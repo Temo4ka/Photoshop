@@ -19,6 +19,8 @@ ListErrors ListHead::pushBack(void *object) {
     nodePrev -> setNext(newNode);
     nodeNext -> setPrev(newNode);
 
+    (this -> size)++;
+
     return ListOk;
 }
 
@@ -52,6 +54,8 @@ ListErrors ListHead::erase(ListNode *node) {
 
     prev -> setNext(next);
     next -> setPrev(prev);
+
+    (this -> size)--;
 
     return ListOk;
 }
