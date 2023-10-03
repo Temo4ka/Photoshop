@@ -1,5 +1,7 @@
 {
     "files.associations": {
-        "list": "cpp"
+        "list": "cpp",
+        "cstdlib": "cpp",
+        "new": "cpp"
     }
 }

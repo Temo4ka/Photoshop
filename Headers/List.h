@@ -6,32 +6,33 @@ enum ListErrors {
 
 class ListHead;
 
-class ListNode {
-    ListHead *head;
+template <class Type> class ListNode {
+    ListHead<Type> *head;
 
-    ListNode *next;
-    ListNode *prev;
+    ListNode<Type> *next;
+    ListNode<Type> *prev;
 
-    void *object;
+    Type *object;
 
     public:
-        ListNode(void *object, ListNode* prev, ListNode *next):
+        ListNode(Type *object, ListNode<Type> *prev, ListNode<Type> *next):
                object (object),
                                    prev (prev),
                                                    next (next)
         {}
 
-        ListErrors setPrev(ListNode *newPrev) {  this -> prev = newPrev;  }
-        ListErrors setNext(ListNode *newNext) {  this -> next = newNext;  }
+        ListErrors setPrev(ListNode<Type> *newPrev) {  this -> prev = newPrev;  }
+        ListErrors setNext(ListNode<Type> *newNext) {  this -> next = newNext;  }
 
-        ListNode *getPrev() {  return this -> prev;  }
-        ListNode *getNext() {  return this -> next;  }
+        ListNode<Type> *getPrev() {  return this -> prev;  }
+        ListNode<Type> *getNext() {  return this -> next;  }
 
         ListHead *getHead() {  return this -> head;  }
 };
 
-class ListHead {
-    ListNode *head;
+template <class Type> class ListHead {
+    
+    ListNode<Type> *head;
 
     size_t size;
 
@@ -41,8 +42,10 @@ class ListHead {
         head (nullptr)
         {}
 
-        ListErrors  pushBack(void *object);
-        ListErrors pushFront(void *object);
+        ListErrors  pushBack(Type *object);
+        ListErrors pushFront(Type *object);
 
-        ListErrors erase(ListNode *node);
+        ListErrors erase(ListNode<Type> *node);
+
+        ListNode<Type>* getHead() { return this->head; }
 };

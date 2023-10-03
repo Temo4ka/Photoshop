@@ -1,7 +1,7 @@
 #include "../Headers/List.h"
 #include "DSL.h"
 
-ListErrors ListHead::pushBack(void *object) {
+ListErrors ListHead::pushBack(Type *object) {
     catchNullptr(object, NullptrCaught);
 
     if (this -> head == nullptr) {
@@ -24,7 +24,7 @@ ListErrors ListHead::pushBack(void *object) {
     return ListOk;
 }
 
-ListErrors ListHead::pushFront(void *object) {
+ListErrors ListHead::pushFront(Type *object) {
     catchNullptr(object, NullptrCaught);
 
     ListErrors err = this -> pushBack(object);

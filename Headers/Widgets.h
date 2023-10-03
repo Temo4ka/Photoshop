@@ -15,22 +15,25 @@ enum ButtonStatus {
     Pressed  = 2
 };
 
-
-
 class Widget {
     Vect position;
     Vect   size  ;
 
+    sf::Sprite *sprite;
+
     WidgetStatus  status;
 
     public:
-        Widget(Vect &pos, Vect &size):
+        Widget(Vect &pos, Vect &size, sf::Sprite *sprite):
            position (pos),
                           size (size),
+                                         sprite (texture),
         status(Disable)
-        {}
+        { this -> sprite.setPosition(pos.x, pos.y); }
 
         void turnOn() { this -> status = Enable; }
+
+        sf::Sprite* getSprite() { return this -> sprite; }
 
         virtual int  onMouseCLick  (double x, double y) = 0;
         virtual int   onMouseMove  (double x, double y) = 0;
@@ -40,6 +43,8 @@ class Widget {
         virtual int onKeyReleased() = 0;
 
         virtual int addObject(Widget &object) = 0;
+
+        virtual int draw(RenderTarget *rt) = 0;
 };
 
 
@@ -52,26 +57,35 @@ class Window : public Widget {
         subWidgets (ListHead())
         {}
 
+        int draw(RenderTarget *rt);
+
+        ListHead getList() { return this -> subWidgets; }
 
 };
 
 class Button : public Widget {
     ButtonStatus buttonsStatus;
 
+    sf::Text text;
+
     public:
-        Button(Vect &pos, Vect &size):
-        Widget(pos, size),
-        {}
+        Button(Vect &pos, Vect &size, const char *text, sf::Font *font);
+
+        int onMouseClick();
+
+        int draw(RenderTarget *rt);
 };
 
 class Menu : public Widget {
     ListHead buttons;
 
     public:
-        Window(Vect &pos, Vect &size):
+        Menu(Vect &pos, Vect &size):
         Widget(pos, size),
         buttons (ListHead())
         {}
+
+        int draw(RenderTarget *rt);
 };
 
 class RenderTarget {
