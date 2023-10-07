@@ -1,11 +1,13 @@
 #include <SFML/Graphics.hpp>
 #include "../Headers/Config.h"
+#include "../Headers/UI.h"
  
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Ps", sf::Style::None);
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
+    Window *mainWindow = orginiseMainScreen(&window);
+
+    RenderTarget rt = RenderTarget(&window);
 
     while (window.isOpen())
     {
@@ -17,7 +19,9 @@ int main()
         }
 
         window.clear();
-        window.draw(shape);
+
+        mainWindow -> draw(&rt);
+        
         window.display();
     }
 

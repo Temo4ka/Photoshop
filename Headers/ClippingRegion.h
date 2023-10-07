@@ -1,6 +1,8 @@
 #include "Vect.h"
 #include <stdint.h>
 
+class RegionSet;
+
 class Region {
     Vect pos;
     Vect size;
