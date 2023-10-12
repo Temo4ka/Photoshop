@@ -10,7 +10,6 @@ enum WidgetStatus {
     Enable  = 1
 };
 
-<<<<<<< HEAD
 class RenderTarget {
     sf::RenderWindow *window;
 
@@ -20,12 +19,6 @@ class RenderTarget {
         {}
 
         sf::RenderWindow *getWindow() { return window; }
-=======
-enum ButtonStatus {
-    Released = 0,
-    Pointed  = 1,
-    Pressed  = 2
->>>>>>> parent of 03800ab (MainScreen added)
 };
 
 class Widget {
@@ -36,12 +29,12 @@ class Widget {
     Vect position;
     Vect   size  ;
 
-    sf::Sprite *sprite;
+    sf::Sprite  *sprite;
+    sf::Texture *texture;
 
     WidgetStatus  status;
 
     public:
-<<<<<<< HEAD
         Widget(Vect &pos, Vect &size, sf::Texture *texture, const signed texW, const signed texH, sf::Sprite *sprite, Widget *parent = nullptr):
            position (pos),
                           size (size),
@@ -59,36 +52,21 @@ class Widget {
             // fclose(logFile);
             if (sprite  != nullptr) (this->sprite)->setScale(size.x / double(texW), size.y / double(texH));
         }
-=======
-        Widget(Vect &pos, Vect &size, sf::Sprite *sprite):
-           position (pos),
-                          size (size),
-                                         sprite (texture),
-        status(Disable)
-        { this -> sprite.setPosition(pos.x, pos.y); }
->>>>>>> parent of 03800ab (MainScreen added)
 
         void changeStatus() { this -> status = (this -> status == Enable)? Disable : Enable; }
 
         sf::Sprite* getSprite() { return this -> sprite; }
 
-<<<<<<< HEAD
         virtual int   onMouseMove  (Vect &pos) = 0;
         virtual int  onMouseClick  (Vect &pos) = 0;
         virtual int onMouseReleased(Vect &pos) = 0;
-=======
-        virtual int  onMouseCLick  (double x, double y) = 0;
-        virtual int   onMouseMove  (double x, double y) = 0;
-        virtual int onMouseReleased(double x, double y) = 0;
->>>>>>> parent of 03800ab (MainScreen added)
 
-        virtual int onKeyPressed () = 0;
-        virtual int onKeyReleased() = 0;
+        // virtual int onKeyPressed () = 0;
+        // virtual int onKeyReleased() = 0;
 
-        virtual int addObject(Widget &object) = 0;
+        // virtual int addObject(Widget &object) = 0;
 
         virtual int draw(RenderTarget *rt) = 0;
-<<<<<<< HEAD
 
         Vect   getSize  () { return this ->   size  ; }
         Vect getPosition() { return this -> position; }
@@ -96,34 +74,19 @@ class Widget {
         WidgetStatus getStatus() { return this -> status; }
 
         ListHead<Widget> *getList() { return this -> subWidgets; }
-=======
->>>>>>> parent of 03800ab (MainScreen added)
 };
 
 
 class Window : public Widget {
-<<<<<<< HEAD
 
     public:
         Window(Vect pos, Vect size, sf::Texture *texture, sf::Sprite *sprite):
         Widget(pos, size, texture, TEST_PIC_WIDTH, TEST_PIC_HEIGHT, sprite)
-=======
-    ListHead subWidgets;
-
-    public:
-        Window(Vect &pos, Vect &size):
-        Widget(pos, size),
-        subWidgets (ListHead())
->>>>>>> parent of 03800ab (MainScreen added)
         {}
 
         int draw(RenderTarget *rt);
 
-<<<<<<< HEAD
         int  addChild  (Widget *widget);
-=======
-        ListHead getList() { return this -> subWidgets; }
->>>>>>> parent of 03800ab (MainScreen added)
 
         int removeChild(Widget *widget);
 
@@ -133,18 +96,11 @@ class Window : public Widget {
 };
 
 
-<<<<<<< HEAD
 class Button : public Widget {
     sf::Text *text;
     sf::Font *font;
 
     int (*run)(Button *button);
-=======
-    sf::Text text;
-
-    public:
-        Button(Vect &pos, Vect &size, const char *text, sf::Font *font);
->>>>>>> parent of 03800ab (MainScreen added)
 
     public:
         enum Status {
@@ -163,24 +119,16 @@ class Button : public Widget {
 };
 
 class Menu : public Widget {
-    ListHead buttons;
+    ListHead<Widget> *buttons;
 
     public:
-<<<<<<< HEAD
         Menu(Vect pos, Vect size):
         Widget(pos, size, nullptr, 0, 0, nullptr),
         buttons (new ListHead<Widget>())
-=======
-        Menu(Vect &pos, Vect &size):
-        Widget(pos, size),
-        buttons (ListHead())
->>>>>>> parent of 03800ab (MainScreen added)
         {}
 
         int draw(RenderTarget *rt);
-};
 
-<<<<<<< HEAD
         int   onMouseMove  (Vect &pos);
         int  onMouseClick  (Vect &pos);
         int onMouseReleased(Vect &pos);
@@ -234,10 +182,3 @@ class Canvas: public Widget {
 int addWidget(Window *parent, Widget *child);
 
 int removeWidget(Window *parent, Widget *child);
-=======
-class RenderTarget {
-    sf::Texture texture;
-
-    sf::RenderWindow *window;
-};
->>>>>>> parent of 03800ab (MainScreen added)
