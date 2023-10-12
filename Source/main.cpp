@@ -16,6 +16,28 @@ int main()
         {
             if (event.type == sf::Event::Closed)
                 window.close();
+
+            if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
+                sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+
+                Vect pos = Vect(mousePos.x, mousePos.y);
+                mainWindow -> onMouseClick(pos);
+            }
+
+            if (event.type == sf::Event::MouseMoved) {
+                sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+
+                Vect pos = Vect(mousePos.x, mousePos.y);
+                mainWindow -> onMouseMove(pos);
+            }
+
+            if (event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left) {
+                sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+
+                Vect pos = Vect(mousePos.x, mousePos.y);
+                mainWindow -> onMouseReleased(pos);
+            }
+
         }
 
         window.clear();

@@ -31,6 +31,7 @@ template <class Type> class ListNode {
 
              Type      *getObject() {  return this -> object; }
 
+        ~ListNode() { delete object; }
 };
 
 template <class Type> class ListHead {
@@ -51,6 +52,16 @@ template <class Type> class ListHead {
         ListErrors erase(ListNode<Type> *node);
 
         ListNode<Type>* getHead() { return this->head; }
+
+        ~ListHead()
+        {
+            ListNode<Type> *cur = head -> getNext();
+            while (cur != head) {
+                ListNode<Type> *next = cur -> getNext();
+                delete cur;
+            }
+            delete cur;
+        }
 };
 
 #include "DSL.h"

@@ -3,6 +3,11 @@
         "list": "cpp",
         "cstdlib": "cpp",
         "new": "cpp",
-        "fstream": "cpp"
+        "fstream": "cpp",
+        "*.tcc": "cpp",
+        "algorithm": "cpp",
+        "istream": "cpp",
+        "ostream": "cpp",
+        "utility": "cpp"
     }
 }
