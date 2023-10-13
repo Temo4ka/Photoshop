@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include "ClippingRegion.h"
 #include "../Headers/Config.h"
 #include "Vect.h"
 #include "List.h"
@@ -25,6 +26,8 @@ class Widget {
     Widget *parent;
 
     ListHead<Widget> *subWidgets;
+
+    Region
 
     Vect position;
     Vect   size  ;

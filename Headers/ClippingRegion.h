@@ -1,4 +1,5 @@
 #include "Vect.h"
+#include "List.h"
 #include <stdint.h>
 
 class RegionSet;
@@ -21,11 +22,14 @@ class Region {
 };
 
 class RegionSet {
-    Region **set;
+    ListHead<Region> set;
     size_t size;
 
     public:
-        RegionSet();
+        RegionSet():
+        size(0),
+        set(ListHead<Region>())
+        {}
 
         size_t getSize() { return this -> size; }
 

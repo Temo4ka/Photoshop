@@ -66,53 +66,57 @@ RegionSet* Region::crossRegion(Region &r) {
     return set;
 }
 
-RegionSet::RegionSet() {
-    this -> set  = new Region*[MAX_SIZE_REGIONS];
-    this -> size = 0;
-}
-
 int RegionSet::addRegion(Region *region) {
     if (this -> size == MAX_SIZE_REGIONS) return EXIT_FAILURE;
 
-    this -> set[this -> size] = region;
+    set.pushBack(region);
     (this -> size)++;
 
     return EXIT_SUCCESS;
 }
 
 void RegionSet::unionRegions(RegionSet &r) {
-    for (int i = 0; i < this->size; i++)
-        addRegion(r.set[i]);
+    ListNode<Region> *cur = set.getHead();
+    for (int i = 0; i < this->size; i++) {
+        addRegion(cur -> getObject());
+        cur = cur -> getNext();
+    }
     
     return;
 }
 
-RegionSet* RegionSet::subRegions(RegionSet &r) {
-    RegionSet *set = new RegionSet;
+RegionSet* RegionSet::subRegions(RegionSet &that) {
+    RegionSet *newSet = new RegionSet;
 
+    ListNode<Region> *curThis = this->set.getHead();
     for (int i = 0; i < size; i++) {
-        Region *cur = this->set[i];
 
-        for (int j = 0; j < r.getSize(); j++) {
-            set -> unionRegions( *(cur->subRegion( *(r.set[j]) )) );
+        ListNode<Region> *curThat = that.set.getHead();
+        for (int j = 0; j < that.getSize(); j++) {
+            newSet -> unionRegions( *((curThis->getObject())->subRegion( *(curThat -> getObject()) )) );
+            curThat = curThat->getNext();
         }
+        curThis -> getNext();
     }
 
-    return set;
+    return newSet;
 }
 
-RegionSet* RegionSet::crossRegions(RegionSet &r) {
-    RegionSet *set = new RegionSet;
+RegionSet* RegionSet::crossRegions(RegionSet &that) {
+    RegionSet *newSet = new RegionSet;
 
+    ListNode<Region> *curThis = this->set.getHead();
     for (int i = 0; i < size; i++) {
-        Region *cur = this->set[i];
 
-        for (int j = 0; j < r.getSize(); j++) {
-            set -> unionRegions( *(cur->crossRegion( *(r.set[j]) )) );
+        ListNode<Region> *curThat = that.set.getHead();
+        for (int j = 0; j < that.getSize(); j++) {
+            newSet -> unionRegions( *((curThis->getObject())->crossRegion( *(curThat -> getObject()) )) );
+            curThat = curThat->getNext();
         }
+        curThis -> getNext();
     }
 
-    return set;
+    return newSet;
 }
 
 double max(double a, double b) {
