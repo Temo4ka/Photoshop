@@ -19,30 +19,6 @@ int Window::draw(RenderTarget *rt) {
     return EXIT_SUCCESS;
 }
 
-int Window::addChild(Widget *widget) {
-    catchNullptr(widget, EXIT_FAILURE);
-
-    ListHead<Widget> *list = this -> getList();
-    list -> pushBack(widget);
-
-    return EXIT_SUCCESS;
-}
-
-int Window::removeChild(Widget *widget) {
-    catchNullptr(widget, EXIT_FAILURE);
-
-    ListHead<Widget> *list = this -> getList();
-    ListNode<Widget> *cur  = list -> getHead();
-    do {
-        if (cur -> getObject() == widget) {
-            list ->erase(cur);
-            break;
-        }
-    } while (cur != list -> getHead());
-
-    return EXIT_SUCCESS;
-}
-
 int Window::onMouseClick(Vect &mouse) {
     // if (POSITION.x > mouse.x || POSITION.x + SIZE.x < mouse.x ||
     //     POSITION.y > mouse.y || POSITION.y + SIZE.y < mouse.y )

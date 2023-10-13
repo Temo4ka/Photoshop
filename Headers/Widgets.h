@@ -27,7 +27,7 @@ class Widget {
 
     ListHead<Widget> *subWidgets;
 
-    Region
+    RegionSet *set;
 
     Vect position;
     Vect   size  ;
@@ -47,6 +47,8 @@ class Widget {
         subWidgets (new ListHead<Widget>()),
         status(Disable)
         {
+            set = new RegionsSet();
+            set -> addRegion(new Region(pos, size));
             if (texture != nullptr) (this->sprite)->setTexture(*texture);
             if (sprite  != nullptr) (this->sprite)->setPosition(pos.x, pos.y); 
             if (sprite  != nullptr) (this->sprite)->setTextureRect(sf::IntRect(0, 0, texW, texH));
@@ -64,6 +66,11 @@ class Widget {
         virtual int  onMouseClick  (Vect &pos) = 0;
         virtual int onMouseReleased(Vect &pos) = 0;
 
+        int  addSubWidget  (Widget *widget);
+        int removeSubWidget(Widget *widget);
+
+        int clipRegions();
+
         // virtual int onKeyPressed () = 0;
         // virtual int onKeyReleased() = 0;
 
@@ -77,6 +84,8 @@ class Widget {
         WidgetStatus getStatus() { return this -> status; }
 
         ListHead<Widget> *getList() { return this -> subWidgets; }
+
+        RegionSet *getRegionSet() { return set; }
 };
 
 
@@ -88,10 +97,6 @@ class Window : public Widget {
         {}
 
         int draw(RenderTarget *rt);
-
-        int  addChild  (Widget *widget);
-
-        int removeChild(Widget *widget);
 
         int   onMouseMove  (Vect &pos);
         int  onMouseClick  (Vect &pos);

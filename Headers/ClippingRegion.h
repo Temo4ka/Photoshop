@@ -35,8 +35,8 @@ class RegionSet {
 
         int addRegion(Region *region);
 
-        RegionSet* crossRegions(RegionSet &r);
-        RegionSet*   subRegions(RegionSet &r);
+        RegionSet* crossRegions(RegionSet *r);
+        RegionSet*   subRegions(RegionSet *r);
         
-          void     unionRegions(RegionSet &r);
+          void     unionRegions(RegionSet *r);
 };

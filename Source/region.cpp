@@ -75,7 +75,7 @@ int RegionSet::addRegion(Region *region) {
     return EXIT_SUCCESS;
 }
 
-void RegionSet::unionRegions(RegionSet &r) {
+void RegionSet::unionRegions(RegionSet *r) {
     ListNode<Region> *cur = set.getHead();
     for (int i = 0; i < this->size; i++) {
         addRegion(cur -> getObject());
@@ -85,15 +85,15 @@ void RegionSet::unionRegions(RegionSet &r) {
     return;
 }
 
-RegionSet* RegionSet::subRegions(RegionSet &that) {
-    RegionSet *newSet = new RegionSet;
+RegionSet* RegionSet::subRegions(RegionSet *that) {
+    RegionSet *newSet = new RegionSet();
 
     ListNode<Region> *curThis = this->set.getHead();
     for (int i = 0; i < size; i++) {
 
-        ListNode<Region> *curThat = that.set.getHead();
-        for (int j = 0; j < that.getSize(); j++) {
-            newSet -> unionRegions( *((curThis->getObject())->subRegion( *(curThat -> getObject()) )) );
+        ListNode<Region> *curThat = that->set.getHead();
+        for (int j = 0; j < that -> getSize(); j++) {
+            newSet -> unionRegions( ((curThis->getObject())->subRegion( *(curThat -> getObject()) )) );
             curThat = curThat->getNext();
         }
         curThis -> getNext();
@@ -102,15 +102,15 @@ RegionSet* RegionSet::subRegions(RegionSet &that) {
     return newSet;
 }
 
-RegionSet* RegionSet::crossRegions(RegionSet &that) {
-    RegionSet *newSet = new RegionSet;
+RegionSet *RegionSet::crossRegions(RegionSet *that) {
+    RegionSet *newSet =  new RegionSet();
 
     ListNode<Region> *curThis = this->set.getHead();
     for (int i = 0; i < size; i++) {
 
-        ListNode<Region> *curThat = that.set.getHead();
-        for (int j = 0; j < that.getSize(); j++) {
-            newSet -> unionRegions( *((curThis->getObject())->crossRegion( *(curThat -> getObject()) )) );
+        ListNode<Region> *curThat = that->set.getHead();
+        for (int j = 0; j < that -> getSize(); j++) {
+            newSet -> unionRegions( ((curThis->getObject())->crossRegion( *(curThat -> getObject()) )) );
             curThat = curThat->getNext();
         }
         curThis -> getNext();
