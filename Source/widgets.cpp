@@ -9,6 +9,7 @@ int Widget::addSubWidget(Widget *widget) {
     delete set;
     set = newSet;
 
+
     ListHead<Widget> *list = this -> getList();
     list -> pushBack(widget);
 
@@ -44,10 +45,7 @@ int Widget::clipRegions() {
     ListHead<Widget> *list = this -> getList();
     ListNode<Widget> *cur  = list -> getHead();
 
-    if (cur == nullptr) {
-        EXECUTE_ERROR(EXIT_FAILURE);
-        return EXIT_FAILURE;
-    }
+    if (cur == nullptr) return EXIT_SUCCESS;
 
     delete set;
     set = new RegionSet;
@@ -61,14 +59,36 @@ int Widget::clipRegions() {
 
         Widget *curWidget = cur->getObject();
 
+        if (curWidget -> getStatus() == Disable) continue;
+
         RegionSet *subSet =  new RegionSet();
         subSet -> addRegion(new Region(curWidget->getPosition(), curWidget -> getSize())); 
-        set -> subRegions(subSet);
         curWidget -> set = subSet;
+
+        RegionSet *newSet = set -> subRegions(subSet);
+        delete set;
+        set = newSet;
         
         curWidget->clipRegions();
+
+        cur = cur -> getNext();
 
     } while (cur != list -> getHead());
 
     return EXIT_SUCCESS;
+}
+
+void Widget::dumpRegions(sf::RenderWindow *window) {
+    set -> dump(window);
+
+    ListNode<Widget> *cur = subWidgets->getHead();
+    do {
+        if (cur == nullptr) return;
+
+        cur -> getObject() -> getRegionSet() -> dump(window);
+        cur -> getObject() -> dumpRegions(window);
+        cur = cur ->getNext();
+    } while(cur != subWidgets -> getHead());
+
+    return;
 }

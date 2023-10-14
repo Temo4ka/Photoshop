@@ -18,9 +18,23 @@ int Button::draw(RenderTarget *rt) {
 
     if (this -> getStatus() == Disable) return EXIT_SUCCESS;
 
-    (this->getSprite())->setTextureRect(sf::IntRect(0, BUTTON_PIC_HEIGHT * status, BUTTON_MENU_WIDTH, BUTTON_PIC_HEIGHT));
+    ListNode<Region> *curRegionNode = ((this->getRegionSet())->getHead())->getHead();
+    for (int i = 0; i < this->getRegionSet()->getSize(); i++) {
+        Region *curRegion = curRegionNode->getObject();
 
-    (rt->getWindow())->draw(*(this->getSprite()));
+        Vect curPos  = curRegion->getPos();
+        Vect curSize = curRegion->getSize();
+
+        (this->getSprite())->setTextureRect(sf::IntRect(curPos.x - POSITION.x, BUTTON_PIC_HEIGHT * status + curPos.y - POSITION.y,
+                                                            curSize.x, curSize.y));
+
+        (this->getSprite())->setPosition(curPos.x, curPos.y);
+
+        (rt->getWindow())->draw(*(this->getSprite()));
+
+        curRegionNode = curRegionNode -> getNext();
+    }
+
     (rt->getWindow())->draw(*(this->text));
 
     ListNode<Widget>* cur = (this -> getList()) -> getHead();

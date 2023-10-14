@@ -1,3 +1,7 @@
+#pragma once
+
+#include <stdint.h>
+
 enum ListErrors {
              ListOk        =  0,
          NullptrCaught     =  1,

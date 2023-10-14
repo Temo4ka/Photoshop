@@ -22,7 +22,7 @@ int Canvas::onMouseMove(Vect &mouse) {
 
     if (status == Status::Released) return EXIT_SUCCESS;
 
-    tm.m(texture, texture, mouse);
+    tm.m(texture, texture, mouse - POSITION);
 
     // switch (tool) {
     //     case Tool::Pen: {
@@ -70,11 +70,23 @@ int Canvas::draw(RenderTarget *rt) {
     sf::Sprite sprite = {};
     texture -> display();
     sprite.setTexture(texture -> getTexture());
-    sprite.setPosition(POSITION.x, POSITION.y);
-    sprite.setTextureRect(sf::IntRect(0, 0, SIZE.x, SIZE.y));
 
-    (rt->getWindow())->draw(sprite);
+    ListNode<Region> *curRegionNode = ((this->getRegionSet())->getHead())->getHead();
+    for (int i = 0; i < this->getRegionSet()->getSize(); i++) {
+        Region *curRegion = curRegionNode->getObject();
 
+        Vect curPos  = curRegion->getPos();
+        Vect curSize = curRegion->getSize();
+
+        sprite.setTextureRect(sf::IntRect(curPos.x - POSITION.x, curPos.y - POSITION.y, curSize.x, curSize.y));
+
+        sprite.setPosition(curPos.x, curPos.y);
+
+        (rt->getWindow())->draw(sprite);
+
+        curRegionNode = curRegionNode -> getNext();
+    }
+    
     ListNode<Widget>* cur = (this -> getList()) -> getHead();
     if (cur == nullptr) return EXIT_SUCCESS;
 

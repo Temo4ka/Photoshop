@@ -14,16 +14,18 @@ Window* orginiseMainScreen(sf::RenderWindow *window) {
 
     Menu *menu = new Menu(Vect(0, PANEL_HEIGHT), Vect(WINDOW_WIDTH, MENU_HEIGHT));
 
-    Canvas *canvas = new Canvas(Vect(0, PANEL_HEIGHT + MENU_HEIGHT + 10), Vect(MAIN_CANVAS_WIDTH, MAIN_CANVAS_HEIGHT));
+    Canvas *canvas = new Canvas(Vect(6, PANEL_HEIGHT + MENU_HEIGHT), Vect(MAIN_CANVAS_WIDTH, MAIN_CANVAS_HEIGHT));
 
     if (addMainScreenButtons(menu, canvas)) return nullptr;
 
      menu  -> changeStatus();
     canvas -> changeStatus();
 
-    ListHead<Widget> *list = mainWindow -> getList();
-    list -> pushBack(canvas);
-    list -> pushBack( menu );
+    mainWindow ->addSubWidget(canvas);
+    mainWindow ->addSubWidget(menu);
+    // ListHead<Widget> *list = mainWindow -> getList();
+    // list -> pushBack(canvas);
+    // list -> pushBack( menu );
 
     mainWindow -> changeStatus();
 

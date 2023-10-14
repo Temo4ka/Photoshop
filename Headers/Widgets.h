@@ -47,7 +47,7 @@ class Widget {
         subWidgets (new ListHead<Widget>()),
         status(Disable)
         {
-            set = new RegionsSet();
+            set = new RegionSet();
             set -> addRegion(new Region(pos, size));
             if (texture != nullptr) (this->sprite)->setTexture(*texture);
             if (sprite  != nullptr) (this->sprite)->setPosition(pos.x, pos.y); 
@@ -86,6 +86,8 @@ class Widget {
         ListHead<Widget> *getList() { return this -> subWidgets; }
 
         RegionSet *getRegionSet() { return set; }
+
+        void dumpRegions(sf::RenderWindow *window);
 };
 
 
@@ -175,6 +177,7 @@ class Canvas: public Widget {
         texture (new sf::RenderTexture)
         { 
             texture->create(size.x, size.y);
+            texture->clear(sf::Color::White);
             tm.t = new B;
         }
 

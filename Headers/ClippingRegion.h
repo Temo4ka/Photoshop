@@ -1,5 +1,6 @@
 #include "Vect.h"
 #include "List.h"
+#include <SFML/Graphics.hpp>
 #include <stdint.h>
 
 class RegionSet;
@@ -12,7 +13,11 @@ class Region {
         Region(Vect pos, Vect size):
                 pos (pos),
                           size (size)
-        {}
+        {
+        FILE *logFile = fopen("logFile.txt", "a");
+        fprintf(logFile, "Pos(%lg, %lg) - Size(%lg, %lg) NEW REGION at %s at %s(%d)\n", pos.x, pos.y, size.x, size.y, __PRETTY_FUNCTION__, __FILE__, __LINE__); 
+        fclose(logFile);
+        }
         
         Vect getPos () { return this -> pos ; }
         Vect getSize() { return this -> size; }
@@ -22,13 +27,13 @@ class Region {
 };
 
 class RegionSet {
-    ListHead<Region> set;
+    ListHead<Region> *set;
     size_t size;
 
     public:
         RegionSet():
         size(0),
-        set(ListHead<Region>())
+        set(new ListHead<Region>())
         {}
 
         size_t getSize() { return this -> size; }
@@ -39,4 +44,8 @@ class RegionSet {
         RegionSet*   subRegions(RegionSet *r);
         
           void     unionRegions(RegionSet *r);
+    
+        ListHead<Region> *getHead() { return set; }
+
+        void dump(sf::RenderWindow *window);
 };

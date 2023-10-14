@@ -1,6 +1,8 @@
 #include <SFML/Graphics.hpp>
 #include "../Headers/Config.h"
 #include "../Headers/UI.h"
+
+// #define DEBUG
  
 int main()
 {
@@ -8,6 +10,8 @@ int main()
     Window *mainWindow = orginiseMainScreen(&window);
 
     RenderTarget rt = RenderTarget(&window);
+
+    mainWindow -> clipRegions();
 
     while (window.isOpen())
     {
@@ -41,8 +45,12 @@ int main()
         }
 
         window.clear();
-
+#ifdef DEBUG
+        mainWindow -> dumpRegions(&window);
+        _sleep(1000);
+#else
         mainWindow -> draw(&rt);
+#endif
         
         window.display();
     }

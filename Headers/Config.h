@@ -18,7 +18,7 @@ const signed BUTTON_PIC_HEIGHT =  60;
 const signed TEST_PIC_WIDTH  = 1440;
 const signed TEST_PIC_HEIGHT =  780;
 
-const signed MAIN_CANVAS_WIDTH  = 1440;
+const signed MAIN_CANVAS_WIDTH  = 1428;
 const signed MAIN_CANVAS_HEIGHT =  620;
 
 static const char *WINDOW_FILE_NAME = "./Image/Window.png";
