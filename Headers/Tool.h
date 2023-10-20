@@ -2,61 +2,65 @@
 #include "Vect.h"
 #include <SFML/Graphics.hpp>
 
-struct T;
+struct Tool;
 
-struct TMan {
-    T* t;
-    sf::Color c;
+struct ToolManager {
+    Tool* tool;
+    sf::Color color;
 
-    TMan():
-    t(nullptr),
-    c(sf::Color::Blue)
+    ToolManager ():
+    tool(nullptr),
+    color(sf::Color::Blue)
     {}
 
-    void p(sf::RenderTexture *rt, sf::RenderTexture *t, Vect cp);
-    void m(sf::RenderTexture *rt, sf::RenderTexture *t, Vect cp);
-    void r(sf::RenderTexture *rt, sf::RenderTexture *t, Vect cp);
+    void  onMousePressed(sf::RenderTexture *rt, sf::RenderTexture *temp, Vect curPosurPosition);
+    void   onMouseMove  (sf::RenderTexture *rt, sf::RenderTexture *temp, Vect curPosurPosition);
+    void onMouseReleased(sf::RenderTexture *rt, sf::RenderTexture *temp, Vect curPosurPosition);
 };
 
-struct T {
-    Vect sp;
-    Vect lp;
+struct Tool {
+    Vect startPoint;
+    Vect lastPoint;
 
-    T():
-    sp(Vect(-1, -1)),
-    lp(Vect(-1, -1))
+    Tool():
+    startPoint (Vect(-1, -1)),
+    lastPoint  (Vect(-1, -1))
     {}
 
-    virtual void p(sf::RenderTexture *rt, sf::RenderTexture *t, Vect c, sf::Color cl) = 0;
-    virtual void m(sf::RenderTexture *rt, sf::RenderTexture *t, Vect c, sf::Color cl) = 0;
-    virtual void r(sf::RenderTexture *rt, sf::RenderTexture *t, Vect c, sf::Color cl) = 0;
+    virtual void onMousePressed (sf::RenderTexture *rt, sf::RenderTexture *temp, Vect curPos, sf::Color color) = 0;
+    virtual void  onMouseMove   (sf::RenderTexture *rt, sf::RenderTexture *temp, Vect curPos, sf::Color color) = 0;
+    virtual void onMouseReleased(sf::RenderTexture *rt, sf::RenderTexture *temp, Vect curPos, sf::Color color) = 0;
 };
 
-// struct Sl : public T {
+// struct Sl : Tool {
 
-//     void p(sf::RenderTexture *rt, sf::RenderTexture *t, Vect c, sf::Color cl);
-//     void m(sf::RenderTexture *rt, sf::RenderTexture *t, Vect c, sf::Color cl);
-//     void r(sf::RenderTexture *rt, sf::RenderTexture *t, Vect c, sf::Color cl);
+//     void p(sf::RenderTexture *rt, sf::RenderTexture *temp, Vect curPos, sf::Color color);
+//     void  onMouseMove  (sf::RenderTexture *rt, sf::RenderTexture *temp, Vect curPos, sf::Color color);
+//     void onMousePressed(sf::RenderTexture *rt, sf::RenderTexture *temp, Vect curPos, sf::Color color);
 // }
 
 
-struct Pl : public T {
-
-    void p(sf::RenderTexture *rt, sf::RenderTexture *t, Vect c, sf::Color cl);
-    void m(sf::RenderTexture *rt, sf::RenderTexture *t, Vect c, sf::Color cl);
-    void r(sf::RenderTexture *rt, sf::RenderTexture *t, Vect c, sf::Color cl);
+struct Polyline : Tool {
+    void onMousePressed (sf::RenderTexture *rt, sf::RenderTexture *temp, Vect curPos, sf::Color color);
+    void  onMouseMove   (sf::RenderTexture *rt, sf::RenderTexture *temp, Vect curPos, sf::Color color);
+    void onMouseReleased(sf::RenderTexture *rt, sf::RenderTexture *temp, Vect curPos, sf::Color color);
 };
 
-struct B : public T {
-
-    void p(sf::RenderTexture *rt, sf::RenderTexture *t, Vect c, sf::Color cl);
-    void m(sf::RenderTexture *rt, sf::RenderTexture *t, Vect c, sf::Color cl);
-    void r(sf::RenderTexture *rt, sf::RenderTexture *t, Vect c, sf::Color cl);
+struct Brush : Tool {
+    void onMousePressed (sf::RenderTexture *rt, sf::RenderTexture *temp, Vect curPos, sf::Color color);
+    void  onMouseMove   (sf::RenderTexture *rt, sf::RenderTexture *temp, Vect curPos, sf::Color color);
+    void onMouseReleased(sf::RenderTexture *rt, sf::RenderTexture *temp, Vect curPos, sf::Color color);
 };
 
-// struct F : public T {
+struct Pen : Tool {
+    void onMousePressed (sf::RenderTexture *rt, sf::RenderTexture *temp, Vect curPos, sf::Color color);
+    void  onMouseMove   (sf::RenderTexture *rt, sf::RenderTexture *temp, Vect curPos, sf::Color color);
+    void onMouseReleased(sf::RenderTexture *rt, sf::RenderTexture *temp, Vect curPos, sf::Color color);
+};
 
-//     void p(sf::RenderTexture *rt, sf::RenderTexture *t, Vect c, sf::Color cl);
-//     void m(sf::RenderTexture *rt, sf::RenderTexture *t, Vect c, sf::Color cl);
-//     void r(sf::RenderTexture *rt, sf::RenderTexture *t, Vect c, sf::Color cl);
+// struct F : Tool {
+
+//     void onMousePressed(sf::RenderTexture *rt, sf::RenderTexture *temp, Vect curPos, sf::Color color);
+//     void  onMouseMove  (sf::RenderTexture *rt, sf::RenderTexture *temp, Vect curPos, sf::Color color);
+//     void onMousePressed(sf::RenderTexture *rt, sf::RenderTexture *temp, Vect curPos, sf::Color color);
 // }

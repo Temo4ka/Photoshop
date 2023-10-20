@@ -31,6 +31,7 @@ class Widget {
 
     Vect position;
     Vect   size  ;
+    Vect  scale  ;
 
     sf::Sprite  *sprite;
     sf::Texture *texture;
@@ -42,12 +43,13 @@ class Widget {
            position (pos),
                           size (size),
                                           texture (texture),
-                                                                sprite (sprite),
-                                                                                parent (parent),
+                                                                                                      sprite (sprite),
+                                                                                                                      parent (parent),
         subWidgets (new ListHead<Widget>()),
+        set (new RegionSet()),
+        scale(Vect(size.x / double(texW), size.y / double(texH))),
         status(Disable)
         {
-            set = new RegionSet();
             set -> addRegion(new Region(pos, size));
             if (texture != nullptr) (this->sprite)->setTexture(*texture);
             if (sprite  != nullptr) (this->sprite)->setPosition(pos.x, pos.y); 
@@ -55,7 +57,7 @@ class Widget {
             // FILE *logFile = fopen("logFile.txt", "a");
             // fprintf(logFile, "%s -> %lg <-> %lg\n",  __PRETTY_FUNCTION__, size.x / double(texW), size.y / double(texH));
             // fclose(logFile);
-            if (sprite  != nullptr) (this->sprite)->setScale(size.x / double(texW), size.y / double(texH));
+            if (sprite  != nullptr) (this->sprite)->setScale(scale.x, scale.y);
         }
 
         void changeStatus() { this -> status = (this -> status == Enable)? Disable : Enable; }
@@ -69,7 +71,7 @@ class Widget {
         int  addSubWidget  (Widget *widget);
         int removeSubWidget(Widget *widget);
 
-        int clipRegions();
+        virtual int clipRegions();
 
         // virtual int onKeyPressed () = 0;
         // virtual int onKeyReleased() = 0;
@@ -87,7 +89,11 @@ class Widget {
 
         RegionSet *getRegionSet() { return set; }
 
-        void dumpRegions(sf::RenderWindow *window);
+        virtual void dumpRegions(sf::RenderWindow *window);
+
+        void setRegionSet(RegionSet *newSet) { set = newSet; }
+
+        ~Widget() { delete sprite; }
 };
 
 
@@ -126,15 +132,16 @@ class Button : public Widget {
         int onMouseReleased(Vect &pos);
 
         int draw(RenderTarget *rt);
+
+        void dumpRegions(sf::RenderWindow *window);
+
+        int clipRegions();
 };
 
 class Menu : public Widget {
-    ListHead<Widget> *buttons;
-
     public:
         Menu(Vect pos, Vect size):
-        Widget(pos, size, nullptr, 0, 0, nullptr),
-        buttons (new ListHead<Widget>())
+        Widget(pos, size, nullptr, 0, 0, nullptr)
         {}
 
         int draw(RenderTarget *rt);
@@ -142,9 +149,6 @@ class Menu : public Widget {
         int   onMouseMove  (Vect &pos);
         int  onMouseClick  (Vect &pos);
         int onMouseReleased(Vect &pos);
-
-        ListHead<Widget> *getList() { return this -> buttons; }
-
 };
 
 #include "./Tool.h"
@@ -152,18 +156,11 @@ class Menu : public Widget {
 class Canvas: public Widget {
     sf::RenderTexture *texture;
 
-    TMan tm;
+    ToolManager toolManager;
 
     sf::Color color;
 
     public:
-        enum Tool {
-            None   = 0,
-            Pen    = 1,
-            Brush  = 2,
-            Rubber = 3,
-        } tool;
-
         enum Status {
             Released = 0,
               Hold   = 1,
@@ -171,14 +168,13 @@ class Canvas: public Widget {
 
         Canvas(Vect pos, Vect size):
         Widget(pos, size, nullptr, 0, 0, nullptr),
-        tool(None),
         status(Released),
         color(sf::Color::Blue),
         texture (new sf::RenderTexture)
         { 
             texture->create(size.x, size.y);
             texture->clear(sf::Color::White);
-            tm.t = new B;
+            toolManager.tool = new Polyline;
         }
 
         int   onMouseMove  (Vect &pos);
@@ -189,7 +185,3 @@ class Canvas: public Widget {
 
         void setColor(sf::Color newColor) { this -> color = newColor; }
 };
-
-int addWidget(Window *parent, Widget *child);
-
-int removeWidget(Window *parent, Widget *child);

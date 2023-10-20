@@ -2,7 +2,7 @@
 
 Window* orginiseMainScreen(sf::RenderWindow *window);
 
-int addMainScreenButtons(Menu *menu, Canvas *canvas);
+int addMainScreenButtons(Window *window, Menu *menu, Canvas *canvas);
 
 Menu *addToolsMenu(Button *tools, Canvas *canvas);
 
@@ -14,11 +14,7 @@ Window *addSubWindow(Vect pos);
 
 int activateWidget(Button *button);
 
-int setPen(Button *button);
-
-int setRubber(Button *button);
-
-int setBrush(Button *button);
+void clipRegions(Window *window);
 
 int setRed(Button *button);
 

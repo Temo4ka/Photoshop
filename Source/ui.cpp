@@ -16,13 +16,13 @@ Window* orginiseMainScreen(sf::RenderWindow *window) {
 
     Canvas *canvas = new Canvas(Vect(6, PANEL_HEIGHT + MENU_HEIGHT), Vect(MAIN_CANVAS_WIDTH, MAIN_CANVAS_HEIGHT));
 
-    if (addMainScreenButtons(menu, canvas)) return nullptr;
+    mainWindow ->addSubWidget(menu);
+    if (addMainScreenButtons(mainWindow, menu, canvas)) return nullptr;
+    mainWindow ->addSubWidget(canvas);
 
      menu  -> changeStatus();
     canvas -> changeStatus();
 
-    mainWindow ->addSubWidget(canvas);
-    mainWindow ->addSubWidget(menu);
     // ListHead<Widget> *list = mainWindow -> getList();
     // list -> pushBack(canvas);
     // list -> pushBack( menu );
@@ -32,7 +32,7 @@ Window* orginiseMainScreen(sf::RenderWindow *window) {
     return mainWindow;
 }
 
-int addMainScreenButtons(Menu *menu, Canvas *canvas) {
+int addMainScreenButtons(Window *mainWindow, Menu *menu, Canvas *canvas) {
     catchNullptr(menu, EXIT_FAILURE);
 
     Vect menuButtonSize(BUTTON_MENU_WIDTH, MENU_HEIGHT);
@@ -57,8 +57,6 @@ int addMainScreenButtons(Menu *menu, Canvas *canvas) {
     Button *tools  = new Button(Vect(BUTTON_MENU_WIDTH * 4, PANEL_HEIGHT), menuButtonSize, "tools ", font, texture, toolsS , activateWidget);
     Button *colors = new Button(Vect(BUTTON_MENU_WIDTH * 5, PANEL_HEIGHT), menuButtonSize, "colors", font, texture, colorsS, activateWidget);
 
-    ListHead<Widget> *list = menu -> getList();
-
      file  -> changeStatus();
      edit  -> changeStatus();
      view  -> changeStatus();
@@ -66,21 +64,24 @@ int addMainScreenButtons(Menu *menu, Canvas *canvas) {
     tools  -> changeStatus();
     window -> changeStatus();
 
-    list -> pushBack( file );
-    list -> pushBack( edit );
-    list -> pushBack( view );
-    list -> pushBack(colors);
-    list -> pushBack(tools );
-    list -> pushBack(window);
+    menu -> addSubWidget( file );
+    menu -> addSubWidget( edit );
+    menu -> addSubWidget( view );
+    menu -> addSubWidget(colors);
+    menu -> addSubWidget(tools );
+    menu -> addSubWidget(window);
 
-    list = tools -> getList();
-    list -> pushBack(addToolsMenu(tools, canvas));
+    Menu *subMenu = addToolsMenu(tools, canvas);
+    mainWindow -> addSubWidget(subMenu);
+       tools   -> addSubWidget(subMenu); 
 
-    list = window -> getList();
-    list -> pushBack(addWindowMenu(window));
+      subMenu   = addColorMenu(colors, canvas);
+    mainWindow -> addSubWidget(subMenu);
+      colors   -> addSubWidget(subMenu);
 
-    list = colors -> getList();
-    list -> pushBack(addColorMenu(colors, canvas));
+      subMenu   = addWindowMenu(window);
+    mainWindow -> addSubWidget(subMenu);
+      window   -> addSubWidget(subMenu);
 
     return EXIT_SUCCESS;
 }
@@ -104,23 +105,21 @@ Menu *addToolsMenu(Button *tools, Canvas *canvas) {
     sf::Sprite * brushS  = new sf::Sprite;
     sf::Sprite * rubberS = new sf::Sprite;
 
-    Menu *toolsMenu = new Menu(Vect(pos.x, pos.y + size.y), Vect(size.x, MENU_HEIGHT * 2));
+    Menu *toolsMenu = new Menu(Vect(pos.x, pos.y + size.y), Vect(size.x, MENU_HEIGHT * 3));
 
-    Button *   pen  = new Button(Vect(pos.x, pos.y + size.y * 1), menuButtonSize, " pen  ", font, texture,  penS  ,  setPen  );
-    Button * brush  = new Button(Vect(pos.x, pos.y + size.y * 2), menuButtonSize, "brush ", font, texture, brushS , setBrush );
-    Button * rubber = new Button(Vect(pos.x, pos.y + size.y * 3), menuButtonSize, "rubber", font, texture, rubberS, setRubber);
-
-    ListHead<Widget> *list = toolsMenu -> getList();
+    Button *   pen  = new Button(Vect(pos.x, pos.y + size.y * 1), menuButtonSize, " pen  ", font, texture,  penS  );
+    Button * brush  = new Button(Vect(pos.x, pos.y + size.y * 2), menuButtonSize, "brush ", font, texture, brushS );
+    Button * rubber = new Button(Vect(pos.x, pos.y + size.y * 3), menuButtonSize, "rubber", font, texture, rubberS);
 
       pen  -> changeStatus();
     brush  -> changeStatus();
     rubber -> changeStatus();
 
-    list -> pushBack( pen  );
-    list -> pushBack(brush );
-    list -> pushBack(rubber);
+    toolsMenu -> addSubWidget( pen );
+    toolsMenu -> addSubWidget(brush );
+    toolsMenu -> addSubWidget(rubber);
 
-    list =  pen   -> getList();
+    ListHead<Widget> *list =  pen   -> getList();
     list -> pushBack(canvas);
 
     list = brush  -> getList();
@@ -151,7 +150,7 @@ Menu *addColorMenu(Button *color, Canvas *canvas) {
     sf::Sprite * greenS = new sf::Sprite;
     sf::Sprite * blueS  = new sf::Sprite;
 
-    Menu *colorMenu = new Menu(Vect(pos.x, pos.y + size.y), Vect(size.x, MENU_HEIGHT * 2));
+    Menu *colorMenu = new Menu(Vect(pos.x, pos.y + size.y), Vect(size.x, MENU_HEIGHT * 3));
 
     Button *  red  = new Button(Vect(pos.x, pos.y + size.y * 1), menuButtonSize, " red ", font, texture,  redS ,  setRed );
     Button * green = new Button(Vect(pos.x, pos.y + size.y * 2), menuButtonSize, "green", font, texture, greenS, setGreen);
@@ -232,76 +231,25 @@ Window *addSubWindow(Vect pos) {
 int activateWidget(Button *button) {
     catchNullptr(button, EXIT_FAILURE);
 
-    FILE *logFile = fopen("logFile.txt", "a");
-    fprintf(logFile, "%s -> Here\n",  __PRETTY_FUNCTION__);
-    fclose(logFile);
+    // FILE *logFile = fopen("logFile.txt", "a");
+    // fprintf(logFile, "%s -> Here\n",  __PRETTY_FUNCTION__);
+    // fclose(logFile);
 
     ListHead<Widget> *list = button -> getList();
 
-    Widget *curWidget = (Widget *) (list->getHead())->getObject();
+    Widget *curWidget = (list->getHead())->getObject();
     catchNullptr(curWidget, EXIT_FAILURE);
 
     curWidget->changeStatus();
-    return EXIT_SUCCESS;
-}
-
-int setPen(Button *button) {
-    catchNullptr(button, EXIT_FAILURE);
-
-    FILE *logFile = fopen("logFile.txt", "a");
-    fprintf(logFile, "%s -> Here\n",  __PRETTY_FUNCTION__);
-    fclose(logFile);
-
-    ListHead<Widget> *list = button -> getList();
-
-    Canvas *curCanvas = (Canvas *) (list->getHead())->getObject();
-    catchNullptr(curCanvas, EXIT_FAILURE);
-
-    curCanvas->tool = Canvas::Tool::Pen;
-
-    return EXIT_SUCCESS;
-}
-
-int setRubber(Button *button) {
-    catchNullptr(button, EXIT_FAILURE);
-
-    FILE *logFile = fopen("logFile.txt", "a");
-    fprintf(logFile, "%s -> Here\n",  __PRETTY_FUNCTION__);
-    fclose(logFile);
-
-    ListHead<Widget> *list = button -> getList();
-
-    Canvas *curCanvas = (Canvas *) (list->getHead())->getObject();
-    catchNullptr(curCanvas, EXIT_FAILURE);
-
-    curCanvas->tool = Canvas::Tool::Rubber;
-
-    return EXIT_SUCCESS;
-}
-
-int setBrush(Button *button) {
-    catchNullptr(button, EXIT_FAILURE);
-
-    FILE *logFile = fopen("logFile.txt", "a");
-    fprintf(logFile, "%s -> Here\n",  __PRETTY_FUNCTION__);
-    fclose(logFile);
-
-    ListHead<Widget> *list = button -> getList();
-
-    Canvas *curCanvas = (Canvas *) (list->getHead())->getObject();
-    catchNullptr(curCanvas, EXIT_FAILURE);
-
-    curCanvas->tool = Canvas::Tool::Brush;
-
-    return EXIT_SUCCESS;
+    return EXIT_SUCCESS; 
 }
 
 int setRed(Button *button) {
     catchNullptr(button, EXIT_FAILURE);
 
-    FILE *logFile = fopen("logFile.txt", "a");
-    fprintf(logFile, "%s -> Here\n",  __PRETTY_FUNCTION__);
-    fclose(logFile);
+    // FILE *logFile = fopen("logFile.txt", "a");
+    // fprintf(logFile, "%s -> Here\n",  __PRETTY_FUNCTION__);
+    // fclose(logFile);
 
     ListHead<Widget> *list = button -> getList();
 
@@ -316,9 +264,9 @@ int setRed(Button *button) {
 int setGreen(Button *button) {
     catchNullptr(button, EXIT_FAILURE);
 
-    FILE *logFile = fopen("logFile.txt", "a");
-    fprintf(logFile, "%s -> Here\n",  __PRETTY_FUNCTION__);
-    fclose(logFile);
+    // FILE *logFile = fopen("logFile.txt", "a");
+    // fprintf(logFile, "%s -> Here\n",  __PRETTY_FUNCTION__);
+    // fclose(logFile);
 
     ListHead<Widget> *list = button -> getList();
 
@@ -333,9 +281,9 @@ int setGreen(Button *button) {
 int setBlue(Button *button) {
     catchNullptr(button, EXIT_FAILURE);
 
-    FILE *logFile = fopen("logFile.txt", "a");
-    fprintf(logFile, "%s -> Here\n",  __PRETTY_FUNCTION__);
-    fclose(logFile);
+    // FILE *logFile = fopen("logFile.txt", "a");
+    // fprintf(logFile, "%s -> Here\n",  __PRETTY_FUNCTION__);
+    // fclose(logFile);
 
     ListHead<Widget> *list = button -> getList();
 
@@ -345,4 +293,15 @@ int setBlue(Button *button) {
     curCanvas->setColor(sf::Color::Blue);
 
     return EXIT_SUCCESS;
+}
+
+void clipRegions(Window *window) {
+    RegionSet *set = window -> getRegionSet();
+    delete set;
+    set = new RegionSet();
+    set -> addRegion(new Region(window -> getPosition(), window -> getSize()));
+    window -> setRegionSet(set);
+    window -> clipRegions();
+
+    return;
 }

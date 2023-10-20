@@ -18,6 +18,8 @@ int Button::draw(RenderTarget *rt) {
 
     if (this -> getStatus() == Disable) return EXIT_SUCCESS;
 
+    // MESSAGE("%s: %d", ((std::string) text->getString()).c_str(), this->getRegionSet()->getSize());
+
     ListNode<Region> *curRegionNode = ((this->getRegionSet())->getHead())->getHead();
     for (int i = 0; i < this->getRegionSet()->getSize(); i++) {
         Region *curRegion = curRegionNode->getObject();
@@ -31,37 +33,16 @@ int Button::draw(RenderTarget *rt) {
         (this->getSprite())->setPosition(curPos.x, curPos.y);
 
         (rt->getWindow())->draw(*(this->getSprite()));
-
+        
         curRegionNode = curRegionNode -> getNext();
     }
 
     (rt->getWindow())->draw(*(this->text));
 
-    ListNode<Widget>* cur = (this -> getList()) -> getHead();
-    if (cur == nullptr) return EXIT_SUCCESS;
-
-    do {
-        catchNullptr(cur -> getObject(), EXIT_FAILURE);
-        (cur -> getObject()) -> draw(rt);
-
-        cur = cur -> getNext();
-    } while (cur != (this -> getList()) -> getHead());
-
     return EXIT_SUCCESS;
 }
 
 int Button::onMouseClick(Vect &mouse) {
-
-    ListNode<Widget>* cur = (this -> getList()) -> getHead();
-    if (cur != nullptr) {
-        do {
-            catchNullptr(cur -> getObject(), EXIT_FAILURE);
-            (cur -> getObject()) -> onMouseClick(mouse);
-
-            cur = cur -> getNext();
-        } while (cur != (this -> getList()) -> getHead());
-    }
-
     if (POSITION.x > mouse.x || POSITION.x + SIZE.x < mouse.x ||
         POSITION.y > mouse.y || POSITION.y + SIZE.y < mouse.y || this -> getStatus() == Disable)
         return EXIT_SUCCESS;
@@ -85,4 +66,14 @@ int Button::onMouseReleased(Vect &mouse) {
     status = Status::Released;
 
     return EXIT_SUCCESS;
+}
+
+int Button::clipRegions() {
+    return EXIT_SUCCESS;
+}
+
+void Button::dumpRegions(sf::RenderWindow *window) {
+    this -> getRegionSet() -> dump(window);
+
+    return;
 }

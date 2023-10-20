@@ -13,11 +13,11 @@ RegionSet* Region::subRegion(Region &r) {
     Vect   b   = r.getPos ();
     Vect sizeB = r.getSize();
 
-    RegionSet *set = new RegionSet;
+    RegionSet *set = new RegionSet();
 
     if (a.y + sizeA.y < b.y || b.y + sizeB.y < a.y ||
         a.x + sizeA.x < b.x || b.x + sizeB.x < a.x) {
-        set->addRegion(this);    
+        set->addRegion(new Region(a, sizeA));    
         return set;
     }
 
@@ -50,10 +50,11 @@ RegionSet* Region::crossRegion(Region &r) {
     Vect sizeB = r.getSize();
 
     if (a.y + sizeA.y < b.y || b.y + sizeB.y < a.y ||
-        a.x + sizeA.x < b.x || b.x + sizeB.x < a.x)
-        return nullptr;
+        a.x + sizeA.x < b.x || b.x + sizeB.x < a.x) {
+        return new RegionSet();
+    }
 
-    RegionSet *set = new RegionSet;
+    RegionSet *set = new RegionSet();
     Region *newRegion = new Region(Vect(max(a.x, b.x), max(a.y, b.y)),
                                    Vect(min(a.x + sizeA.x, b.x + sizeB.x) - max(a.x, b.x), min(a.y + sizeA.y, b.y + sizeB.y) - max(a.y, b.y)));
     set->addRegion(newRegion);
@@ -62,7 +63,7 @@ RegionSet* Region::crossRegion(Region &r) {
 }
 
 int RegionSet::addRegion(Region *region) {
-    if (this -> size == MAX_SIZE_REGIONS) return EXIT_FAILURE;
+    catchNullptr(region, EXIT_FAILURE);
 
     set -> pushBack(region);
     (this -> size)++;
@@ -70,43 +71,55 @@ int RegionSet::addRegion(Region *region) {
     return EXIT_SUCCESS;
 }
 
-void RegionSet::unionRegions(RegionSet *that) {
-    ListNode<Region> *cur = (that -> getHead())->getHead();
 
-    for (int i = 0; i < that->size; i++) { 
+void RegionSet::unionRegions(RegionSet *that) {
+    catchNullptr(that,);
+
+    ListNode<Region> *cur = (that -> getHead())->getHead();
+    for (int i = 0; i < that->size; i++) {
         addRegion(cur -> getObject());
         cur = cur -> getNext();
-
     }
     
     return;
 }
 
 RegionSet* RegionSet::subRegions(RegionSet *that) {
+    catchNullptr(that, nullptr);
+
     RegionSet *newSet = new RegionSet();
+    RegionSet * temp  = new RegionSet();
+    *temp = *this;
 
-    ListNode<Region> *curThis = (this->set)->getHead();
-    for (int i = 0; i < size; i++) {
+    ListNode<Region> *curThat = (that->set)->getHead();
+    for (int j = 0; j < that -> size; j++) {
 
-        ListNode<Region> *curThat = (that->set)->getHead();
-        for (int j = 0; j < that -> getSize(); j++) {
+        ListNode<Region> *curThis = (temp->set)->getHead();
+        for (int i = 0; i < temp -> size; i++) {
             newSet -> unionRegions( ((curThis->getObject())->subRegion( *(curThat -> getObject()) )) );
-             Vect sz  = curThat->getObject()->getSize();
-            Vect pos = curThat->getObject()->getPos ();   
+            //  Vect sz  = curThat->getObject()->getSize();
+            // Vect pos = curThat->getObject()->getPos ();   
 
-            FILE *logFile = fopen("logFile.txt", "a");
-            fprintf(logFile, "Pos(%lg, %lg) - Size(%lg, %lg) = Size at %s at %s(%d)\n", pos.x, pos.y, sz.x, sz.y, __PRETTY_FUNCTION__, __FILE__, __LINE__); 
-            fclose(logFile);
+            // FILE *logFile = fopen("logFile.txt", "a");
+            // fprintf(logFile, "Pos(%lg, %lg) - Size(%lg, %lg) = Size at %s at %s(%d)\n", pos.x, pos.y, sz.x, sz.y, __PRETTY_FUNCTION__, __FILE__, __LINE__); 
+            // fclose(logFile);
         
-            curThat = curThat->getNext();
+            curThis = curThis -> getNext();
         }
-        curThis = curThis -> getNext();
-    }
+        delete temp;
+        temp = newSet;
+        newSet = new RegionSet();
 
-    return newSet;
+        curThat = curThat->getNext();
+    }
+    delete newSet;
+
+    return temp;
 }
 
 RegionSet *RegionSet::crossRegions(RegionSet *that) {
+    catchNullptr(that, nullptr);
+
     RegionSet *newSet =  new RegionSet();
 
     ListNode<Region> *curThis = (this->set)->getHead();
@@ -117,7 +130,7 @@ RegionSet *RegionSet::crossRegions(RegionSet *that) {
             newSet -> unionRegions( ((curThis->getObject())->crossRegion( *(curThat -> getObject()) )) );
             curThat = curThat->getNext();
         }
-        curThis -> getNext();
+        curThis = curThis -> getNext();
     }
 
     return newSet;
@@ -137,6 +150,8 @@ void RegionSet::dump(sf::RenderWindow *window) {
     
         sf::RectangleShape rect(sf::Vector2f(sz.x, sz.y));
         rect.setPosition(sf::Vector2f(pos.x, pos.y));
+        rect.setOutlineThickness(4);
+        rect.setOutlineColor(sf::Color::Black);
         rect.setFillColor(sf::Color(k, 255 - k, 125 + k % 255, 70));
 
         window -> draw(rect);

@@ -1,71 +1,122 @@
 #include "../Headers/Tool.h"
 
-void B::p(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect c, sf::Color cl) {
-    this -> sp.x = this -> lp.x = c.x;
-    this -> sp.y = this -> lp.y = c.y;
+void Brush::onMousePressed(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect curPos, sf::Color color) {
+    catchNullptr(rt, /*nothing*/ );
+    catchNullptr(tmp, /*nothing*/ );
+
+    this -> startPoint = this -> lastPoint = curPos;
 
     return;
 }
 
-void B::m(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect c, sf::Color cl) {
-    this -> lp.x = c.x;
-    this -> lp.y = c.y;
+void Brush::onMouseMove(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect curPos, sf::Color color) {
+    catchNullptr(rt, /*nothing*/ );
+    catchNullptr(tmp, /*nothing*/ );
 
-    sf::CircleShape po(8);
-    po.setPosition(c.x, c.y);
-    po.setFillColor(cl);
-    rt->draw(po);
+    this -> lastPoint = curPos;
+
+    sf::CircleShape circle(8);
+    circle.setPosition(curPos.x, curPos.y);
+    circle.setFillColor(color);
+    rt->draw(circle);
 }
 
-void B::r(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect c, sf::Color cl) {
+void Brush::onMouseReleased(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect curPos, sf::Color color) {
+    catchNullptr(rt, /*nothing*/ );
+    catchNullptr(tmp, /*nothing*/ );
+
     return;
 }
 
-void Pl::p(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect c, sf::Color cl) {
-    if (this -> sp.x == -1 && this -> sp.y == -1) {
-        this -> sp.x = this -> lp.x = c.x;
-        this -> sp.y = this -> lp.y = c.y;
+void Polyline::onMousePressed(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect curPos, sf::Color color) {
+    catchNullptr(rt, /*nothing*/ );
+    catchNullptr(tmp, /*nothing*/ );
+
+    if (this -> startPoint.x == -1 && this -> startPoint.y == -1) {
+        this -> startPoint = this -> lastPoint = curPos;
     } else {
         sf::Vertex vertices[] = {
-            sf::Vertex(sf::Vector2f(lp.x, lp.y), cl),
-            sf::Vertex(sf::Vector2f(c.x, c.y), cl)
+            sf::Vertex(sf::Vector2f(lastPoint.x, lastPoint.y), color),
+            sf::Vertex(sf::Vector2f(curPos.x, curPos.y), color)
         };
         rt -> draw(vertices, 2, sf::Lines);
-        lp.x = c.x;
-        lp.y = c.y;
+        lastPoint = curPos;
     }
 
     return;
 }
 
-void Pl::m(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect c, sf::Color cl) {
+void Polyline::onMouseMove(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect curPos, sf::Color color) {
+    catchNullptr(rt, /*nothing*/ );
+    catchNullptr(tmp, /*nothing*/ );
+
     sf::Vertex vertices[] = {
-        sf::Vertex(sf::Vector2f(lp.x, lp.y), cl),
-        sf::Vertex(sf::Vector2f(c.x, c.y), cl)
+        sf::Vertex(sf::Vector2f(lastPoint.x, lastPoint.y), color),
+        sf::Vertex(sf::Vector2f(curPos.x, curPos.y), color)
+    };
+    tmp -> draw(vertices, 2, sf::Lines);
+}
+
+void Polyline::onMouseReleased(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect curPos, sf::Color color) {
+    catchNullptr(rt, /*nothing*/ );
+    catchNullptr(tmp, /*nothing*/ );
+
+    return;
+}
+
+void Pen::onMousePressed(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect curPos, sf::Color color) {
+    catchNullptr(rt, /*nothing*/ );
+    catchNullptr(tmp, /*nothing*/ );
+
+    this -> startPoint = this -> lastPoint = curPos;
+
+    return;
+}
+
+void Pen::onMouseMove(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect curPos, sf::Color color) {
+    catchNullptr(rt, /*nothing*/ );
+    catchNullptr(tmp, /*nothing*/ );
+
+    sf::Vertex vertices[] = {
+        sf::Vertex(sf::Vector2f(lastPoint.x, lastPoint.y), color),
+        sf::Vertex(sf::Vector2f(curPos.x, curPos.y), color)
     };
     rt -> draw(vertices, 2, sf::Lines);
-    lp.x = c.x;
-    lp.y = c.y;
-}
-
-void Pl::r(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect c, sf::Color cl) {
-    return;
-}
-
-void TMan::p(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect cp) {
-    t->p(rt, tmp, cp, c);
+    lastPoint = curPos;
 
     return;
 }
 
-void TMan::m(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect cp) {
-    t->m(rt, tmp, cp, c);
+void Pen::onMouseReleased(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect curPos, sf::Color color) {
+    catchNullptr(rt, /*nothing*/ );
+    catchNullptr(tmp, /*nothing*/ );
 
     return;
 }
 
-void TMan::r(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect cp) {
-    t->r(rt, tmp, cp, c);
+void ToolManager::onMousePressed(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect curPos) {
+    catchNullptr(rt, /*nothing*/ );
+    catchNullptr(tmp, /*nothing*/ );
+
+    tool->onMousePressed(rt, tmp, curPos, color);
+
+    return;
+}
+
+void ToolManager::onMouseMove(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect curPos) {
+    catchNullptr(rt, /*nothing*/ );
+    catchNullptr(tmp, /*nothing*/ );
+
+    tool->onMouseMove(rt, tmp, curPos, color);
+
+    return;
+}
+
+void ToolManager::onMouseReleased(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect curPos) {
+    catchNullptr(rt, /*nothing*/ );
+    catchNullptr(tmp, /*nothing*/ );
+
+    tool->onMouseReleased(rt, tmp, curPos, color);
 
     return;
 }

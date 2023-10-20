@@ -34,9 +34,9 @@ int Window::draw(RenderTarget *rt) {
 }
 
 int Window::onMouseClick(Vect &mouse) {
-    // if (POSITION.x > mouse.x || POSITION.x + SIZE.x < mouse.x ||
-    //     POSITION.y > mouse.y || POSITION.y + SIZE.y < mouse.y )
-    //     return EXIT_SUCCESS;
+    if (POSITION.x > mouse.x || POSITION.x + SIZE.x < mouse.x ||
+        POSITION.y > mouse.y || POSITION.y + SIZE.y < mouse.y )
+        return EXIT_SUCCESS;
     
     ListNode<Widget>* cur = (this -> getList()) -> getHead();
     if (cur == nullptr) return EXIT_SUCCESS;
@@ -52,9 +52,9 @@ int Window::onMouseClick(Vect &mouse) {
 }
 
 int Window::onMouseMove(Vect &mouse) {
-    // if (POSITION.x > mouse.x || POSITION.x + SIZE.x < mouse.x ||
-    //     POSITION.y > mouse.y || POSITION.y + SIZE.y < mouse.y )
-    //     return EXIT_SUCCESS;
+    if (POSITION.x > mouse.x || POSITION.x + SIZE.x < mouse.x ||
+        POSITION.y > mouse.y || POSITION.y + SIZE.y < mouse.y )
+        return EXIT_SUCCESS;
     
     ListNode<Widget>* cur = (this -> getList()) -> getHead();
     if (cur == nullptr) return EXIT_SUCCESS;

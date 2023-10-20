@@ -3,11 +3,11 @@
 int Widget::addSubWidget(Widget *widget) {
     catchNullptr(widget , EXIT_FAILURE);
 
-    RegionSet *subSet = widget->getRegionSet();
-    RegionSet *newSet =  set->subRegions(subSet);
+    // RegionSet *subSet = widget->getRegionSet();
+    // RegionSet *newSet =  set->subRegions(subSet);
 
-    delete set;
-    set = newSet;
+    // delete set;
+    // set = newSet;
 
 
     ListHead<Widget> *list = this -> getList();
@@ -41,15 +41,10 @@ int Widget::removeSubWidget(Widget *widget) {
 }
 
 int Widget::clipRegions() {
-
     ListHead<Widget> *list = this -> getList();
     ListNode<Widget> *cur  = list -> getHead();
 
     if (cur == nullptr) return EXIT_SUCCESS;
-
-    delete set;
-    set = new RegionSet;
-    set -> addRegion(new Region(position, size));
 
     do {
         if (cur == nullptr) {
@@ -59,20 +54,30 @@ int Widget::clipRegions() {
 
         Widget *curWidget = cur->getObject();
 
-        if (curWidget -> getStatus() == Disable) continue;
+        if (curWidget -> getStatus() == Disable) {
+            cur = cur -> getNext();
+            continue;
+        }
 
+        delete curWidget -> getRegionSet();
         RegionSet *subSet =  new RegionSet();
-        subSet -> addRegion(new Region(curWidget->getPosition(), curWidget -> getSize())); 
-        curWidget -> set = subSet;
+        subSet -> addRegion(new Region(curWidget->getPosition(), curWidget -> getSize()));
 
-        RegionSet *newSet = set -> subRegions(subSet);
+        RegionSet *newSet = set -> crossRegions(subSet);
+        delete subSet;
+        subSet = newSet;
+
+
+        newSet = set -> subRegions(subSet);
+        // MESSAGE("%lg, %lg", set -> getHead() -> getHead() -> getObject() -> getSize().x,
+        //                 set -> getHead() -> getHead() -> getObject() -> getSize().y);
         delete set;
         set = newSet;
-        
-        curWidget->clipRegions();
+        curWidget -> setRegionSet(subSet);
+
+        curWidget -> clipRegions();
 
         cur = cur -> getNext();
-
     } while (cur != list -> getHead());
 
     return EXIT_SUCCESS;
@@ -84,6 +89,11 @@ void Widget::dumpRegions(sf::RenderWindow *window) {
     ListNode<Widget> *cur = subWidgets->getHead();
     do {
         if (cur == nullptr) return;
+
+        if (cur -> getObject() -> getStatus() == Disable) {
+            cur = cur ->getNext();
+            continue;
+        }
 
         cur -> getObject() -> getRegionSet() -> dump(window);
         cur -> getObject() -> dumpRegions(window);

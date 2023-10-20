@@ -7,7 +7,7 @@ int Canvas::onMouseClick(Vect &mouse) {
     
     status = Status::Hold;
 
-    tm.p(texture, texture, mouse);
+    toolManager.onMousePressed(texture, texture, mouse - POSITION);
 
     return EXIT_SUCCESS;
 }
@@ -22,7 +22,7 @@ int Canvas::onMouseMove(Vect &mouse) {
 
     if (status == Status::Released) return EXIT_SUCCESS;
 
-    tm.m(texture, texture, mouse - POSITION);
+    toolManager.onMouseMove(texture, texture, mouse - POSITION);
 
     // switch (tool) {
     //     case Tool::Pen: {
@@ -58,7 +58,7 @@ int Canvas::onMouseMove(Vect &mouse) {
 int Canvas::onMouseReleased(Vect &mouse) {
     status = Status::Released;
 
-    tm.r(texture, texture, mouse);
+    toolManager.onMouseReleased(texture, texture, mouse - POSITION);
 
     return EXIT_SUCCESS;
 }

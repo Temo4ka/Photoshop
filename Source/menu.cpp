@@ -10,22 +10,20 @@ int Menu::draw(RenderTarget *rt) {
 
     do {
         catchNullptr(cur -> getObject(), EXIT_FAILURE);
+
         (cur -> getObject()) -> draw(rt);
 
         cur = cur -> getNext();
-        // fprintf(log, "%p Here!!!\n", cur);
         
     } while (cur != (this -> getList()) -> getHead());
-
-    // fclose(log);
 
     return EXIT_SUCCESS;
 }
 
 int Menu::onMouseClick(Vect &mouse) {
-    // if (POSITION.x > mouse.x || POSITION.x + SIZE.x < mouse.x ||
-    //     POSITION.y > mouse.y || POSITION.y + SIZE.y < mouse.y )
-    //     return EXIT_SUCCESS;
+    if (POSITION.x > mouse.x || POSITION.x + SIZE.x < mouse.x ||
+        POSITION.y > mouse.y || POSITION.y + SIZE.y < mouse.y || getStatus() == Disable)
+        return EXIT_SUCCESS;
     
     ListNode<Widget>* cur = (this -> getList()) -> getHead();
     if (cur == nullptr) return EXIT_SUCCESS;
@@ -41,9 +39,9 @@ int Menu::onMouseClick(Vect &mouse) {
 }
 
 int Menu::onMouseMove(Vect &mouse) {
-    // if (POSITION.x > mouse.x || POSITION.x + SIZE.x < mouse.x ||
-    //     POSITION.y > mouse.y || POSITION.y + SIZE.y < mouse.y )
-    //     return EXIT_SUCCESS;
+    if (POSITION.x > mouse.x || POSITION.x + SIZE.x < mouse.x ||
+        POSITION.y > mouse.y || POSITION.y + SIZE.y < mouse.y )
+        return EXIT_SUCCESS;
     
     ListNode<Widget>* cur = (this -> getList()) -> getHead();
     if (cur == nullptr) return EXIT_SUCCESS;
@@ -59,9 +57,9 @@ int Menu::onMouseMove(Vect &mouse) {
 }
 
 int Menu::onMouseReleased(Vect &mouse) {
-    // if (POSITION.x > mouse.x || POSITION.x + SIZE.x < mouse.x ||
-    //     POSITION.y > mouse.y || POSITION.y + SIZE.y < mouse.y )
-    //     return EXIT_SUCCESS;
+    if (POSITION.x > mouse.x || POSITION.x + SIZE.x < mouse.x ||
+        POSITION.y > mouse.y || POSITION.y + SIZE.y < mouse.y )
+        return EXIT_SUCCESS;
     
     ListNode<Widget>* cur = (this -> getList()) -> getHead();
     if (cur == nullptr) return EXIT_SUCCESS;

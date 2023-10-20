@@ -55,14 +55,20 @@ template <class Type> class ListHead {
 
         ListErrors erase(ListNode<Type> *node);
 
-        ListNode<Type>* getHead() { return this->head; }
+        ListNode<Type>* getHead() { return head; }
+
+        size_t getSize() {  return size;  }
 
         ~ListHead()
         {
+            if (head == nullptr) return;
+
             ListNode<Type> *cur = head -> getNext();
+
             while (cur != head) {
                 ListNode<Type> *next = cur -> getNext();
                 delete cur;
+                cur = next;
             }
             delete cur;
         }
