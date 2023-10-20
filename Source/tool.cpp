@@ -120,3 +120,31 @@ void ToolManager::onMouseReleased(sf::RenderTexture *rt, sf::RenderTexture *tmp,
 
     return;
 }
+
+void Eraser::onMousePressed(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect curPos, sf::Color color) {
+    catchNullptr(rt, /*nothing*/ );
+    catchNullptr(tmp, /*nothing*/ );
+
+    this -> startPoint = this -> lastPoint = curPos;
+
+    return;
+}
+
+void Eraser::onMouseMove(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect curPos, sf::Color color) {
+    catchNullptr(rt, /*nothing*/ );
+    catchNullptr(tmp, /*nothing*/ );
+
+    this -> lastPoint = curPos;
+
+    sf::CircleShape circle(8);
+    circle.setPosition(curPos.x, curPos.y);
+    circle.setFillColor(sf::White);
+    rt->draw(circle);
+}
+
+void Eraser::onMouseReleased(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect curPos, sf::Color color) {
+    catchNullptr(rt, /*nothing*/ );
+    catchNullptr(tmp, /*nothing*/ );
+
+    return;
+}

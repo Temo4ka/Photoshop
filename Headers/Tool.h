@@ -64,3 +64,39 @@ struct Pen : Tool {
 //     void  onMouseMove  (sf::RenderTexture *rt, sf::RenderTexture *temp, Vect curPos, sf::Color color);
 //     void onMousePressed(sf::RenderTexture *rt, sf::RenderTexture *temp, Vect curPos, sf::Color color);
 // }
+
+struct Eraser : Tool {
+    void onMousePressed (sf::RenderTexture *rt, sf::RenderTexture *temp, Vect curPos, sf::Color color);
+    void  onMouseMove   (sf::RenderTexture *rt, sf::RenderTexture *temp, Vect curPos, sf::Color color);
+    void onMouseReleased(sf::RenderTexture *rt, sf::RenderTexture *temp, Vect curPos, sf::Color color);
+};
+
+struct Fill : Tool {
+    void onMousePressed (sf::RenderTexture *rt, sf::RenderTexture *temp, Vect curPos, sf::Color color);
+    void  onMouseMove   (sf::RenderTexture *rt, sf::RenderTexture *temp, Vect curPos, sf::Color color);
+    void onMouseReleased(sf::RenderTexture *rt, sf::RenderTexture *temp, Vect curPos, sf::Color color);
+};
+
+struct Pen : Tool {
+    void onMousePressed (sf::RenderTexture *rt, sf::RenderTexture *temp, Vect curPos, sf::Color color);
+    void  onMouseMove   (sf::RenderTexture *rt, sf::RenderTexture *temp, Vect curPos, sf::Color color);
+    void onMouseReleased(sf::RenderTexture *rt, sf::RenderTexture *temp, Vect curPos, sf::Color color);
+};
+
+struct Square : Tool {
+    void onMousePressed (sf::RenderTexture *rt, sf::RenderTexture *temp, Vect curPos, sf::Color color);
+    void  onMouseMove   (sf::RenderTexture *rt, sf::RenderTexture *temp, Vect curPos, sf::Color color);
+    void onMouseReleased(sf::RenderTexture *rt, sf::RenderTexture *temp, Vect curPos, sf::Color color);
+};
+
+struct Circle : Tool {
+    void onMousePressed (sf::RenderTexture *rt, sf::RenderTexture *temp, Vect curPos, sf::Color color);
+    void  onMouseMove   (sf::RenderTexture *rt, sf::RenderTexture *temp, Vect curPos, sf::Color color);
+    void onMouseReleased(sf::RenderTexture *rt, sf::RenderTexture *temp, Vect curPos, sf::Color color);
+};
+
+struct Elipse : Tool {
+    void onMousePressed (sf::RenderTexture *rt, sf::RenderTexture *temp, Vect curPos, sf::Color color);
+    void  onMouseMove   (sf::RenderTexture *rt, sf::RenderTexture *temp, Vect curPos, sf::Color color);
+    void onMouseReleased(sf::RenderTexture *rt, sf::RenderTexture *temp, Vect curPos, sf::Color color);
+};
