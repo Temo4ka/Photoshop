@@ -22,9 +22,15 @@ struct Tool {
     Vect startPoint;
     Vect lastPoint;
 
+    enum Drawing {
+        Disable = 0,
+         Enable = 1
+    } drawing;
+
     Tool():
     startPoint (Vect(-1, -1)),
-    lastPoint  (Vect(-1, -1))
+    lastPoint  (Vect(-1, -1)),
+    drawing (Disable)
     {}
 
     virtual void onMousePressed (sf::RenderTexture *rt, sf::RenderTexture *temp, Vect curPos, sf::Color color) = 0;
@@ -72,12 +78,6 @@ struct Eraser : Tool {
 };
 
 struct Fill : Tool {
-    void onMousePressed (sf::RenderTexture *rt, sf::RenderTexture *temp, Vect curPos, sf::Color color);
-    void  onMouseMove   (sf::RenderTexture *rt, sf::RenderTexture *temp, Vect curPos, sf::Color color);
-    void onMouseReleased(sf::RenderTexture *rt, sf::RenderTexture *temp, Vect curPos, sf::Color color);
-};
-
-struct Pen : Tool {
     void onMousePressed (sf::RenderTexture *rt, sf::RenderTexture *temp, Vect curPos, sf::Color color);
     void  onMouseMove   (sf::RenderTexture *rt, sf::RenderTexture *temp, Vect curPos, sf::Color color);
     void onMouseReleased(sf::RenderTexture *rt, sf::RenderTexture *temp, Vect curPos, sf::Color color);

@@ -19,11 +19,9 @@
     }                                                                                                                                 \
 }
 
-#define MESSAGE(...) {                                                                                                     \
-    char *message = (char *) calloc(256, sizeof(char));                                                                     \
-    sprintf(message, __VA_ARGS__);                                                                                           \
+#define MESSAGE(msg, ...) {                                                                                                  \
     FILE *logFile = fopen("logFile.txt", "a");                                                                                \
-    fprintf(logFile, "MESSAGE:%s from %s at %s(%d)\n", message, __PRETTY_FUNCTION__, __FILE__, __LINE__);                      \
+    fprintf (logFile, "MSG:" msg "%s %d", __VA_ARGS__ , __FILE__, __LINE__)                                                    \
     fclose(logFile);                                                                                                            \
 }
 

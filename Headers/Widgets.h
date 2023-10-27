@@ -54,10 +54,10 @@ class Widget {
             if (texture != nullptr) (this->sprite)->setTexture(*texture);
             if (sprite  != nullptr) (this->sprite)->setPosition(pos.x, pos.y); 
             if (sprite  != nullptr) (this->sprite)->setTextureRect(sf::IntRect(0, 0, texW, texH));
+            if (sprite  != nullptr) (this->sprite)->setScale(scale.x, scale.y);
             // FILE *logFile = fopen("logFile.txt", "a");
             // fprintf(logFile, "%s -> %lg <-> %lg\n",  __PRETTY_FUNCTION__, size.x / double(texW), size.y / double(texH));
             // fclose(logFile);
-            if (sprite  != nullptr) (this->sprite)->setScale(scale.x, scale.y);
         }
 
         void changeStatus() { this -> status = (this -> status == Enable)? Disable : Enable; }
@@ -82,6 +82,7 @@ class Widget {
 
         Vect   getSize  () { return this ->   size  ; }
         Vect getPosition() { return this -> position; }
+        Vect   getScale () { return this ->   scale ; }
 
         WidgetStatus getStatus() { return this -> status; }
 
@@ -155,10 +156,9 @@ class Menu : public Widget {
 
 class Canvas: public Widget {
     sf::RenderTexture *texture;
+    sf::RenderTexture *  temp ;
 
     ToolManager toolManager;
-
-    sf::Color color;
 
     public:
         enum Status {
@@ -169,12 +169,12 @@ class Canvas: public Widget {
         Canvas(Vect pos, Vect size):
         Widget(pos, size, nullptr, 0, 0, nullptr),
         status(Released),
-        color(sf::Color::Blue),
-        texture (new sf::RenderTexture)
+        texture (new sf::RenderTexture),
+          temp  (new sf::RenderTexture)
         { 
             texture->create(size.x, size.y);
             texture->clear(sf::Color::White);
-            toolManager.tool = new Polyline;
+            toolManager.tool = new Circle;
         }
 
         int   onMouseMove  (Vect &pos);
@@ -183,5 +183,10 @@ class Canvas: public Widget {
 
         int draw(RenderTarget *rt);
 
-        void setColor(sf::Color newColor) { this -> color = newColor; }
+        void setColor(sf::Color newColor) { toolManager.color = newColor; }
+
+        void setTool(Tool *tool) { 
+            delete toolManager.tool;
+            toolManager.tool = tool;
+        }
 };

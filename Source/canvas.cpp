@@ -7,7 +7,7 @@ int Canvas::onMouseClick(Vect &mouse) {
     
     status = Status::Hold;
 
-    toolManager.onMousePressed(texture, texture, mouse - POSITION);
+    toolManager.onMousePressed(texture, temp, mouse - POSITION);
 
     return EXIT_SUCCESS;
 }
@@ -20,37 +20,11 @@ int Canvas::onMouseMove(Vect &mouse) {
         return EXIT_SUCCESS;
     }
 
-    if (status == Status::Released) return EXIT_SUCCESS;
+    // if (status == Status::Released) return EXIT_SUCCESS;
 
-    toolManager.onMouseMove(texture, texture, mouse - POSITION);
-
-    // switch (tool) {
-    //     case Tool::Pen: {
-    //         sf::RectangleShape point(sf::Vector2f(3, 3));
-    //         point.setPosition(mouse.x - POSITION.x, mouse.y - POSITION.y);
-    //         point.setFillColor(color);
-    //         texture->draw(point);
-    //     }
-    //     break;
-        
-    //     case Tool::Brush: {
-    //         sf::CircleShape point(8);
-    //         point.setPosition(mouse.x - POSITION.x, mouse.y - POSITION.y);
-    //         point.setFillColor(color);
-    //         texture->draw(point);
-    //     }
-    //     break;
-        
-    //     case Tool::Rubber: {
-    //         sf::CircleShape point(8);
-    //         point.setPosition(mouse.x - POSITION.x, mouse.y - POSITION.y);
-    //         point.setFillColor(sf::Color(0, 0, 0, 0));
-    //         texture->draw(point);
-    //     }
-    //     break;
-        
-    //     default: break;
-    // }
+    temp->create(SIZE.x, SIZE.y);
+    temp->clear(sf::Color(0, 0, 0, 0));
+    toolManager.onMouseMove(texture, temp, mouse - POSITION);
   
     return EXIT_SUCCESS;
 }
@@ -58,7 +32,7 @@ int Canvas::onMouseMove(Vect &mouse) {
 int Canvas::onMouseReleased(Vect &mouse) {
     status = Status::Released;
 
-    toolManager.onMouseReleased(texture, texture, mouse - POSITION);
+    toolManager.onMouseReleased(texture, temp, mouse - POSITION);
 
     return EXIT_SUCCESS;
 }
@@ -67,9 +41,14 @@ int Canvas::draw(RenderTarget *rt) {
     catchNullptr(rt, EXIT_FAILURE);
     if (this -> getStatus() == Disable) return EXIT_SUCCESS;
 
-    sf::Sprite sprite = {};
+    sf::Sprite   sprite   = {};
+    sf::Sprite tempSprite = {};
+    
     texture -> display();
-    sprite.setTexture(texture -> getTexture());
+      temp  -> display();
+
+      sprite  .setTexture(texture -> getTexture());
+    tempSprite.setTexture(  temp  -> getTexture());
 
     ListNode<Region> *curRegionNode = ((this->getRegionSet())->getHead())->getHead();
     for (int i = 0; i < this->getRegionSet()->getSize(); i++) {
@@ -77,12 +56,16 @@ int Canvas::draw(RenderTarget *rt) {
 
         Vect curPos  = curRegion->getPos();
         Vect curSize = curRegion->getSize();
+        // Vect  scale  = this -> getScale();
 
         sprite.setTextureRect(sf::IntRect(curPos.x - POSITION.x, curPos.y - POSITION.y, curSize.x, curSize.y));
+        tempSprite.setTextureRect(sf::IntRect(curPos.x - POSITION.x, curPos.y - POSITION.y, curSize.x, curSize.y));
 
         sprite.setPosition(curPos.x, curPos.y);
+        tempSprite.setPosition(curPos.x, curPos.y);
 
-        (rt->getWindow())->draw(sprite);
+        (rt->getWindow())->draw(  sprite  );
+        (rt->getWindow())->draw(tempSprite);
 
         curRegionNode = curRegionNode -> getNext();
     }

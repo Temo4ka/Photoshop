@@ -79,7 +79,7 @@ int addMainScreenButtons(Window *mainWindow, Menu *menu, Canvas *canvas) {
     mainWindow -> addSubWidget(subMenu);
       colors   -> addSubWidget(subMenu);
 
-      subMenu   = addWindowMenu(window);
+      subMenu   = addWindowMenu(mainWindow, window);
     mainWindow -> addSubWidget(subMenu);
       window   -> addSubWidget(subMenu);
 
@@ -101,32 +101,42 @@ Menu *addToolsMenu(Button *tools, Canvas *canvas) {
     sf::Texture *texture = new sf::Texture; 
     texture -> loadFromFile(BUTTON_FILE_NAME);
 
-    sf::Sprite *  penS   = new sf::Sprite;
-    sf::Sprite * brushS  = new sf::Sprite;
-    sf::Sprite * rubberS = new sf::Sprite;
+    sf::Sprite *   penS    = new sf::Sprite;
+    sf::Sprite *  brushS   = new sf::Sprite;
+    sf::Sprite *  rubberS  = new sf::Sprite;
+    sf::Sprite *  circleS  = new sf::Sprite;
+    sf::Sprite *  squareS  = new sf::Sprite;
+    sf::Sprite * polylineS = new sf::Sprite;
 
-    Menu *toolsMenu = new Menu(Vect(pos.x, pos.y + size.y), Vect(size.x, MENU_HEIGHT * 3));
+    Menu *toolsMenu = new Menu(Vect(pos.x, pos.y + size.y), Vect(size.x, MENU_HEIGHT * 6));
 
-    Button *   pen  = new Button(Vect(pos.x, pos.y + size.y * 1), menuButtonSize, " pen  ", font, texture,  penS  );
-    Button * brush  = new Button(Vect(pos.x, pos.y + size.y * 2), menuButtonSize, "brush ", font, texture, brushS );
-    Button * rubber = new Button(Vect(pos.x, pos.y + size.y * 3), menuButtonSize, "rubber", font, texture, rubberS);
+    Button *    pen   = new Button(Vect(pos.x, pos.y + size.y * 1), menuButtonSize, "  pen   ", font, texture,   penS   ,   setPen   );
+    Button *  brush   = new Button(Vect(pos.x, pos.y + size.y * 2), menuButtonSize, " brush  ", font, texture,  brushS  ,  setBrush  );
+    Button *  rubber  = new Button(Vect(pos.x, pos.y + size.y * 3), menuButtonSize, " eraser ", font, texture,  rubberS ,  setEraser );
+    Button *  circle  = new Button(Vect(pos.x, pos.y + size.y * 4), menuButtonSize, " circle ", font, texture,  circleS ,  setCircle );
+    Button *  square  = new Button(Vect(pos.x, pos.y + size.y * 5), menuButtonSize, " square ", font, texture,  squareS ,  setSquare );
+    Button * polyline = new Button(Vect(pos.x, pos.y + size.y * 6), menuButtonSize, "polyline", font, texture, polylineS, setPolyline);
 
-      pen  -> changeStatus();
-    brush  -> changeStatus();
-    rubber -> changeStatus();
+       pen   -> changeStatus();
+     brush   -> changeStatus();
+     rubber  -> changeStatus();
+     circle  -> changeStatus();
+     square  -> changeStatus();
+    polyline -> changeStatus();
 
-    toolsMenu -> addSubWidget( pen );
-    toolsMenu -> addSubWidget(brush );
-    toolsMenu -> addSubWidget(rubber);
+    toolsMenu -> addSubWidget(  pen   );
+    toolsMenu -> addSubWidget( brush  );
+    toolsMenu -> addSubWidget( rubber );
+    toolsMenu -> addSubWidget( circle );
+    toolsMenu -> addSubWidget( square );
+    toolsMenu -> addSubWidget(polyline);
 
-    ListHead<Widget> *list =  pen   -> getList();
-    list -> pushBack(canvas);
-
-    list = brush  -> getList();
-    list -> pushBack(canvas);
-
-    list = rubber -> getList();
-    list -> pushBack(canvas);
+      pen    -> addSubWidget(canvas);
+     brush   -> addSubWidget(canvas);
+     rubber  -> addSubWidget(canvas);
+     circle  -> addSubWidget(canvas);
+     square  -> addSubWidget(canvas);
+    polyline -> addSubWidget(canvas);
 
     return toolsMenu;
 }
@@ -178,7 +188,7 @@ Menu *addColorMenu(Button *color, Canvas *canvas) {
     return colorMenu;
 }
 
-Menu *addWindowMenu(Button *window) {
+Menu *addWindowMenu(Window *mainWindow, Button *window) {
     catchNullptr(window, nullptr);
 
     Vect pos  = window -> getPosition();
@@ -200,19 +210,20 @@ Menu *addWindowMenu(Button *window) {
     Button *window1 = new Button(Vect(pos.x, pos.y + size.y * 1), menuButtonSize, "window1", font, texture, window1S, activateWidget);
     Button *window2 = new Button(Vect(pos.x, pos.y + size.y * 2), menuButtonSize, "window2", font, texture, window2S, activateWidget);
 
-    ListHead<Widget> *list = windowMenu -> getList();
-
     window1 -> changeStatus();
     window2 -> changeStatus();
 
-    list -> pushBack(window1);
-    list -> pushBack(window2);
+    windowMenu -> addSubWidget(window1);
+    windowMenu -> addSubWidget(window2);
 
-    list = window1 -> getList();
-    list -> pushBack(addSubWindow(Vect(200, 400)));
+    Window *win1 = addSubWindow(Vect(200, 400));
+    Window *win2 = addSubWindow(Vect(900, 400));
 
-    list = window2 -> getList();
-    list -> pushBack(addSubWindow(Vect(900, 400)));
+    window1 -> addSubWidget(win1);
+    window2 -> addSubWidget(win2);
+
+    mainWindow -> addSubWidget(win1);
+    mainWindow -> addSubWidget(win2);
 
     return windowMenu;
 }
@@ -292,6 +303,78 @@ int setBlue(Button *button) {
 
     curCanvas->setColor(sf::Color::Blue);
 
+    return EXIT_SUCCESS;
+}
+
+int setPen(Button *button) {
+    catchNullptr(button, EXIT_FAILURE);
+
+    ListHead<Widget> *list = button -> getList();
+
+    Canvas *curCanvas = (Canvas *) (list->getHead())->getObject();
+    catchNullptr(curCanvas, EXIT_FAILURE);
+
+    curCanvas->setTool(new Pen);
+    return EXIT_SUCCESS;
+}
+
+int setBrush(Button *button) {
+    catchNullptr(button, EXIT_FAILURE);
+
+    ListHead<Widget> *list = button -> getList();
+
+    Canvas *curCanvas = (Canvas *) (list->getHead())->getObject();
+    catchNullptr(curCanvas, EXIT_FAILURE);
+
+    curCanvas->setTool(new Brush);
+    return EXIT_SUCCESS;
+}
+
+int setEraser(Button *button) {
+    catchNullptr(button, EXIT_FAILURE);
+
+    ListHead<Widget> *list = button -> getList();
+
+    Canvas *curCanvas = (Canvas *) (list->getHead())->getObject();
+    catchNullptr(curCanvas, EXIT_FAILURE);
+
+    curCanvas->setTool(new Eraser);
+    return EXIT_SUCCESS;
+}
+
+int setCircle(Button *button) {
+    catchNullptr(button, EXIT_FAILURE);
+
+    ListHead<Widget> *list = button -> getList();
+
+    Canvas *curCanvas = (Canvas *) (list->getHead())->getObject();
+    catchNullptr(curCanvas, EXIT_FAILURE);
+
+    curCanvas->setTool(new Circle);
+    return EXIT_SUCCESS;
+}
+
+int setSquare(Button *button) {
+    catchNullptr(button, EXIT_FAILURE);
+
+    ListHead<Widget> *list = button -> getList();
+
+    Canvas *curCanvas = (Canvas *) (list->getHead())->getObject();
+    catchNullptr(curCanvas, EXIT_FAILURE);
+
+    curCanvas->setTool(new Square);
+    return EXIT_SUCCESS;
+}
+
+int setPolyline(Button *button) {
+    catchNullptr(button, EXIT_FAILURE);
+
+    ListHead<Widget> *list = button -> getList();
+
+    Canvas *curCanvas = (Canvas *) (list->getHead())->getObject();
+    catchNullptr(curCanvas, EXIT_FAILURE);
+
+    curCanvas->setTool(new Polyline);
     return EXIT_SUCCESS;
 }
 

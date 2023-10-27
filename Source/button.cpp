@@ -26,9 +26,10 @@ int Button::draw(RenderTarget *rt) {
 
         Vect curPos  = curRegion->getPos();
         Vect curSize = curRegion->getSize();
+        Vect  scale  = this -> getScale();
 
         (this->getSprite())->setTextureRect(sf::IntRect(curPos.x - POSITION.x, BUTTON_PIC_HEIGHT * status + curPos.y - POSITION.y,
-                                                            curSize.x, curSize.y));
+                                                            curSize.x / scale.x, curSize.y / scale.y));
 
         (this->getSprite())->setPosition(curPos.x, curPos.y);
 

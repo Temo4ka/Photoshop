@@ -10,8 +10,10 @@ int Window::draw(RenderTarget *rt) {
 
         Vect curPos  = curRegion->getPos();
         Vect curSize = curRegion->getSize();
+        Vect  scale  = this -> getScale();
 
-        (this->getSprite())->setTextureRect(sf::IntRect(curPos.x - POSITION.x, curPos.y - POSITION.y, curSize.x, curSize.y));
+        (this->getSprite())->setTextureRect(sf::IntRect(curPos.x - POSITION.x, curPos.y - POSITION.y,
+                                                        curSize.x / scale.x, curSize.y / scale.y));
 
         (this->getSprite())->setPosition(curPos.x, curPos.y);
 
