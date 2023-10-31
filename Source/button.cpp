@@ -44,8 +44,7 @@ int Button::draw(RenderTarget *rt) {
 }
 
 int Button::onMouseClick(Vect &mouse) {
-    if (POSITION.x > mouse.x || POSITION.x + SIZE.x < mouse.x ||
-        POSITION.y > mouse.y || POSITION.y + SIZE.y < mouse.y || this -> getStatus() == Disable)
+    if (!isInWidgetRegion(mouse) || this -> getStatus() == Disable)
         return EXIT_SUCCESS;
 
     status = Status::Pressed;
@@ -56,8 +55,7 @@ int Button::onMouseClick(Vect &mouse) {
 }
 
 int Button::onMouseMove(Vect &mouse) {
-    if (POSITION.x > mouse.x || POSITION.x + SIZE.x < mouse.x ||
-        POSITION.y > mouse.y || POSITION.y + SIZE.y < mouse.y )
+    if (!isInWidgetRegion(mouse))
         status = Status::Released;
 
     return EXIT_SUCCESS;

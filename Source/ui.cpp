@@ -16,8 +16,8 @@ Window* orginiseMainScreen(sf::RenderWindow *window) {
 
     Canvas *canvas = new Canvas(Vect(6, PANEL_HEIGHT + MENU_HEIGHT), Vect(MAIN_CANVAS_WIDTH, MAIN_CANVAS_HEIGHT));
 
-    mainWindow ->addSubWidget(menu);
     if (addMainScreenButtons(mainWindow, menu, canvas)) return nullptr;
+    mainWindow ->addSubWidget(menu);
     mainWindow ->addSubWidget(canvas);
 
      menu  -> changeStatus();

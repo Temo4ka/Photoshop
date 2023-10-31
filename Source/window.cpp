@@ -27,6 +27,7 @@ int Window::draw(RenderTarget *rt) {
 
     do {
         catchNullptr(cur -> getObject(), EXIT_FAILURE);
+
         (cur -> getObject()) -> draw(rt);
 
         cur = cur -> getNext();
@@ -36,16 +37,18 @@ int Window::draw(RenderTarget *rt) {
 }
 
 int Window::onMouseClick(Vect &mouse) {
-    if (POSITION.x > mouse.x || POSITION.x + SIZE.x < mouse.x ||
-        POSITION.y > mouse.y || POSITION.y + SIZE.y < mouse.y )
-        return EXIT_SUCCESS;
+    if (mouse.y < POSITION.y + PANEL_HEIGHT) {
+        lastPoint = mouse;
+         status   = Status::OnMove;
+    }
     
     ListNode<Widget>* cur = (this -> getList()) -> getHead();
     if (cur == nullptr) return EXIT_SUCCESS;
 
     do {
         catchNullptr(cur -> getObject(), EXIT_FAILURE);
-        (cur -> getObject()) -> onMouseClick(mouse);
+        if ((cur -> getObject()) -> isInWidgetArea(mouse))
+            (cur -> getObject()) -> onMouseClick(mouse);
 
         cur = cur -> getNext();
     } while (cur != (this -> getList()) -> getHead());
@@ -54,16 +57,18 @@ int Window::onMouseClick(Vect &mouse) {
 }
 
 int Window::onMouseMove(Vect &mouse) {
-    if (POSITION.x > mouse.x || POSITION.x + SIZE.x < mouse.x ||
-        POSITION.y > mouse.y || POSITION.y + SIZE.y < mouse.y )
-        return EXIT_SUCCESS;
+    if (status == Status::OnMove) {
+        setPosition(getPosition() + mouse - lastPoint);
+        lastPoint = mouse;
+    }
     
     ListNode<Widget>* cur = (this -> getList()) -> getHead();
     if (cur == nullptr) return EXIT_SUCCESS;
 
     do {
         catchNullptr(cur -> getObject(), EXIT_FAILURE);
-        (cur -> getObject()) -> onMouseMove(mouse);
+        if ((cur -> getObject()) -> isInWidgetArea(mouse))
+            (cur -> getObject()) -> onMouseMove(mouse);
 
         cur = cur -> getNext();
     } while (cur != (this -> getList()) -> getHead());
@@ -72,19 +77,45 @@ int Window::onMouseMove(Vect &mouse) {
 }
 
 int Window::onMouseReleased(Vect &mouse) {
-    // if (POSITION.x > mouse.x || POSITION.x + SIZE.x < mouse.x ||
-    //     POSITION.y > mouse.y || POSITION.y + SIZE.y < mouse.y )
-    //     return EXIT_SUCCESS;
+    status = Status::Still;
     
     ListNode<Widget>* cur = (this -> getList()) -> getHead();
     if (cur == nullptr) return EXIT_SUCCESS;
 
     do {
         catchNullptr(cur -> getObject(), EXIT_FAILURE);
-        (cur -> getObject()) -> onMouseReleased(mouse);
+
+        if ((cur -> getObject()) -> isInWidgetArea(mouse))
+            (cur -> getObject()) -> onMouseReleased(mouse);
 
         cur = cur -> getNext();
     } while (cur != (this -> getList()) -> getHead());
 
     return EXIT_SUCCESS;
+}
+
+bool Widget::isInWidgetArea(Vect point) {
+    if (point.x < position.x || point.x > position.x + size.x ||
+        point.y < position.y || point.y > position.y + size.y   )
+        return false;
+
+    return true;
+}
+
+bool Widget::isInWidgetRegion(Vect point) {
+
+    ListNode<Region> *curNode = set -> getHead() -> getHead();
+    do {
+        catchNullptr(curNode, false);
+        Region *curRegion = curNode -> getObject();
+        catchNullptr(curRegion, false);
+
+        if ( (point.x >= curRegion->getPos().x && point.x <= curRegion->getPos().x + curRegion->getSize().x) &&
+             (point.y >= curRegion->getPos().y && point.y <= curRegion->getPos().y + curRegion->getSize().y)   )
+            return true;
+
+        curNode = curNode -> getNext();
+    } while (curNode != set -> getHead() -> getHead());
+
+    return false;
 }

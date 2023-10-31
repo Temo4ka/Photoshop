@@ -1,8 +1,7 @@
 #include "../Headers/Widgets.h"
 
 int Canvas::onMouseClick(Vect &mouse) {
-    if (POSITION.x > mouse.x || POSITION.x + SIZE.x < mouse.x ||
-        POSITION.y > mouse.y || POSITION.y + SIZE.y < mouse.y )
+    if (!isInWidgetRegion(mouse))
         return EXIT_SUCCESS;
     
     status = Status::Hold;
@@ -13,10 +12,9 @@ int Canvas::onMouseClick(Vect &mouse) {
 }
 
 int Canvas::onMouseMove(Vect &mouse) {
-    if (POSITION.x > mouse.x || POSITION.x + SIZE.x < mouse.x ||
-        POSITION.y > mouse.y || POSITION.y + SIZE.y < mouse.y )
-    {
+    if (!isInWidgetRegion(mouse)) {
         status = Status::Released;
+        
         return EXIT_SUCCESS;
     }
 

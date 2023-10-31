@@ -5,6 +5,7 @@
 #include "../Headers/Config.h"
 #include "Vect.h"
 #include "List.h"
+#include "Events.h"
 
 enum WidgetStatus {
     Disable = 0,
@@ -22,7 +23,7 @@ class RenderTarget {
         sf::RenderWindow *getWindow() { return window; }
 };
 
-class Widget {
+class Widget : public EventProcessible {
     Widget *parent;
 
     ListHead<Widget> *subWidgets;
@@ -48,7 +49,8 @@ class Widget {
         subWidgets (new ListHead<Widget>()),
         set (new RegionSet()),
         scale(Vect(size.x / double(texW), size.y / double(texH))),
-        status(Disable)
+        status(Disable),
+        EventProcessible(1)
         {
             set -> addRegion(new Region(pos, size));
             if (texture != nullptr) (this->sprite)->setTexture(*texture);
@@ -94,15 +96,31 @@ class Widget {
 
         void setRegionSet(RegionSet *newSet) { set = newSet; }
 
+        void setPosition(Vect pos) { position = pos; }
+
+        bool  isInWidgetArea (Vect point);
+        bool isInWidgetRegion(Vect point);
+
         ~Widget() { delete sprite; }
 };
 
 
 class Window : public Widget {
+    enum Status {
+            Still      = 0,
+            OnMove     = 1,
+         OnResizeLeft  = 2,
+         OnResizeRight = 4,
+        OnResizeBottom = 8,
+    } status;
+
+    Vect lastPoint;
 
     public:
         Window(Vect pos, Vect size, sf::Texture *texture, sf::Sprite *sprite):
-        Widget(pos, size, texture, TEST_PIC_WIDTH, TEST_PIC_HEIGHT, sprite)
+        Widget(pos, size, texture, TEST_PIC_WIDTH, TEST_PIC_HEIGHT, sprite),
+        status(Status::Still),
+        lastPoint(Vect(0, 0))
         {}
 
         int draw(RenderTarget *rt);
@@ -110,6 +128,7 @@ class Window : public Widget {
         int   onMouseMove  (Vect &pos);
         int  onMouseClick  (Vect &pos);
         int onMouseReleased(Vect &pos);
+        // Status getStatus() { return status; }
 };
 
 

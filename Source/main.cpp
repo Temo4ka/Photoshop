@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include "../Headers/Config.h"
 #include "../Headers/UI.h"
+#include "../Headers/Events.h"
 
 // #define DEBUG
  
@@ -14,6 +15,9 @@ int main()
 
     clipRegions(mainWindow);
 
+    EventManager eventManager = {};
+    eventManager.addWidget(mainWindow);
+
     while (window.isOpen())
     {
         sf::Event event;
@@ -26,36 +30,21 @@ int main()
             if (event.type == sf::Event::Closed)
                 window.close();
 
-            if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
-                sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+            if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) 
+                eventManager.executeEvent(EventProcessible::Events::MouseLeftClick, &window);
 
-                Vect pos = Vect(mousePos.x, mousePos.y);
-                mainWindow -> onMouseClick(pos);
-                clipRegions(mainWindow);
-            }
+            if (event.type == sf::Event::MouseMoved)
+                eventManager.executeEvent(EventProcessible::Events::MouseMove, &window);
 
-            if (event.type == sf::Event::MouseMoved) {
-                sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-
-                Vect pos = Vect(mousePos.x, mousePos.y);
-                mainWindow -> onMouseMove(pos);
-                clipRegions(mainWindow);
-            }
-
-            if (event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left) {
-                sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-
-                Vect pos = Vect(mousePos.x, mousePos.y);
-                mainWindow -> onMouseReleased(pos);
-                clipRegions(mainWindow);
-            }
+            if (event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left)
+                eventManager.executeEvent(EventProcessible::Events::MouseLeftRelease, &window);
 
         }
     window.clear();
 
 #ifdef DEBUG
         mainWindow -> dumpRegions(&window);
-        _sleep(2000);
+        // _sleep(2000);
 #else
         // MESSAGE("Before DRAW");
         mainWindow -> draw(&rt);
