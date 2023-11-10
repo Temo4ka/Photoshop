@@ -21,8 +21,14 @@
 
 #define MESSAGE(msg, ...) {                                                                                                  \
     FILE *logFile = fopen("logFile.txt", "a");                                                                                \
-    fprintf (logFile, "MSG:" msg "%s %d", __VA_ARGS__ , __FILE__, __LINE__)                                                    \
+    fprintf (logFile, "MSG:" msg ", from %s at %s(%d)\n", __VA_ARGS__, __PRETTY_FUNCTION__, __FILE__, __LINE__);               \
     fclose(logFile);                                                                                                            \
+}
+
+#define MSG(msg) {                                                                                                      \
+    FILE *logFile = fopen("logFile.txt", "a");                                                                           \
+    fprintf (logFile, "MSG:" msg ", from %s at %s(%d)\n", __PRETTY_FUNCTION__, __FILE__, __LINE__);                       \
+    fclose(logFile);                                                                                                       \
 }
 
 #define POSITION this->getPosition()

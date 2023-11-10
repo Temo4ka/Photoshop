@@ -50,7 +50,7 @@ class Widget : public EventProcessible {
         set (new RegionSet()),
         scale(Vect(size.x / double(texW), size.y / double(texH))),
         status(Disable),
-        EventProcessible(1)
+        EventProcessible(BASE_PRIORITY)
         {
             set -> addRegion(new Region(pos, size));
             if (texture != nullptr) (this->sprite)->setTexture(*texture);
@@ -119,6 +119,12 @@ class Window : public Widget {
     public:
         Window(Vect pos, Vect size, sf::Texture *texture, sf::Sprite *sprite):
         Widget(pos, size, texture, TEST_PIC_WIDTH, TEST_PIC_HEIGHT, sprite),
+        status(Status::Still),
+        lastPoint(Vect(0, 0))
+        {}
+
+        Window(Vect pos, Vect size, sf::Texture *texture, const signed texW, const signed texH, sf::Sprite *sprite):
+        Widget(pos, size, texture, texW, texH, sprite),
         status(Status::Still),
         lastPoint(Vect(0, 0))
         {}
@@ -208,4 +214,36 @@ class Canvas: public Widget {
             delete toolManager.tool;
             toolManager.tool = tool;
         }
+};
+
+struct KeyBoard {
+    enum Key {
+    Unknown = -1 ,
+    A , B , C ,
+    D , E , F , G ,
+    H , I , J , K ,
+    L , M , N , O ,
+    P , Q , R , S ,
+    T , U , V , W ,
+    X , Y , Z , Num0 ,
+    Num1 , Num2 , Num3 , Num4 ,
+    Num5 , Num6 , Num7 , Num8 ,
+    Num9 , Escape , LControl , LShift ,
+    LAlt , LSystem , RControl , RShift ,
+    RAlt , RSystem , Menu , LBracket ,
+    RBracket , Semicolon , Comma , Period ,
+    Apostrophe , Slash , Backslash , Grave ,
+    Equal , Hyphen , Space , Enter ,
+    Backspace , Tab , PageUp , PageDown ,
+    End , Home , Insert , Delete ,
+    Add , Subtract , Multiply , Divide ,
+    Left , Right , Up , Down ,
+    Numpad0 , Numpad1 , Numpad2 , Numpad3 ,
+    Numpad4 , Numpad5 , Numpad6 , Numpad7 ,
+    Numpad8 , Numpad9 , F1 , F2 ,
+    F3 , F4 , F5 , F6 ,
+    F7 , F8 , F9 , F10 ,
+    F11 , F12 , F13 , F14 ,
+    F15
+    } key;
 };

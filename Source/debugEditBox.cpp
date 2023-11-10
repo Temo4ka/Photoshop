@@ -4,20 +4,26 @@
 #include "../Headers/Events.h"
 #include "../Headers/EditBox.h"
 
-#define DEBUG
+// #define DEBUG
  
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Ps", sf::Style::None);
-    
-    Window *mainWindow = orginiseMainScreen(&window);
+    sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Ps");
 
     RenderTarget rt = RenderTarget(&window);
 
-    clipRegions(mainWindow);
+    sf::Image image;
+    image.loadFromFile(EDITBOX_FILE_NAME);
+
+    sf::Texture texture;
+    texture.loadFromImage(image);
+
+    EditBox editBox = EditBox(Vect(0, 0), Vect(1080, 60), &texture, 240, 60, new sf::Sprite);
+    editBox.changeStatus();
+    // clipRegions(&editBox);
 
     EventManager eventManager = {};
-    eventManager.addWidget(mainWindow);
+    eventManager.addWidget(&editBox);
 
     while (window.isOpen())
     {
@@ -40,6 +46,8 @@ int main()
             if (event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left)
                 eventManager.executeEvent(EventProcessible::Events::MouseLeftRelease, &window);
             
+            if (event.type == sf::Event::KeyPressed)
+                editBox.onKeyPressed(KeyBoard::Key(event.key.code));
 
         }
     window.clear();
@@ -49,7 +57,7 @@ int main()
         // _sleep(2000);
 #else
         // MESSAGE("Before DRAW");
-        mainWindow -> draw(&rt);
+        editBox.draw(&rt);
         // MESSAGE("After DRAW");
 #endif
         

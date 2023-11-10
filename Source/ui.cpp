@@ -38,7 +38,7 @@ int addMainScreenButtons(Window *mainWindow, Menu *menu, Canvas *canvas) {
     Vect menuButtonSize(BUTTON_MENU_WIDTH, MENU_HEIGHT);
 
     sf::Font *font = new sf::Font;
-    font -> loadFromFile("./Font/newFont.ttf");
+    font -> loadFromFile(FONT_FILE_NAME);
 
     sf::Texture *texture = new sf::Texture; 
     texture -> loadFromFile(BUTTON_FILE_NAME);
