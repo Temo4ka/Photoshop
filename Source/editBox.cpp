@@ -49,13 +49,26 @@ int EditBox::draw(RenderTarget *rt) {
 int EditBox::onKeyPressed (KeyBoard::Key key) {
     if (!isWriting) return EXIT_SUCCESS; 
 
-    if (key >= KeyBoard::A && key <= KeyBoard::Z) addNewLetter(translateLetter(key));
+    if (type == BoxType::Text) {
+        if (key >= KeyBoard::A && key <= KeyBoard::Z) addNewLetter(translateLetter(key));
 
-    if (key == KeyBoard::Space) addNewLetter(" ");
+        if (key == KeyBoard::Space) addNewLetter(" ");
+
+        if (key == KeyBoard::LShift) capsLocked = true;
+    }
+
+    if (key >= KeyBoard::Num0 && key <= KeyBoard::Num9) {
+        char *symb = new char;
+        addNewLetter(itoa(key - KeyBoard::Num0, symb, 10));
+        delete symb;
+    }
+
+    if (key == KeyBoard::Period && !(isPeriodPlaced && type == BoxType::Num)) {
+        addNewLetter(".");
+        isPeriodPlaced = true;
+    }
 
     if (key == KeyBoard::Backspace) eraseLetter();
-
-    if (key == KeyBoard::LShift) capsLocked = true;
 
     // MSG("UNKNOWN KEY!");
     return EXIT_SUCCESS;
@@ -64,12 +77,15 @@ int EditBox::onKeyPressed (KeyBoard::Key key) {
 int EditBox::onKeyReleased (KeyBoard::Key key) {
     if (key == KeyBoard::LShift) capsLocked = false;
 
-    MSG("UNKNOWN KEY!");
+    // MSG("UNKNOWN KEY!");
     return EXIT_SUCCESS;
 }
 
 void EditBox::eraseLetter() {
-    if (curString.size()) curString.pop_back();
+    if (curString.size()) {
+        if (curString.back() == '.') isPeriodPlaced = false;
+        curString.pop_back();
+    }
 
     return;
 }

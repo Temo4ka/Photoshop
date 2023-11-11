@@ -6,7 +6,7 @@ int Canvas::onMouseClick(Vect &mouse) {
     
     status = Status::Hold;
 
-    toolManager.onMousePressed(texture, temp, mouse - POSITION);
+    toolManager -> onMousePressed(texture, temp, mouse - POSITION);
 
     return EXIT_SUCCESS;
 }
@@ -22,7 +22,7 @@ int Canvas::onMouseMove(Vect &mouse) {
 
     temp->create(SIZE.x, SIZE.y);
     temp->clear(sf::Color(0, 0, 0, 0));
-    toolManager.onMouseMove(texture, temp, mouse - POSITION);
+    toolManager -> onMouseMove(texture, temp, mouse - POSITION);
   
     return EXIT_SUCCESS;
 }
@@ -30,7 +30,7 @@ int Canvas::onMouseMove(Vect &mouse) {
 int Canvas::onMouseReleased(Vect &mouse) {
     status = Status::Released;
 
-    toolManager.onMouseReleased(texture, temp, mouse - POSITION);
+    toolManager -> onMouseReleased(texture, temp, mouse - POSITION);
 
     return EXIT_SUCCESS;
 }

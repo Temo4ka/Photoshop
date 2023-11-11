@@ -178,13 +178,14 @@ class Menu : public Widget {
 };
 
 #include "./Tool.h"
+#include "./Filter.h"
 
 class Canvas: public Widget {
     sf::RenderTexture *texture;
     sf::RenderTexture *  temp ;
 
-     ToolManager  *toolManager;
-    FilterManager *toolManager;
+     ToolManager  *  toolManager;
+    FilterManager *filterManager;
 
     public:
         enum Status {
@@ -201,7 +202,7 @@ class Canvas: public Widget {
         { 
             texture->create(size.x, size.y);
             texture->clear(sf::Color::White);
-            toolManager.tool = new Circle;
+            toolManager -> tool = new Circle;
         }
 
         int   onMouseMove  (Vect &pos);
@@ -210,11 +211,11 @@ class Canvas: public Widget {
 
         int draw(RenderTarget *rt);
 
-        void setColor(sf::Color newColor) { toolManager.color = newColor; }
+        void setColor(sf::Color newColor) { toolManager -> color = newColor; }
 
         void setTool(Tool *tool) { 
-            delete toolManager.tool;
-            toolManager.tool = tool;
+            delete toolManager -> tool;
+            toolManager -> tool = tool;
         }
 };
 

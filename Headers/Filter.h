@@ -1,3 +1,5 @@
+#pragma once
+
 #include <SFML/Graphics.hpp>
 #include "List.h"
 
@@ -38,4 +40,4 @@ class ReverseFilter : public Filter {
         ReverseFilter(): Filter() {}
 
         void apply(sf::RenderTexture *rt);
-}
+};
