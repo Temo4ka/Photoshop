@@ -19,7 +19,7 @@ class EditBox : public Window {
         isWriting (false),
         font(new sf::Font())
         {
-            font->loadFromFile(FONT_FILE_NAME);
+            font->loadFromFile("./Font/arial.ttf");
             setPriority(HIGH_PRIORITY);
         }
 

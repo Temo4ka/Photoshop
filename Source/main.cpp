@@ -4,7 +4,7 @@
 #include "../Headers/Events.h"
 #include "../Headers/EditBox.h"
 
-#define DEBUG
+// #define DEBUG
  
 int main()
 {

@@ -13,7 +13,29 @@ class Filter {
         paramsNum(0)
         {}
 
-        void apply(sf::RenderTexture *rt);
+        virtual void apply(sf::RenderTexture *rt) = 0;
 
         ListHead<const char *> getParamsNames() { return paramsNames; } 
 };
+
+class FilterManager {
+    Filter *lastFilter; 
+
+    bool active;
+
+    public:
+
+        FilterManager():
+        lastFilter(nullptr),
+          active  ( false )
+        {}
+
+        void setFilter(Filter *filter) { lastFilter = filter; }
+};
+
+class ReverseFilter : public Filter {
+    public:
+        ReverseFilter(): Filter() {}
+
+        void apply(sf::RenderTexture *rt);
+}

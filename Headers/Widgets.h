@@ -183,7 +183,8 @@ class Canvas: public Widget {
     sf::RenderTexture *texture;
     sf::RenderTexture *  temp ;
 
-    ToolManager toolManager;
+     ToolManager  *toolManager;
+    FilterManager *toolManager;
 
     public:
         enum Status {
@@ -194,8 +195,9 @@ class Canvas: public Widget {
         Canvas(Vect pos, Vect size):
         Widget(pos, size, nullptr, 0, 0, nullptr),
         status(Released),
-        texture (new sf::RenderTexture),
-          temp  (new sf::RenderTexture)
+          texture   (new sf::RenderTexture),
+           temp     (new sf::RenderTexture),
+        toolManager (new ToolManager)
         { 
             texture->create(size.x, size.y);
             texture->clear(sf::Color::White);

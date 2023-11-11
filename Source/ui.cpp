@@ -45,28 +45,28 @@ int addMainScreenButtons(Window *mainWindow, Menu *menu, Canvas *canvas) {
 
     sf::Sprite * fileS  = new sf::Sprite;
     sf::Sprite * editS  = new sf::Sprite;
-    sf::Sprite * viewS  = new sf::Sprite;
+    sf::Sprite *filterS = new sf::Sprite;
     sf::Sprite *colorsS = new sf::Sprite;
     sf::Sprite *toolsS  = new sf::Sprite;
     sf::Sprite *windowS = new sf::Sprite;
 
     Button * file  = new Button(Vect(BUTTON_MENU_WIDTH * 0, PANEL_HEIGHT), menuButtonSize, " file ", font, texture,  fileS );
     Button * edit  = new Button(Vect(BUTTON_MENU_WIDTH * 1, PANEL_HEIGHT), menuButtonSize, " edit ", font, texture,  editS );
-    Button * view  = new Button(Vect(BUTTON_MENU_WIDTH * 2, PANEL_HEIGHT), menuButtonSize, " view ", font, texture,  viewS );
+    Button *filter = new Button(Vect(BUTTON_MENU_WIDTH * 2, PANEL_HEIGHT), menuButtonSize, "filter", font, texture, filterS);
     Button *window = new Button(Vect(BUTTON_MENU_WIDTH * 3, PANEL_HEIGHT), menuButtonSize, "window", font, texture, windowS, activateWidget);
     Button *tools  = new Button(Vect(BUTTON_MENU_WIDTH * 4, PANEL_HEIGHT), menuButtonSize, "tools ", font, texture, toolsS , activateWidget);
     Button *colors = new Button(Vect(BUTTON_MENU_WIDTH * 5, PANEL_HEIGHT), menuButtonSize, "colors", font, texture, colorsS, activateWidget);
 
      file  -> changeStatus();
      edit  -> changeStatus();
-     view  -> changeStatus();
+    filter -> changeStatus();
     colors -> changeStatus();
     tools  -> changeStatus();
     window -> changeStatus();
 
     menu -> addSubWidget( file );
     menu -> addSubWidget( edit );
-    menu -> addSubWidget( view );
+    menu -> addSubWidget( filter );
     menu -> addSubWidget(colors);
     menu -> addSubWidget(tools );
     menu -> addSubWidget(window);

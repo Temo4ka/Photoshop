@@ -26,7 +26,7 @@ int EditBox::draw(RenderTarget *rt) {
     sf::Text text;
     text.setFont(*font);
     text.setString(curString);
-    text.setPosition(POSITION.x + 10 * getScale().x, POSITION.y + 20);
+    text.setPosition(POSITION.x + 10 * getScale().x, POSITION.y + 10);
     text.setFillColor(sf::Color::Black);
 
     (rt->getWindow()) -> draw(text);
@@ -48,7 +48,7 @@ int EditBox::draw(RenderTarget *rt) {
 
 int EditBox::onKeyPressed (KeyBoard::Key key) {
     if (!isWriting) return EXIT_SUCCESS; 
-    
+
     if (key >= KeyBoard::A && key <= KeyBoard::Z) addNewLetter(translateLetter(key));
 
     if (key == KeyBoard::Space) addNewLetter(" ");
