@@ -36,7 +36,7 @@ int Window::draw(RenderTarget *rt) {
     return EXIT_SUCCESS;
 }
 
-int Window::onMouseClick(Vect &mouse) {
+int Window::onMousePress(Vect &mouse) {
     if (mouse.y < POSITION.y + PANEL_HEIGHT) {
         lastPoint = mouse;
          status   = Status::OnMove;
@@ -48,7 +48,7 @@ int Window::onMouseClick(Vect &mouse) {
     do {
         catchNullptr(cur -> getObject(), EXIT_FAILURE);
         if ((cur -> getObject()) -> isInWidgetArea(mouse))
-            (cur -> getObject()) -> onMouseClick(mouse);
+            (cur -> getObject()) -> onMousePress(mouse);
 
         cur = cur -> getNext();
     } while (cur != (this -> getList()) -> getHead());
@@ -76,7 +76,7 @@ int Window::onMouseMove(Vect &mouse) {
     return EXIT_SUCCESS;
 }
 
-int Window::onMouseReleased(Vect &mouse) {
+int Window::onMouseRelease(Vect &mouse) {
     status = Status::Still;
     
     ListNode<Widget>* cur = (this -> getList()) -> getHead();
@@ -86,7 +86,7 @@ int Window::onMouseReleased(Vect &mouse) {
         catchNullptr(cur -> getObject(), EXIT_FAILURE);
 
         if ((cur -> getObject()) -> isInWidgetArea(mouse))
-            (cur -> getObject()) -> onMouseReleased(mouse);
+            (cur -> getObject()) -> onMouseRelease(mouse);
 
         cur = cur -> getNext();
     } while (cur != (this -> getList()) -> getHead());

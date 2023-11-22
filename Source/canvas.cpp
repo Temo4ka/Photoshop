@@ -1,9 +1,16 @@
 #include "../Headers/Widgets.h"
 
-int Canvas::onMouseClick(Vect &mouse) {
+int Canvas::onMousePress(Vect &mouse) {
     if (!isInWidgetRegion(mouse))
         return EXIT_SUCCESS;
     
+    if (filterManager -> active) {
+        filterManager -> apply(texture);
+
+        filterManager -> active = false;
+        return EXIT_SUCCESS;
+    }
+
     status = Status::Hold;
 
     toolManager -> onMousePressed(texture, temp, mouse - POSITION);
@@ -27,10 +34,10 @@ int Canvas::onMouseMove(Vect &mouse) {
     return EXIT_SUCCESS;
 }
 
-int Canvas::onMouseReleased(Vect &mouse) {
+int Canvas::onMouseRelease(Vect &mouse) {
     status = Status::Released;
 
-    toolManager -> onMouseReleased(texture, temp, mouse - POSITION);
+    toolManager -> onMouseRelease(texture, temp, mouse - POSITION);
 
     return EXIT_SUCCESS;
 }

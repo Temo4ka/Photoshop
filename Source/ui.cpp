@@ -52,7 +52,7 @@ int addMainScreenButtons(Window *mainWindow, Menu *menu, Canvas *canvas) {
 
     Button * file  = new Button(Vect(BUTTON_MENU_WIDTH * 0, PANEL_HEIGHT), menuButtonSize, " file ", font, texture,  fileS );
     Button * edit  = new Button(Vect(BUTTON_MENU_WIDTH * 1, PANEL_HEIGHT), menuButtonSize, " edit ", font, texture,  editS );
-    Button *filter = new Button(Vect(BUTTON_MENU_WIDTH * 2, PANEL_HEIGHT), menuButtonSize, "filter", font, texture, filterS);
+    Button *filter = new Button(Vect(BUTTON_MENU_WIDTH * 2, PANEL_HEIGHT), menuButtonSize, "filter", font, texture, filterS, activateWidget);
     Button *window = new Button(Vect(BUTTON_MENU_WIDTH * 3, PANEL_HEIGHT), menuButtonSize, "window", font, texture, windowS, activateWidget);
     Button *tools  = new Button(Vect(BUTTON_MENU_WIDTH * 4, PANEL_HEIGHT), menuButtonSize, "tools ", font, texture, toolsS , activateWidget);
     Button *colors = new Button(Vect(BUTTON_MENU_WIDTH * 5, PANEL_HEIGHT), menuButtonSize, "colors", font, texture, colorsS, activateWidget);
@@ -66,14 +66,18 @@ int addMainScreenButtons(Window *mainWindow, Menu *menu, Canvas *canvas) {
 
     menu -> addSubWidget( file );
     menu -> addSubWidget( edit );
-    menu -> addSubWidget( filter );
+    menu -> addSubWidget(filter);
     menu -> addSubWidget(colors);
     menu -> addSubWidget(tools );
     menu -> addSubWidget(window);
 
     Menu *subMenu = addToolsMenu(tools, canvas);
     mainWindow -> addSubWidget(subMenu);
-       tools   -> addSubWidget(subMenu); 
+       tools   -> addSubWidget(subMenu);
+    
+      subMenu   = addFilterMenu(filter, canvas);
+    mainWindow -> addSubWidget(subMenu);
+       filter  -> addSubWidget(subMenu); 
 
       subMenu   = addColorMenu(colors, canvas);
     mainWindow -> addSubWidget(subMenu);
@@ -82,16 +86,17 @@ int addMainScreenButtons(Window *mainWindow, Menu *menu, Canvas *canvas) {
       subMenu   = addWindowMenu(mainWindow, window);
     mainWindow -> addSubWidget(subMenu);
       window   -> addSubWidget(subMenu);
+      
 
     return EXIT_SUCCESS;
 }
  
-Menu *addToolsMenu(Button *tools, Canvas *canvas) {
-    catchNullptr(tools, nullptr);
+Menu *addFilterMenu(Button *filter, Canvas *canvas) {
+    catchNullptr(filter, nullptr);
     catchNullptr(canvas, nullptr);
 
-    Vect pos  = tools -> getPosition();
-    Vect size = tools ->   getSize  ();
+    Vect pos  = filter -> getPosition();
+    Vect size = filter ->   getSize  ();
 
     Vect menuButtonSize(BUTTON_MENU_WIDTH, MENU_HEIGHT);
 
@@ -101,44 +106,24 @@ Menu *addToolsMenu(Button *tools, Canvas *canvas) {
     sf::Texture *texture = new sf::Texture; 
     texture -> loadFromFile(BUTTON_FILE_NAME);
 
-    sf::Sprite *   penS    = new sf::Sprite;
-    sf::Sprite *  brushS   = new sf::Sprite;
-    sf::Sprite *  rubberS  = new sf::Sprite;
-    sf::Sprite *  circleS  = new sf::Sprite;
-    sf::Sprite *  squareS  = new sf::Sprite;
-    sf::Sprite * polylineS = new sf::Sprite;
+    sf::Sprite *reverseS = new sf::Sprite;
+    sf::Sprite *recentS  = new sf::Sprite;
 
-    Menu *toolsMenu = new Menu(Vect(pos.x, pos.y + size.y), Vect(size.x, MENU_HEIGHT * 6));
+    Menu *filterMenu  = new Menu(Vect(pos.x, pos.y + size.y), Vect(size.x, MENU_HEIGHT * 2));
 
-    Button *    pen   = new Button(Vect(pos.x, pos.y + size.y * 1), menuButtonSize, "  pen   ", font, texture,   penS   ,   setPen   );
-    Button *  brush   = new Button(Vect(pos.x, pos.y + size.y * 2), menuButtonSize, " brush  ", font, texture,  brushS  ,  setBrush  );
-    Button *  rubber  = new Button(Vect(pos.x, pos.y + size.y * 3), menuButtonSize, " eraser ", font, texture,  rubberS ,  setEraser );
-    Button *  circle  = new Button(Vect(pos.x, pos.y + size.y * 4), menuButtonSize, " circle ", font, texture,  circleS ,  setCircle );
-    Button *  square  = new Button(Vect(pos.x, pos.y + size.y * 5), menuButtonSize, " square ", font, texture,  squareS ,  setSquare );
-    Button * polyline = new Button(Vect(pos.x, pos.y + size.y * 6), menuButtonSize, "polyline", font, texture, polylineS, setPolyline);
+    Button * reverse  = new Button(Vect(pos.x, pos.y + size.y * 1), menuButtonSize, "Reverse", font, texture, reverseS,  setReverse  );
+    Button * recent   = new Button(Vect(pos.x, pos.y + size.y * 2), menuButtonSize, "Recent ", font, texture, recentS , setLastFilter);
 
-       pen   -> changeStatus();
-     brush   -> changeStatus();
-     rubber  -> changeStatus();
-     circle  -> changeStatus();
-     square  -> changeStatus();
-    polyline -> changeStatus();
+    reverse -> changeStatus();
+    recent  -> changeStatus();
 
-    toolsMenu -> addSubWidget(  pen   );
-    toolsMenu -> addSubWidget( brush  );
-    toolsMenu -> addSubWidget( rubber );
-    toolsMenu -> addSubWidget( circle );
-    toolsMenu -> addSubWidget( square );
-    toolsMenu -> addSubWidget(polyline);
+    filterMenu -> addSubWidget(reverse);
+    filterMenu -> addSubWidget(recent );
 
-      pen    -> addSubWidget(canvas);
-     brush   -> addSubWidget(canvas);
-     rubber  -> addSubWidget(canvas);
-     circle  -> addSubWidget(canvas);
-     square  -> addSubWidget(canvas);
-    polyline -> addSubWidget(canvas);
+     reverse   -> addSubWidget(canvas);
+     recent    -> addSubWidget(canvas);
 
-    return toolsMenu;
+    return filterMenu;
 }
 
 Menu *addColorMenu(Button *color, Canvas *canvas) {
@@ -226,6 +211,61 @@ Menu *addWindowMenu(Window *mainWindow, Button *window) {
     mainWindow -> addSubWidget(win2);
 
     return windowMenu;
+}
+
+Menu *addToolsMenu(Button *tools, Canvas *canvas) {
+    catchNullptr(tools, nullptr);
+    catchNullptr(canvas, nullptr);
+
+    Vect pos  = tools -> getPosition();
+    Vect size = tools ->   getSize  ();
+
+    Vect menuButtonSize(BUTTON_MENU_WIDTH, MENU_HEIGHT);
+
+    sf::Font *font = new sf::Font;
+    font -> loadFromFile("./Font/newFont.ttf");
+
+    sf::Texture *texture = new sf::Texture; 
+    texture -> loadFromFile(BUTTON_FILE_NAME);
+
+    sf::Sprite *   penS    = new sf::Sprite;
+    sf::Sprite *  brushS   = new sf::Sprite;
+    sf::Sprite *  rubberS  = new sf::Sprite;
+    sf::Sprite *  circleS  = new sf::Sprite;
+    sf::Sprite *  squareS  = new sf::Sprite;
+    sf::Sprite * polylineS = new sf::Sprite;
+
+    Menu *toolsMenu = new Menu(Vect(pos.x, pos.y + size.y), Vect(size.x, MENU_HEIGHT * 6));
+
+    Button *    pen   = new Button(Vect(pos.x, pos.y + size.y * 1), menuButtonSize, "  pen   ", font, texture,   penS   ,   setPen   );
+    Button *  brush   = new Button(Vect(pos.x, pos.y + size.y * 2), menuButtonSize, " brush  ", font, texture,  brushS  ,  setBrush  );
+    Button *  rubber  = new Button(Vect(pos.x, pos.y + size.y * 3), menuButtonSize, " eraser ", font, texture,  rubberS ,  setEraser );
+    Button *  circle  = new Button(Vect(pos.x, pos.y + size.y * 4), menuButtonSize, " circle ", font, texture,  circleS ,  setCircle );
+    Button *  square  = new Button(Vect(pos.x, pos.y + size.y * 5), menuButtonSize, " square ", font, texture,  squareS ,  setSquare );
+    Button * polyline = new Button(Vect(pos.x, pos.y + size.y * 6), menuButtonSize, "polyline", font, texture, polylineS, setPolyline);
+
+       pen   -> changeStatus();
+     brush   -> changeStatus();
+     rubber  -> changeStatus();
+     circle  -> changeStatus();
+     square  -> changeStatus();
+    polyline -> changeStatus();
+
+    toolsMenu -> addSubWidget(  pen   );
+    toolsMenu -> addSubWidget( brush  );
+    toolsMenu -> addSubWidget( rubber );
+    toolsMenu -> addSubWidget( circle );
+    toolsMenu -> addSubWidget( square );
+    toolsMenu -> addSubWidget(polyline);
+
+      pen    -> addSubWidget(canvas);
+     brush   -> addSubWidget(canvas);
+     rubber  -> addSubWidget(canvas);
+     circle  -> addSubWidget(canvas);
+     square  -> addSubWidget(canvas);
+    polyline -> addSubWidget(canvas);
+
+    return toolsMenu;
 }
 
 Window *addSubWindow(Vect pos) {
@@ -377,6 +417,31 @@ int setPolyline(Button *button) {
     curCanvas->setTool(new Polyline);
     return EXIT_SUCCESS;
 }
+
+int setReverse(Button *button) {
+    catchNullptr(button, EXIT_FAILURE);
+
+    ListHead<Widget> *list = button -> getList();
+
+    Canvas *curCanvas = (Canvas *) (list->getHead())->getObject();
+    catchNullptr(curCanvas, EXIT_FAILURE);
+
+    curCanvas->setFilter(new ReverseFilter);
+    return EXIT_SUCCESS;
+}
+
+int setLastFilter(Button *button) {
+    catchNullptr(button, EXIT_FAILURE);
+
+    ListHead<Widget> *list = button -> getList();
+
+    Canvas *curCanvas = (Canvas *) (list->getHead())->getObject();
+    catchNullptr(curCanvas, EXIT_FAILURE);
+
+    curCanvas->activateFilter();
+    return EXIT_SUCCESS;
+}
+
 
 void clipRegions(Window *window) {
     RegionSet *set = window -> getRegionSet();

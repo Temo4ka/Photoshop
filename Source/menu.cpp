@@ -20,7 +20,7 @@ int Menu::draw(RenderTarget *rt) {
     return EXIT_SUCCESS;
 }
 
-int Menu::onMouseClick(Vect &mouse) {
+int Menu::onMousePress(Vect &mouse) {
     if (POSITION.x > mouse.x || POSITION.x + SIZE.x < mouse.x ||
         POSITION.y > mouse.y || POSITION.y + SIZE.y < mouse.y || getStatus() == Disable)
         return EXIT_SUCCESS;
@@ -30,7 +30,7 @@ int Menu::onMouseClick(Vect &mouse) {
 
     do {
         catchNullptr(cur -> getObject(), EXIT_FAILURE);
-        (cur -> getObject()) -> onMouseClick(mouse);
+        (cur -> getObject()) -> onMousePress(mouse);
 
         cur = cur -> getNext();
     } while (cur != (this -> getList()) -> getHead());
@@ -56,7 +56,7 @@ int Menu::onMouseMove(Vect &mouse) {
     return EXIT_SUCCESS;
 }
 
-int Menu::onMouseReleased(Vect &mouse) {
+int Menu::onMouseRelease(Vect &mouse) {
     if (POSITION.x > mouse.x || POSITION.x + SIZE.x < mouse.x ||
         POSITION.y > mouse.y || POSITION.y + SIZE.y < mouse.y )
         return EXIT_SUCCESS;
@@ -66,7 +66,7 @@ int Menu::onMouseReleased(Vect &mouse) {
 
     do {
         catchNullptr(cur -> getObject(), EXIT_FAILURE);
-        (cur -> getObject()) -> onMouseReleased(mouse);
+        (cur -> getObject()) -> onMouseRelease(mouse);
 
         cur = cur -> getNext();
     } while (cur != (this -> getList()) -> getHead());

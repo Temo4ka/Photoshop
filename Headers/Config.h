@@ -30,3 +30,4 @@ static const char * WINDOW_FILE_NAME = "./Image/Window.png"  ;
 static const char *EDITBOX_FILE_NAME = "./Image/editBox.png" ;
 static const char * BUTTON_FILE_NAME = "./Image/buttons.jpg" ;
 static const char *   FONT_FILE_NAME = "./Font/newFont.ttf"  ;
+static const char *ARIAL_FONT_FILE_NAME = "./Font/arial.ttf" ;

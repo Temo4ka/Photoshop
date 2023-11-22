@@ -4,14 +4,14 @@
 #include <stdlib.h>
 
 int EventManager::executeEvent(Events event, sf::RenderWindow *window) {
-    ListNode <Widget> *curNode = scene -> getHead();
+    ListNode <plugin::EventProcessableI> *curNode = scene -> getHead();
 
     do {
         catchNullptr(curNode, EXIT_FAILURE);
-        Widget *curWidget = curNode -> getObject();
+        plugin::EventProcessableI *curWidget = curNode -> getObject();
         catchNullptr(curWidget, EXIT_FAILURE);
 
-        if (curWidget -> getPriority() < this -> getPriority()) {
+        if (curWidget -> getPriority() < priority) {
             curNode = curNode -> getNext();
             continue;
         }
@@ -22,7 +22,7 @@ int EventManager::executeEvent(Events event, sf::RenderWindow *window) {
                 sf::Vector2i mousePos = sf::Mouse::getPosition(*window);
 
                 Vect pos = Vect(mousePos.x, mousePos.y);
-                curWidget -> onMouseClick(pos);
+                curWidget -> onMousePress(pos);
                 clipRegions((Window *) curWidget);
                 break;
             }
@@ -31,7 +31,7 @@ int EventManager::executeEvent(Events event, sf::RenderWindow *window) {
                 sf::Vector2i mousePos = sf::Mouse::getPosition(*window);
 
                 Vect pos = Vect(mousePos.x, mousePos.y);
-                curWidget -> onMouseReleased(pos);
+                curWidget -> onMouseRelease(pos);
                 clipRegions((Window *) curWidget);
                 break;
             }
@@ -55,10 +55,19 @@ int EventManager::executeEvent(Events event, sf::RenderWindow *window) {
     return EXIT_SUCCESS;
 }
 
-int EventManager::addWidget(Widget *widget) {
-    catchNullptr(widget, EXIT_FAILURE);
+void EventManager::registerObject(plugin::EventProcessableI *object) {
+    catchNullptr(object, );
 
-    scene -> pushBack(widget);
+    scene -> pushBack(object);
 
-    return EXIT_SUCCESS;
+    return;
+}
+
+
+void EventManager::unregisterObject(plugin::EventProcessableI *object) {
+    catchNullptr(object, );
+
+    scene -> erase(object);
+
+    return;
 }

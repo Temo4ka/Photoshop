@@ -1,10 +1,10 @@
 #include "../Headers/EditBox.h"
 
 
-int EditBox::onMouseClick(Vect &pos) {
+int EditBox::onMousePress(Vect &pos) {
     isWriting = true;
 
-    return Window::onMouseClick(pos);
+    return Window::onMousePress(pos);
 }
 
 int EditBox::onMouseMove(Vect &pos) {
@@ -14,8 +14,8 @@ int EditBox::onMouseMove(Vect &pos) {
     return Window::onMouseMove(pos);
 }
 
-int EditBox::onMouseReleased(Vect &pos) {
-    return Window::onMouseReleased(pos);
+int EditBox::onMouseRelease(Vect &pos) {
+    return Window::onMouseRelease(pos);
 }
 
 int EditBox::draw(RenderTarget *rt) {

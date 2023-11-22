@@ -1,6 +1,8 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include "plugin.h"
+#include "RenderTarget.h"
 #include "ClippingRegion.h"
 #include "../Headers/Config.h"
 #include "Vect.h"
@@ -12,19 +14,8 @@ enum WidgetStatus {
     Enable  = 1
 };
 
-class RenderTarget {
-    sf::RenderWindow *window;
-
-    public:
-        RenderTarget(sf::RenderWindow *window):
-                               window (window)
-        {}
-
-        sf::RenderWindow *getWindow() { return window; }
-};
-
-class Widget : public EventProcessible {
-    Widget *parent;
+class Widget : public EventProcessible, plugin::WidgetI {
+    plugin::WidgetI *parent;
 
     ListHead<Widget> *subWidgets;
 
@@ -67,8 +58,8 @@ class Widget : public EventProcessible {
         sf::Sprite* getSprite() { return this -> sprite; }
 
         virtual int   onMouseMove  (Vect &pos) = 0;
-        virtual int  onMouseClick  (Vect &pos) = 0;
-        virtual int onMouseReleased(Vect &pos) = 0;
+        virtual int  onMousePress  (Vect &pos) = 0;
+        virtual int onMouseRelease (Vect &pos) = 0;
 
         int  addSubWidget  (Widget *widget);
         int removeSubWidget(Widget *widget);
@@ -101,7 +92,41 @@ class Widget : public EventProcessible {
         bool  isInWidgetArea (Vect point);
         bool isInWidgetRegion(Vect point);
 
+        void move(Vect delta) { position += delta; }
+
         ~Widget() { delete sprite; }
+
+    /*------------------------------for plugins-----------------------------------*/
+
+    void registerSubWidget  (plugin::WidgetI* object);
+    void unregisterSubWidget(plugin::WidgetI* object);
+
+    plugin::Vec2 getSize() { return plugin::Vec2(size.x, size.y); }
+    plugin::Vec2 getPos() { return plugin::Vec2(pos.x, pos.y); }
+
+
+    void setSize(plugin::Vec2 size) { size = Vect(size.x, size.y); }
+    void setPos (plugin::Vec2 pos)  { pos  = Vect(size.x, size.y); }
+
+    bool isExtern() { return false; }
+
+    void setParent(WidgetI *root) { parent = root; }
+
+    WidgetI *getParent() { return root;}
+
+    void move(Vec2 shift) { move(Vect(shift.x, shift.y)); }
+
+    bool getAvailable() { return (status == Enable)? true : false};
+
+    void setAvailable(bool newStatus) { status = (newStatus)? Enable: Disable; }
+
+    void render(RenderTargetI* rti) { draw((RenderTarget *) rt) }                               //CRINGE!!!
+    void recalcRegion() { clipRegions(); }
+
+    ~WidgetI() { ~Widget() };
+
+    /*----------------------------------------------------------------------------*/
+
 };
 
 
@@ -132,8 +157,8 @@ class Window : public Widget {
         int draw(RenderTarget *rt);
 
         int   onMouseMove  (Vect &pos);
-        int  onMouseClick  (Vect &pos);
-        int onMouseReleased(Vect &pos);
+        int  onMousePress  (Vect &pos);
+        int onMouseRelease(Vect &pos);
         // Status getStatus() { return status; }
 };
 
@@ -154,8 +179,8 @@ class Button : public Widget {
         Button(Vect pos, Vect size, const char *text, sf::Font *font, sf::Texture *texture, sf::Sprite *sprite, int (*run)(Button *Button) = nullptr);
 
         int   onMouseMove  (Vect &pos);
-        int  onMouseClick  (Vect &pos);
-        int onMouseReleased(Vect &pos);
+        int  onMousePress  (Vect &pos);
+        int onMouseRelease(Vect &pos);
 
         int draw(RenderTarget *rt);
 
@@ -173,8 +198,8 @@ class Menu : public Widget {
         int draw(RenderTarget *rt);
 
         int   onMouseMove  (Vect &pos);
-        int  onMouseClick  (Vect &pos);
-        int onMouseReleased(Vect &pos);
+        int  onMousePress  (Vect &pos);
+        int onMouseRelease(Vect &pos);
 };
 
 #include "./Tool.h"
@@ -196,18 +221,21 @@ class Canvas: public Widget {
         Canvas(Vect pos, Vect size):
         Widget(pos, size, nullptr, 0, 0, nullptr),
         status(Released),
-          texture   (new sf::RenderTexture),
-           temp     (new sf::RenderTexture),
-        toolManager (new ToolManager)
+           texture   (new sf::RenderTexture),
+            temp     (new sf::RenderTexture),
+         toolManager (new ToolManager),
+        filterManager(new FilterManager)
         { 
             texture->create(size.x, size.y);
             texture->clear(sf::Color::White);
             toolManager -> tool = new Circle;
+
+            filterManager -> lastFilter = new ReverseFilter;
         }
 
         int   onMouseMove  (Vect &pos);
-        int  onMouseClick  (Vect &pos);
-        int onMouseReleased(Vect &pos);
+        int  onMousePress  (Vect &pos);
+        int onMouseRelease(Vect &pos);
 
         int draw(RenderTarget *rt);
 
@@ -217,6 +245,15 @@ class Canvas: public Widget {
             delete toolManager -> tool;
             toolManager -> tool = tool;
         }
+
+        void setFilter(Filter *filter) { 
+            delete filterManager -> lastFilter;
+
+            filterManager -> lastFilter = filter;
+            filterManager ->   active   = true;
+        }
+
+        void activateFilter() { filterManager -> active = true; }
 };
 
 struct KeyBoard {

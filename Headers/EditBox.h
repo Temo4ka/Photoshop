@@ -40,8 +40,8 @@ class EditBox : public Window {
         int draw(RenderTarget *rt);
 
         int   onMouseMove  (Vect &pos);
-        int  onMouseClick  (Vect &pos);
-        int onMouseReleased(Vect &pos);
+        int  onMousePress  (Vect &pos);
+        int onMouseRelease(Vect &pos);
 
         int onKeyPressed (KeyBoard::Key key);
         int onKeyReleased(KeyBoard::Key key);

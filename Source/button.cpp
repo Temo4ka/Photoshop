@@ -43,7 +43,7 @@ int Button::draw(RenderTarget *rt) {
     return EXIT_SUCCESS;
 }
 
-int Button::onMouseClick(Vect &mouse) {
+int Button::onMousePress(Vect &mouse) {
     if (!isInWidgetRegion(mouse) || this -> getStatus() == Disable)
         return EXIT_SUCCESS;
 
@@ -61,7 +61,7 @@ int Button::onMouseMove(Vect &mouse) {
     return EXIT_SUCCESS;
 }
 
-int Button::onMouseReleased(Vect &mouse) {
+int Button::onMouseRelease(Vect &mouse) {
     status = Status::Released;
 
     return EXIT_SUCCESS;

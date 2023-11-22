@@ -1,124 +1,33 @@
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(90)
-MSG:27, from int EditBox::onKeyPressed(KeyBoard::Key) at ./source/editBox.cpp(63)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(90)
-MSG:28, from int EditBox::onKeyPressed(KeyBoard::Key) at ./source/editBox.cpp(63)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(90)
-MSG:27, from int EditBox::onKeyPressed(KeyBoard::Key) at ./source/editBox.cpp(63)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(90)
-MSG:29, from int EditBox::onKeyPressed(KeyBoard::Key) at ./source/editBox.cpp(63)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(90)
-MSG:27, from int EditBox::onKeyPressed(KeyBoard::Key) at ./source/editBox.cpp(63)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(90)
-MSG:27, from int EditBox::onKeyPressed(KeyBoard::Key) at ./source/editBox.cpp(63)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(90)
-MSG:27, from int EditBox::onKeyPressed(KeyBoard::Key) at ./source/editBox.cpp(63)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(90)
-MSG:27, from int EditBox::onKeyPressed(KeyBoard::Key) at ./source/editBox.cpp(63)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(90)
-MSG:27, from int EditBox::onKeyPressed(KeyBoard::Key) at ./source/editBox.cpp(63)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(89)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(89)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(89)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(89)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(89)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(89)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(89)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(89)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(89)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(89)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(89)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(89)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(89)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(89)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(89)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(89)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(89)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(89)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(89)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(89)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(89)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(89)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(89)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(89)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(89)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(89)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(89)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(89)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(89)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(89)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(89)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(89)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(89)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(89)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(89)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(89)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(89)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(89)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(89)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(89)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
-MSG:30, from void EditBox::addNewLetter(const char*) at ./source/editBox.cpp(97)
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL

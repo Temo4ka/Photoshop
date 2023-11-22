@@ -1,9 +1,13 @@
 #include "../Headers/Tool.h"
 #include "../Headers/DSL.h"
 
-void Brush::onMousePressed(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect curPos, sf::Color color) {
+sf::Color translateColor(Color color);
+
+void Brush::paintOnPress(RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) {
     catchNullptr(rt , /*nothing*/ );
     catchNullptr(tmp, /*nothing*/ );
+
+    Vect curPos = Vect(context.position.x, context.position.y);
 
     drawing = Drawing::Enable;
 
@@ -12,21 +16,45 @@ void Brush::onMousePressed(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect c
     return;
 }
 
-void Brush::onMouseMove(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect curPos, sf::Color color) {
+void Brush::paintOnMove(RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) {
     catchNullptr(rt , /*nothing*/ );
     catchNullptr(tmp, /*nothing*/ );
 
+    Vect curPos = Vect(context.position.x, context.position.y);
+
+    sf::RenderTexture * rt  = ((RenderTarget *) data) -> getWindow();
+    sf::RenderTexture *temp = ((RenderTarget *) tmp ) -> getWindow();
+    
     if (drawing == Drawing::Disable) return;
 
-    this -> lastPoint = curPos;
+    float radius = 8;
 
-    sf::CircleShape circle(8);
-    circle.setPosition(curPos.x, curPos.y);
-    circle.setFillColor(color);
+    sf::CircleShape circle(radius);
+    circle.setPosition(lastPoint.x - radius, lastPoint.y - radius);
+    circle.setFillColor(translateColor(color));
     rt->draw(circle);
+    circle.setPosition(curPos.x - radius, curPos.y - radius);
+    rt->draw(circle);
+
+    sf::ConvexShape polygon;
+
+    Vect dir = curPos - lastPoint;
+    Vect  n  = !(Vect(-dir.y, dir.x)) * radius;
+
+    polygon.setPointCount(4);
+    polygon.setPoint(0, sf::Vector2f(lastPoint.x - n.x, lastPoint.y - n.y));
+    polygon.setPoint(1, sf::Vector2f(lastPoint.x + n.x, lastPoint.y + n.y));
+    polygon.setPoint(2, sf::Vector2f(   curPos.x + n.x,    curPos.y + n.y));
+    polygon.setPoint(3, sf::Vector2f(   curPos.x - n.x,    curPos.y - n.y));
+
+    polygon.setFillColor(translateColor(color));
+
+    rt -> draw(polygon);
+
+    this -> lastPoint = curPos;
 }
 
-void Brush::onMouseReleased(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect curPos, sf::Color color) {
+void Brush::paintOnRelease(RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) {
     catchNullptr(rt , /*nothing*/ );
     catchNullptr(tmp, /*nothing*/ );
 
@@ -35,9 +63,14 @@ void Brush::onMouseReleased(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect 
     return;
 }
 
-void Polyline::onMousePressed(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect curPos, sf::Color color) {
+void Polyline::paintOnPress(RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) {
     catchNullptr(rt , /*nothing*/ );
     catchNullptr(tmp, /*nothing*/ );
+
+    Vect curPos = Vect(context.position.x, context.position.y);
+
+    sf::RenderTexture * rt  = ((RenderTarget *) data) -> getWindow();
+    sf::RenderTexture *temp = ((RenderTarget *) tmp ) -> getWindow();
 
     if (drawing == Enable) return;
 
@@ -47,8 +80,8 @@ void Polyline::onMousePressed(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vec
         this -> startPoint = this -> lastPoint = curPos;
     } else {
         sf::Vertex vertices[] = {
-            sf::Vertex(sf::Vector2f(lastPoint.x, lastPoint.y), color),
-            sf::Vertex(sf::Vector2f(curPos.x, curPos.y), color)
+            sf::Vertex(sf::Vector2f(lastPoint.x, lastPoint.y), translateColor(color)),
+            sf::Vertex(sf::Vector2f(curPos.x, curPos.y), translateColor(color))
         };
         rt -> draw(vertices, 2, sf::Lines);
         lastPoint = curPos;
@@ -57,18 +90,22 @@ void Polyline::onMousePressed(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vec
     return;
 }
 
-void Polyline::onMouseMove(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect curPos, sf::Color color) {
+void Polyline::paintOnMove(RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) {
     catchNullptr(rt , /*nothing*/ );
     catchNullptr(tmp, /*nothing*/ );
+    
+    Vect curPos = Vect(context.position.x, context.position.y);
+    sf::RenderTexture * rt  = ((RenderTarget *) data) -> getWindow();
+    sf::RenderTexture *temp = ((RenderTarget *) tmp ) -> getWindow();
 
     sf::Vertex vertices[] = {
-        sf::Vertex(sf::Vector2f(lastPoint.x, lastPoint.y), color),
-        sf::Vertex(sf::Vector2f(curPos.x, curPos.y), color)
+        sf::Vertex(sf::Vector2f(lastPoint.x, lastPoint.y), translateColor(color)),
+        sf::Vertex(sf::Vector2f(curPos.x, curPos.y), translateColor(color))
     };
     tmp -> draw(vertices, 2, sf::Lines);
 }
 
-void Polyline::onMouseReleased(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect curPos, sf::Color color) {
+void Polyline::paintOnRelease(RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) {
     catchNullptr(rt , /*nothing*/ );
     catchNullptr(tmp, /*nothing*/ );
 
@@ -77,26 +114,33 @@ void Polyline::onMouseReleased(sf::RenderTexture *rt, sf::RenderTexture *tmp, Ve
     return;
 }
 
-void Pen::onMousePressed(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect curPos, sf::Color color) {
+void Pen::paintOnPress(RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) {
     catchNullptr(rt , /*nothing*/ );
     catchNullptr(tmp, /*nothing*/ );
 
     drawing = Drawing::Enable;
+
+    Vect curPos = Vect(context.position.x, context.position.y);
 
     this -> startPoint = this -> lastPoint = curPos;
 
     return;
 }
 
-void Pen::onMouseMove(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect curPos, sf::Color color) {
+void Pen::paintOnMove(RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) {
     catchNullptr(rt , /*nothing*/ );
     catchNullptr(tmp, /*nothing*/ );
+
+    Vect curPos = Vect(context.position.x, context.position.y);
+
+    sf::RenderTexture * rt  = ((RenderTarget *) data) -> getWindow();
+    sf::RenderTexture *temp = ((RenderTarget *) tmp ) -> getWindow();
 
     if (drawing == Drawing::Disable) return;
 
     sf::Vertex vertices[] = {
-        sf::Vertex(sf::Vector2f(lastPoint.x, lastPoint.y), color),
-        sf::Vertex(sf::Vector2f(curPos.x, curPos.y), color)
+        sf::Vertex(sf::Vector2f(lastPoint.x, lastPoint.y), translateColor(color)),
+        sf::Vertex(sf::Vector2f(curPos.x, curPos.y), translateColor(color))
     };
     rt -> draw(vertices, 2, sf::Lines);
     lastPoint = curPos;
@@ -104,7 +148,7 @@ void Pen::onMouseMove(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect curPos
     return;
 }
 
-void Pen::onMouseReleased(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect curPos, sf::Color color) {
+void Pen::paintOnRelease(RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) {
     catchNullptr(rt , /*nothing*/ );
     catchNullptr(tmp, /*nothing*/ );
 
@@ -113,31 +157,29 @@ void Pen::onMouseReleased(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect cu
     return;
 }
 
-void ToolManager::onMousePressed(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect curPos) {
-    catchNullptr(rt , /*nothing*/ );
-    catchNullptr(tmp, /*nothing*/ );
-
-    tool->onMousePressed(rt, tmp, curPos, color);
-
-    return;
-}
 
 
-void Eraser::onMousePressed(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect curPos, sf::Color color) {
+void Eraser::paintOnPress(RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) {
     catchNullptr(rt , /*nothing*/ );
     catchNullptr(tmp, /*nothing*/ );
 
     drawing = Drawing::Enable;
+    Vect curPos = Vect(context.position.x, context.position.y);
 
     this -> startPoint = this -> lastPoint = curPos;
 
     return;
 }
 
-void Eraser::onMouseMove(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect curPos, sf::Color color) {
+void Eraser::paintOnMove(RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) {
     catchNullptr(rt , /*nothing*/ );
     catchNullptr(tmp, /*nothing*/ );
 
+    Vect curPos = Vect(context.position.x, context.position.y);
+
+    sf::RenderTexture * rt  = ((RenderTarget *) data) -> getWindow();
+    sf::RenderTexture *temp = ((RenderTarget *) tmp ) -> getWindow();
+    
     if (drawing == Drawing::Disable) return;
 
     this -> lastPoint = curPos;
@@ -148,16 +190,21 @@ void Eraser::onMouseMove(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect cur
     rt->draw(circle);
 }
 
-void Eraser::onMouseReleased(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect curPos, sf::Color color) {
+void Eraser::paintOnRelease(RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) {
     catchNullptr(rt , /*nothing*/ );
     catchNullptr(tmp, /*nothing*/ );
 
     return;
 }
 
-void Square::onMousePressed(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect curPos, sf::Color color) {
+void Square::paintOnPress(RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) {
     catchNullptr(rt , /*nothing*/ );
     catchNullptr(tmp, /*nothing*/ );
+
+    Vect curPos = Vect(context.position.x, context.position.y);
+
+    sf::RenderTexture * rt  = ((RenderTarget *) data) -> getWindow();
+    sf::RenderTexture *temp = ((RenderTarget *) tmp ) -> getWindow();
 
     if (drawing == Drawing::Enable) return;
 
@@ -168,7 +215,7 @@ void Square::onMousePressed(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect 
     } else {
         sf::RectangleShape rectangle(sf::Vector2f(curPos.x - startPoint.x, curPos.y - startPoint.y));
         rectangle.setPosition(startPoint.x, startPoint.y);
-        rectangle.setFillColor(color);
+        rectangle.setFillColor(translateColor(color));
         rt -> draw(rectangle);
         startPoint = Vect(-1, -1);
     }
@@ -176,21 +223,27 @@ void Square::onMousePressed(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect 
     return;
 }
 
-void Square::onMouseMove(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect curPos, sf::Color color) {
+void Square::paintOnMove(RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) {
     catchNullptr(rt , /*nothing*/ );
     catchNullptr(tmp, /*nothing*/ );
+
+    Vect curPos = Vect(context.position.x, context.position.y);
+
+    sf::RenderTexture * rt  = ((RenderTarget *) data) -> getWindow();
+    sf::RenderTexture *temp = ((RenderTarget *) tmp ) -> getWindow();
+
 
     if (this -> startPoint.x == -1 && this -> startPoint.y == -1) return;
 
     sf::RectangleShape rectangle(sf::Vector2f(curPos.x - startPoint.x, curPos.y - startPoint.y));
     rectangle.setPosition(startPoint.x, startPoint.y);
-    rectangle.setFillColor(color);
+    rectangle.setFillColor(translateColor(color));
     tmp -> draw(rectangle);
 
     return;
 }
 
-void Square::onMouseReleased(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect curPos, sf::Color color) {
+void Square::paintOnRelease(RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) {
     catchNullptr(rt , /*nothing*/ );
     catchNullptr(tmp, /*nothing*/ );
 
@@ -199,9 +252,14 @@ void Square::onMouseReleased(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect
     return;
 }
 
-void Circle::onMousePressed(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect curPos, sf::Color color) {
+void Circle::paintOnPress(RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) {
     catchNullptr(rt , /*nothing*/ );
     catchNullptr(tmp, /*nothing*/ );
+
+    Vect curPos = Vect(context.position.x, context.position.y);
+
+    sf::RenderTexture * rt  = ((RenderTarget *) data) -> getWindow();
+    sf::RenderTexture *temp = ((RenderTarget *) tmp ) -> getWindow();
 
     if (drawing == Drawing::Enable) return;
 
@@ -226,7 +284,7 @@ void Circle::onMousePressed(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect 
 
         sf::CircleShape circle(radius);
         circle.setPosition(circlePos.x, circlePos.y);
-        circle.setFillColor(color);
+        circle.setFillColor(translateColor(color));
         rt -> draw(circle);
 
         startPoint = Vect(-1, -1);
@@ -235,9 +293,14 @@ void Circle::onMousePressed(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect 
     return;
 }
 
-void Circle::onMouseMove(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect curPos, sf::Color color) {
+void Circle::paintOnMove(RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) {
     catchNullptr(rt , /*nothing*/ );
     catchNullptr(tmp, /*nothing*/ );
+
+    Vect curPos = Vect(context.position.x, context.position.y);
+
+    sf::RenderTexture * rt  = ((RenderTarget *) data) -> getWindow();
+    sf::RenderTexture *temp = ((RenderTarget *) tmp ) -> getWindow();
 
     if (this -> startPoint.x == -1 && this -> startPoint.y == -1) return;
 
@@ -258,13 +321,13 @@ void Circle::onMouseMove(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect cur
 
     sf::CircleShape circle(radius);
     circle.setPosition(circlePos.x, circlePos.y);
-    circle.setFillColor(color);
+    circle.setFillColor(translateColor(color));
     tmp -> draw(circle);
 
     return;
 }
 
-void Circle::onMouseReleased(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect curPos, sf::Color color) {
+void Circle::paintOnRelease(RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) {
     catchNullptr(rt , /*nothing*/ );
     catchNullptr(tmp, /*nothing*/ );
 
@@ -273,21 +336,34 @@ void Circle::onMouseReleased(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect
     return;
 }
 
-void ToolManager::onMouseMove(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect curPos) {
+void ToolManager::paintOnPress(RenderTargetI *data, RenderTargetI *tmp, MouseContext context) {
     catchNullptr(rt , /*nothing*/ );
     catchNullptr(tmp, /*nothing*/ );
 
-    tool->onMouseMove(rt, tmp, curPos, color);
+    tool->paintOnPress(data, tmp, curPos, color);
+
+    return;
+}
+
+void ToolManager::paintOnMove  (RenderTargetI *data, RenderTargetI *tmp, MouseContext context) {
+    catchNullptr(rt , /*nothing*/ );
+    catchNullptr(tmp, /*nothing*/ );
+
+    tool->paintOnMove(data, tmp, context, color);
 
     return;
 }
 
 
-void ToolManager::onMouseReleased(sf::RenderTexture *rt, sf::RenderTexture *tmp, Vect curPos) {
+void ToolManager::paintOnRelease(RenderTargetI *data, RenderTargetI *tmp, MouseContext context) {
     catchNullptr(rt , /*nothing*/ );
     catchNullptr(tmp, /*nothing*/ );
 
-    tool->onMouseReleased(rt, tmp, curPos, color);
+    tool->paintOnRelease(data, tmp, context, color);
 
     return;
+}
+
+sf::Color translateColor(Color color) {
+    return sf::Color(translateColor(color).r, translateColor(color).g, translateColor(color).b, translateColor(color).a);
 }

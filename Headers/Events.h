@@ -2,11 +2,12 @@
 
 #include "List.h"
 #include <SFML/Graphics.hpp>
+#include "plugin.h"
 
 class Widget;
 
-class EventProcessible {
-    unsigned priority;
+class EventProcessible : plugin::EventProcessableI {
+    uint8_t priority;
 
     public:
 
@@ -27,21 +28,35 @@ class EventProcessible {
 
         void setPriority(unsigned priority) { this->priority = priority; }
 
-        unsigned getPriority() { return priority; }
+        uint8_t getPriority() { return priority; }
+
+        virtual bool onMouseMove    (plugin::MouseContext context) = 0;
+        virtual bool onMouseRelease (plugin::MouseContext context) = 0;
+        virtual bool onMousePress   (plugin::MouseContext context) = 0;
+
+        virtual bool onKeyboardPress  (plugin::KeyboardContext context) = 0;
+        virtual bool onKeyboardRelease(plugin::KeyboardContext context) = 0;
+
 };
 
-class EventManager : public EventProcessible { 
-    ListHead <Widget> *scene;
+class EventManager : plugin::EventManagerI {
+    uint8_t priority;
+
+    ListHead <plugin::EventProcessableI> *scene;
     
     public:
         EventManager():
         EventProcessible(0),
-        scene(new ListHead<Widget>())
+        scene(new ListHead <plugin::EventProcessableI>())
         {}
 
         int executeEvent(Events event, sf::RenderWindow *window);
 
-        int addWidget(Widget *widget);
+        void registerObject(plugin::EventProcessableI *object);
+        
+        void unregisterObject(plugin::EventProcessableI *object);
+
+        void setPriority(plugin::EventType, uint8_t priority) { this->priority = priority; }
 
         ~EventManager() { delete scene; }
 };

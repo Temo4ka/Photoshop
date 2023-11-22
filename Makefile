@@ -3,6 +3,7 @@ all:
 	./source/button.cpp ./source/menu.cpp ./source/window.cpp ./source/canvas.cpp \
 	./source/main.cpp ./source/region.cpp ./source/widgets.cpp ./source/ui.cpp    \
 	./source/tool.cpp ./source/vect.cpp ./source/events.cpp ./source/editBox.cpp  \
+	./source/filter.cpp                                                           \
 	-lm -o ps.exe -lmingw32 -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lsfml-main -mwindows
 
 reg:
