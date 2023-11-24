@@ -7,8 +7,8 @@
 class Filter : plugin::FilterI {
     size_t paramsNum;
 
-    Array<const char *> paramNames;
-    Array<   double   >   params  ;
+    plugin::Array<const char *> paramNames;
+    plugin::Array<   double   >   params  ;
 
     public:
         Filter() :
@@ -17,12 +17,10 @@ class Filter : plugin::FilterI {
 
         virtual void apply(plugin::RenderTargetI *data) = 0;
 
-        Array<const char *> getParamNames()  { return paramNames; }
-        Array<  double    >    getParams()   { return   params  ; }
+        plugin::Array<const char *> getParamNames()  { return paramNames; }
+        plugin::Array<  double    >    getParams()   { return   params  ; }
 
-        void setParams(Array<double> params) { this -> params = params; }
-
-
+        void setParams(plugin::Array<double> params) { this -> params = params; }
 };
 
 struct FilterManager : plugin::FilterManagerI {

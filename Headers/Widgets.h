@@ -14,7 +14,7 @@ enum WidgetStatus {
     Enable  = 1
 };
 
-class Widget : public EventProcessible, plugin::WidgetI {
+class Widget : plugin::WidgetI {
     plugin::WidgetI *parent;
 
     ListHead<Widget> *subWidgets;
@@ -98,6 +98,18 @@ class Widget : public EventProcessible, plugin::WidgetI {
 
     /*------------------------------for plugins-----------------------------------*/
 
+    bool onMouseMove    (plugin::MouseContext context);
+    bool onMouseRelease (plugin::MouseContext context);
+    bool onMousePress   (plugin::MouseContext context);
+
+    bool onKeyboardPress  (plugin::KeyboardContext context) { return false; }
+    bool onKeyboardRelease(plugin::KeyboardContext context) { return false; }
+
+    bool onClock(uint64_t delta) { return false; }
+
+    uint8_t getPriority() { return LOW_PRIORITY; }
+
+
     void registerSubWidget  (plugin::WidgetI* object);
     void unregisterSubWidget(plugin::WidgetI* object);
 
@@ -112,7 +124,7 @@ class Widget : public EventProcessible, plugin::WidgetI {
 
     void setParent(WidgetI *root) { parent = root; }
 
-    WidgetI *getParent() { return root;}
+    WidgetI *getParent() { return parent;}
 
     void move(Vec2 shift) { move(Vect(shift.x, shift.y)); }
 
@@ -120,7 +132,7 @@ class Widget : public EventProcessible, plugin::WidgetI {
 
     void setAvailable(bool newStatus) { status = (newStatus)? Enable: Disable; }
 
-    void render(RenderTargetI* rti) { draw((RenderTarget *) rt) }                               //CRINGE!!!
+    void render(RenderTargetI* rti) { draw(dynamic_cast<RenderTarget *>(rt)) }                               //CRINGE!!!
     void recalcRegion() { clipRegions(); }
 
     ~WidgetI() { ~Widget() };
@@ -158,7 +170,7 @@ class Window : public Widget {
 
         int   onMouseMove  (Vect &pos);
         int  onMousePress  (Vect &pos);
-        int onMouseRelease(Vect &pos);
+        int onMouseRelease (Vect &pos);
         // Status getStatus() { return status; }
 };
 
@@ -199,7 +211,7 @@ class Menu : public Widget {
 
         int   onMouseMove  (Vect &pos);
         int  onMousePress  (Vect &pos);
-        int onMouseRelease(Vect &pos);
+        int onMouseRelease (Vect &pos);
 };
 
 #include "./Tool.h"
@@ -239,14 +251,14 @@ class Canvas: public Widget {
 
         int draw(RenderTarget *rt);
 
-        void setColor(sf::Color newColor) { toolManager -> color = newColor; }
+        void setColor(sf::Color newColor) { toolManager -> color = { newColor.r, newColor.g, newColor.b, newColor.a }; }
 
         void setTool(Tool *tool) { 
             delete toolManager -> tool;
             toolManager -> tool = tool;
         }
 
-        void setFilter(Filter *filter) { 
+        void setFilter(plugin::FilterI *filter) { 
             delete filterManager -> lastFilter;
 
             filterManager -> lastFilter = filter;

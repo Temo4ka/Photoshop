@@ -37,6 +37,8 @@ class EventProcessible : plugin::EventProcessableI {
         virtual bool onKeyboardPress  (plugin::KeyboardContext context) = 0;
         virtual bool onKeyboardRelease(plugin::KeyboardContext context) = 0;
 
+        bool onClock(uint64_t delta) {return false;}
+
 };
 
 class EventManager : plugin::EventManagerI {

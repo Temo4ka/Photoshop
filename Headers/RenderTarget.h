@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include "Vect.h"
 #include "plugin.h"
 
 using namespace plugin;
@@ -27,12 +28,12 @@ class RenderTarget : RenderTargetI {
         void drawTexture(Vec2 pos, Vec2 size, const Texture *texture);
         void drawText(Vec2 pos, const char *content, uint16_t char_size, Color color);
 
-        // Texture *getTexture() {};
+        Texture *getTexture();
 
         void display() { window -> display(); }
 
         void clear() { window -> clear(); }
         
-        Vect getPos () { return pos; }
-        Vect getSize() { return size; }
+        Vect getPosition() { return pos;  }
+        Vect   getSize  () { return size; }
 };

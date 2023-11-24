@@ -17,7 +17,7 @@ struct Gui : GuiI {
 
     Vec2 getSize();
     RenderTargetI *getRenderTarget(Vec2 size, Vec2 pos, Plugin *self);
-    void createParamWindow(Array<const char *> param_names, Interface *self) = 0;
+    void createParamWindow(Array<const char *> param_names, Interface *self);
     WidgetI* getRoot() { return root; }
 
     ~Gui() {

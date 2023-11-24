@@ -102,3 +102,37 @@ void Widget::dumpRegions(sf::RenderWindow *window) {
 
     return;
 }
+
+bool Widget::onMouseMove(plugin::MouseContext context) {
+    Vect pos = Vect(context.position.x, context.position.y);
+
+    this -> onMouseMove(pos);
+
+    return true;
+}
+
+bool Widget::onMouseRelease (plugin::MouseContext context) {
+    Vect pos = Vect(context.position.x, context.position.y);
+
+    this -> onMouseRelease(pos);
+
+    return true;
+}
+
+bool Widget::onMousePress(plugin::MouseContext context) {
+    Vect pos = Vect(context.position.x, context.position.y);
+
+    this -> onMousePress(pos);
+
+    return true;
+}
+
+void Widget::registerSubWidget  (plugin::WidgetI* object) {
+    
+    return;
+}
+
+void Widget::unregisterSubWidget(plugin::WidgetI* object) {
+
+    return;
+}

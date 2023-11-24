@@ -16,3 +16,8 @@ RenderTargetI* Gui::getRenderTarget(Vec2 sz, Vec2 pos, Plugin *self) {
 
     return newRt;
 }
+
+void createParamWindow(Array<const char *> param_names, Interface *self) {
+
+    return;
+}

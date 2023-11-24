@@ -29,7 +29,6 @@ class EditBox : public Window {
         type(BoxType::Num)
         {
             font->loadFromFile("./Font/arial.ttf");
-            setPriority(HIGH_PRIORITY);
         }
 
         void addNewLetter(const char *letter);
@@ -47,4 +46,6 @@ class EditBox : public Window {
         int onKeyReleased(KeyBoard::Key key);
 
         void setType(BoxType newType) { type = newType; }
+
+	    uint8_t getPriority() { return HIGH_PRIORITY; }
 };

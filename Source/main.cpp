@@ -12,7 +12,7 @@ int main()
     
     Window *mainWindow = orginiseMainScreen(&window);
 
-    RenderTarget rt = RenderTarget(&window);
+    RenderTarget rt = RenderTarget();
 
     clipRegions(mainWindow);
 

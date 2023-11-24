@@ -5,30 +5,7 @@
 
 using namespace plugin;
 
-struct Tool;
-
-struct ToolManager : ToolManagerI {
-    Tool* tool;
-    Color color;
-
-    ToolManager ():
-    tool(nullptr),
-    color(Color(0, 255, 0, 255))
-    {}
-
-    void  paintOnMove  (RenderTargetI *data, RenderTargetI *tmp, MouseContext context);
-    void  paintOnPress (RenderTargetI *data, RenderTargetI *tmp, MouseContext context);
-    void paintOnRelease(RenderTargetI *data, RenderTargetI *tmp, MouseContext context);
-    //TODO: void  disableTool  (RenderTargetI *data, RenderTargetI *tmp, MouseContext context);
-
-    void setColor(Color color) { this -> color = color; }
-    void setTool (ToolI *tool) { this -> tool  = (Tool *) tool; }
-
-    ToolI *getTool()  { return tool; }
-    Color  getColor() { return color; }
-};
-
-struct Tool : ToolI {
+struct Tool : public ToolI {
     Array<const char *> paramNames;
     Array<   double   >   params  ;
 
@@ -46,6 +23,8 @@ struct Tool : ToolI {
     drawing    (  Disable   )
     {}
 
+    const Texture *getIcon() { return nullptr }
+
     virtual void  paintOnPress  (RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) = 0;
     virtual void   paintOnMove  (RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) = 0;
     virtual void paintOnRelease (RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) = 0;
@@ -56,6 +35,28 @@ struct Tool : ToolI {
     void setParams(Array<double> params) { this -> params = params; }
 };
 
+
+struct ToolManager : ToolManagerI {
+    Tool* tool;
+    Color color;
+
+    ToolManager ():
+    tool(nullptr),
+    color(Color(0, 255, 0, 255))
+    {}
+
+    void  paintOnMove  (RenderTargetI *data, RenderTargetI *tmp, MouseContext context);
+    void  paintOnPress (RenderTargetI *data, RenderTargetI *tmp, MouseContext context);
+    void paintOnRelease(RenderTargetI *data, RenderTargetI *tmp, MouseContext context);
+
+    void  disableTool  (RenderTargetI *data, RenderTargetI *tmp, MouseContext context) { tool -> drawing = Tool::Disable; }
+
+    void setColor(Color color) { this -> color = color; }
+    void setTool (ToolI *tool) { this -> tool  = (Tool *) tool; }
+
+    ToolI *getTool()  { return tool; }
+    Color  getColor() { return color; }
+};
 // struct Sl : Tool {
 
 //     void p(sf::RenderTexture *rt, sf::RenderTexture *temp, Vect curPos, sf::Color color);

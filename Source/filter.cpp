@@ -1,31 +1,28 @@
 #include "../Headers/Filter.h"
+#include "../Headers/RenderTarget.h"
 
 void ReverseFilter::apply(plugin::RenderTargetI *data) {
-    catchNullptr(rt, /*Error*/);
+    catchNullptr(data, /*Error*/);
 
-    RenderTarget* target = data;
+    plugin::Texture *texture = data -> getTexture();
 
-    sf::RenderTexture *rt = getWindow();
-
-    sf::Texture texture = rt -> getTexture();
-
-    sf::Image image = texture.copyToImage();
-
-    sf::Vector2u size = image.getSize();
+    enum Color {
+        red = 0,
+        green,
+        blue,
+        alpha,
+    }
 
     for (int y = 0; y < size.y; y++)
         for (int x = 0; x < size.x; x++) {
-            sf::Color curColor = image.getPixel(x, y);
+            int curX = x * 4;
 
-            image.setPixel(x, y, sf::Color(255 - curColor.r, 255 - curColor.g, 255 - curColor.b));
+            texture -> data[curX +  red ] = 255 - texture -> data[curX +  red ];
+            texture -> data[curX + green] = 255 - texture -> data[curX + green];
+            texture -> data[curX + blue ] = 255 - texture -> data[curX + blue ];
         }
 
-    texture.loadFromImage(image);
-    
-    sf::Sprite sprite;
-    sprite.setTexture(texture);
-
-    rt -> draw(sprite);
+    data -> drawTexture(Vec2(-1, -1), Vec2(texture -> size.x, texture -> size.y), texture);
 
     return;
 }
