@@ -1,6 +1,15 @@
 #include "../Headers/Filter.h"
 #include "../Headers/RenderTarget.h"
 
+void FilterManager::setFilter(plugin::FilterI *filter) {
+    catchNullptr(filter, );
+    
+    if (this -> lastFilter != nullptr) delete this -> lastFilter;
+    this -> lastFilter = filter;
+
+    return;
+}
+
 void ReverseFilter::apply(plugin::RenderTargetI *data) {
     catchNullptr(data, /*Error*/);
 

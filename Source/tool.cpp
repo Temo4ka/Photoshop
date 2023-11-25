@@ -384,3 +384,12 @@ void ToolManager::disableTool(RenderTargetI *data, RenderTargetI *tmp, MouseCont
 
     return;
 }
+
+void ToolManager::setTool(ToolI *tool) {
+    catchNullptr(tool, );
+
+    if (this -> tool != nullptr) delete this -> tool;
+    this -> tool = tool;
+
+    return;
+}

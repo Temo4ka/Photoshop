@@ -52,7 +52,7 @@ struct ToolManager : public ToolManagerI {
     void  disableTool  (RenderTargetI *data, RenderTargetI *tmp, MouseContext context);
 
     void setColor(Color color) { this -> color = color; }
-    void setTool (ToolI *tool) { this -> tool  = tool;  }
+    void setTool (ToolI *tool);
 
     ToolI *getTool()  { return tool; }
     Color  getColor() { return color; }

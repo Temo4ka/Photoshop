@@ -2,7 +2,7 @@
 #include "../Headers/DSL.h"
 #include "../Headers/Config.h"
 
-Window* orginiseMainScreen(sf::RenderWindow *window) {
+Window* orginiseMainScreen(sf::RenderWindow *window, FilterManager *filterManager, ToolManager *toolManager) {
     catchNullptr(  window  , nullptr);
 
     sf::Texture *texture = new sf::Texture;
@@ -14,7 +14,7 @@ Window* orginiseMainScreen(sf::RenderWindow *window) {
 
     Menu *menu = new Menu(Vect(0, PANEL_HEIGHT), Vect(WINDOW_WIDTH, MENU_HEIGHT));
 
-    Canvas *canvas = new Canvas(Vect(6, PANEL_HEIGHT + MENU_HEIGHT), Vect(MAIN_CANVAS_WIDTH, MAIN_CANVAS_HEIGHT));
+    Canvas *canvas = new Canvas(Vect(6, PANEL_HEIGHT + MENU_HEIGHT), Vect(MAIN_CANVAS_WIDTH, MAIN_CANVAS_HEIGHT), toolManager, filterManager);
 
     if (addMainScreenButtons(mainWindow, menu, canvas)) return nullptr;
     mainWindow ->addSubWidget(menu);

@@ -3,23 +3,36 @@
 #include "../Headers/UI.h"
 #include "../Headers/Events.h"
 #include "../Headers/EditBox.h"
+#include "../Headers/Gui.h"
 
 // #define DEBUG
  
 int main()
 {
-    plugin::App app;
-
     sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Ps", sf::Style::None);
     
-    Window *mainWindow = orginiseMainScreen(&window);
+     ToolManager   toolManager  =  ToolManager ();
+    toolManager.setColor({255, 0, 0, 255});
+    toolManager.setTool(new Circle);
+    
+    FilterManager filterManager = FilterManager();
+    filterManager.setFilter(new ReverseFilter);
 
     RenderTarget rt = RenderTarget(Vect(0, 0), Vect(WINDOW_WIDTH, WINDOW_HEIGHT));
 
+    Window *mainWindow = orginiseMainScreen(&window, &filterManager, &toolManager);
     clipRegions(mainWindow);
 
     EventManager eventManager = {};
     eventManager.registerObject(mainWindow);
+
+    Gui gui(&rt, mainWindow);
+
+    plugin::App app;
+    app.root = &gui;
+    app.event_manager  = &eventManager;
+    app.filter_manager = &filterManager;
+    app.tool_manager   = &toolManager;
 
     while (window.isOpen())
     {

@@ -234,13 +234,13 @@ class Canvas: public Widget {
               Hold   = 1,
         } status;
 
-        Canvas(Vect pos, Vect size):
+        Canvas(Vect pos, Vect size, ToolManager *toolMgr, FilterManager * filterMgr):
         Widget(pos, size, nullptr, 0, 0, nullptr),
         status(Released),
            texture   (new RenderTarget(pos, size)),
             temp     (new RenderTarget(pos, size)),
-         toolManager (new ToolManager),
-        filterManager(new FilterManager)
+         toolManager (toolMgr),
+        filterManager(filterMgr)
         { 
             texture->clear(sf::Color::White);
             toolManager -> tool = new Circle;

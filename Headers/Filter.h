@@ -37,7 +37,7 @@ struct FilterManager : plugin::FilterManagerI {
 
     void applyFilter();
 
-    void setFilter(plugin::FilterI *filter) { lastFilter = filter; }
+    void setFilter(plugin::FilterI *filter);
 
     void setRenderTarget(plugin::RenderTargetI *target) { curRenderTarget = target; }
 

@@ -30,7 +30,7 @@ class EventProcessible : plugin::EventProcessableI {
 
 };
 
-class EventManager : plugin::EventManagerI {
+class EventManager : public plugin::EventManagerI {
     uint8_t priority;
 
     ListHead <plugin::EventProcessableI> *scene;

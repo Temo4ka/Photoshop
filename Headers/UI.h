@@ -1,6 +1,6 @@
 #include "Widgets.h"
 
-Window* orginiseMainScreen(sf::RenderWindow *window);
+Window* orginiseMainScreen(sf::RenderWindow *window, FilterManager*, ToolManager*);
 
 int addMainScreenButtons(Window *window, Menu *menu, Canvas *canvas);
 
