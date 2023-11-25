@@ -1,33 +1,5 @@
-curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
-curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
-curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
-curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
-curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
-curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
-curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
-curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
-curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
-curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
-curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
-curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
-curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
-curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
-curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
-curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
-curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
-curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
-curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
-curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
-curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
-curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
-curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
-curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
-curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
-curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
-curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
-curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
-curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
-curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
-curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
-curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
-curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(109) is NULL
+MSG:Blyat, from virtual void Circle::paintOnPress(plugin::RenderTargetI*, plugin::RenderTargetI*, plugin::MouseContext, plugin::Color) at ./source/tool.cpp(297)
+MSG:Blyat, from virtual void Circle::paintOnPress(plugin::RenderTargetI*, plugin::RenderTargetI*, plugin::MouseContext, plugin::Color) at ./source/tool.cpp(297)
+MSG:Blyat, from virtual void Circle::paintOnPress(plugin::RenderTargetI*, plugin::RenderTargetI*, plugin::MouseContext, plugin::Color) at ./source/tool.cpp(297)
+MSG:Blyat, from virtual void Circle::paintOnPress(plugin::RenderTargetI*, plugin::RenderTargetI*, plugin::MouseContext, plugin::Color) at ./source/tool.cpp(297)
+MSG:Blyat, from virtual void Circle::paintOnPress(plugin::RenderTargetI*, plugin::RenderTargetI*, plugin::MouseContext, plugin::Color) at ./source/tool.cpp(297)

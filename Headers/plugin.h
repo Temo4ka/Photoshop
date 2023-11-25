@@ -278,7 +278,7 @@ namespace plugin {
         virtual void render(RenderTargetI* ) = 0;
         virtual void recalcRegion() = 0;
 
-        virtual ~WidgetI() = 0;
+        virtual ~WidgetI() = default;
     };
 
     struct ToolI: public Interface {
@@ -338,8 +338,8 @@ namespace plugin {
 
     struct App {
         GuiI *root;
-        EventManagerI *event_manager; 
-        ToolManagerI *tool_manager;
+        EventManagerI  *event_manager ; 
+        ToolManagerI   * tool_manager ;
         FilterManagerI *filter_manager; 
     };
 }

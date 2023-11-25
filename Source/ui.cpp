@@ -96,7 +96,7 @@ Menu *addFilterMenu(Button *filter, Canvas *canvas) {
     catchNullptr(canvas, nullptr);
 
     Vect pos  = filter -> getPosition();
-    Vect size = filter ->   getSize  ();
+    Vect size = filter ->    getSizeVect   ();
 
     Vect menuButtonSize(BUTTON_MENU_WIDTH, MENU_HEIGHT);
 
@@ -131,7 +131,7 @@ Menu *addColorMenu(Button *color, Canvas *canvas) {
     catchNullptr(canvas, nullptr);
 
     Vect pos  = color -> getPosition();
-    Vect size = color ->   getSize  ();
+    Vect size = color ->    getSizeVect   ();
 
     Vect menuButtonSize(BUTTON_MENU_WIDTH, MENU_HEIGHT);
 
@@ -177,7 +177,7 @@ Menu *addWindowMenu(Window *mainWindow, Button *window) {
     catchNullptr(window, nullptr);
 
     Vect pos  = window -> getPosition();
-    Vect size = window ->   getSize  ();
+    Vect size = window ->    getSizeVect   ();
 
     Vect menuButtonSize(BUTTON_MENU_WIDTH, MENU_HEIGHT);
 
@@ -218,7 +218,7 @@ Menu *addToolsMenu(Button *tools, Canvas *canvas) {
     catchNullptr(canvas, nullptr);
 
     Vect pos  = tools -> getPosition();
-    Vect size = tools ->   getSize  ();
+    Vect size = tools -> getSizeVect();
 
     Vect menuButtonSize(BUTTON_MENU_WIDTH, MENU_HEIGHT);
 
@@ -447,7 +447,7 @@ void clipRegions(Window *window) {
     RegionSet *set = window -> getRegionSet();
     delete set;
     set = new RegionSet();
-    set -> addRegion(new Region(window -> getPosition(), window -> getSize()));
+    set -> addRegion(new Region(window -> getPosition(), window -> getSizeVect()));
     window -> setRegionSet(set);
     window -> clipRegions();
 

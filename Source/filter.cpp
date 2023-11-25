@@ -6,23 +6,17 @@ void ReverseFilter::apply(plugin::RenderTargetI *data) {
 
     plugin::Texture *texture = data -> getTexture();
 
-    enum Color {
-        red = 0,
-        green,
-        blue,
-        alpha,
-    }
+    int h = texture->height;
+    int w = texture->width;
 
-    for (int y = 0; y < size.y; y++)
-        for (int x = 0; x < size.x; x++) {
-            int curX = x * 4;
-
-            texture -> data[curX +  red ] = 255 - texture -> data[curX +  red ];
-            texture -> data[curX + green] = 255 - texture -> data[curX + green];
-            texture -> data[curX + blue ] = 255 - texture -> data[curX + blue ];
+    for (int y = 0; y < h; y++)
+        for (int x = 0; x < w; x++) {
+            texture -> pixels[y * w + x].r = 255 - texture -> pixels[y * w + x].r;
+            texture -> pixels[y * w + x].g = 255 - texture -> pixels[y * w + x].g;
+            texture -> pixels[y * w + x].b = 255 - texture -> pixels[y * w + x].b;
         }
 
-    data -> drawTexture(Vec2(-1, -1), Vec2(texture -> size.x, texture -> size.y), texture);
+    data -> drawTexture(Vec2(0, 0), Vec2(w, h), texture);
 
     return;
 }

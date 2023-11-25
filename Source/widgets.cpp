@@ -32,7 +32,7 @@ int Widget::removeSubWidget(Widget *widget) {
             RegionSet *subSet = widget->getRegionSet(); 
             set -> unionRegions(subSet);
 
-            list ->erase(cur);
+            list ->eraseNode(cur);
             break;
         }
     } while (cur != list -> getHead());
@@ -61,7 +61,7 @@ int Widget::clipRegions() {
 
         delete curWidget -> getRegionSet();
         RegionSet *subSet =  new RegionSet();
-        subSet -> addRegion(new Region(curWidget->getPosition(), curWidget -> getSize()));
+        subSet -> addRegion(new Region(curWidget->getPosition(), curWidget ->  getSizeVect ()));
 
         RegionSet *newSet = set -> crossRegions(subSet);
         delete subSet;

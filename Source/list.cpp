@@ -35,7 +35,7 @@ ListErrors ListHead::pushFront(Type *object) {
     return ListOk;
 }
 
-ListErrors ListHead::erase(ListNode *node) {
+ListErrors ListHead::eraseNode(ListNode *node) {
     catchNullptr(node, NullptrCaught);
 
     if (node->getHead() != this) return ErasementOfUnknownNode;

@@ -1,9 +1,10 @@
 #include "../Headers/RenderTarget.h"
 #include "../Headers/Config.h"
-
-sf::Color translateColor(Color color);
+#include "../Headers/DSL.h"
 
 void RenderTarget::setPixel(Vec2 pos, Color color) {
+    display();
+
     sf::Texture texture = window -> getTexture();
 
     sf::Image image = texture.copyToImage();
@@ -28,14 +29,14 @@ void RenderTarget::drawLine(Vec2 point1, Vec2 point2, Color color) {
 }
 
 void RenderTarget::drawRect(Vec2 pos, Vec2 size, Color color) {
-    sf::RectangleShape rectangle(sf::Vector2f(size.x + pos.x, size.y + pos.y));
+    sf::RectangleShape rectangle(sf::Vector2f(size.x, size.y));
     rectangle.setPosition(pos.x, pos.y);
     rectangle.setFillColor(translateColor(color));
     window -> draw(rectangle);
 }
 
 void RenderTarget::drawEllipse(Vec2 pos, Vec2 size, Color color) {
-    float radius = std::max(size.x, size.y);
+    float radius = std::max(size.x, size.y) / 2;
 
     sf::CircleShape circle(radius);
     circle.setPosition(pos.x, pos.y);
@@ -45,10 +46,10 @@ void RenderTarget::drawEllipse(Vec2 pos, Vec2 size, Color color) {
 }
 
 void RenderTarget::drawTexture(Vec2 pos, Vec2 size, const Texture *texture) {
-    catchNullptr(texture, );
+    catchNullptr(texture, /*nothing*/);
 
     sf::Image image;
-    image.create(size.x, size.y, texture.data);
+    image.create(size.x, size.y, (uint8_t *) texture->pixels);
 
     sf::Texture sfmlTexture;
     sfmlTexture.loadFromImage(image);
@@ -82,16 +83,18 @@ sf::Color translateColor(Color color) {
 }
 
 Texture* RenderTarget::getTexture() {
+    display();
+
     Texture *texture = new Texture;
 
     texture->width  = size.x;
     texture->height = size.y;
 
-    sf::Image image = window.getTexture().copyToImage();
+    sf::Image image = window->getTexture().copyToImage();
 
-    uint8_t *pixels = image.getPixelsPtr();
+    const uint8_t *pixels = image.getPixelsPtr();
     
-    texture->pixels = (uint8_t *) calloc(size.x * size.y * 4, sizeof(uint8_t));
+    texture->pixels = (plugin::Color *) calloc(size.x * size.y, sizeof(plugin::Color));
 
     memcpy(texture -> pixels, pixels, size.x * size.y * 4 * sizeof(uint8_t));
 

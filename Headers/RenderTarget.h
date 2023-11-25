@@ -1,10 +1,12 @@
+#pragma once
+
 #include <SFML/Graphics.hpp>
 #include "Vect.h"
 #include "plugin.h"
 
 using namespace plugin;
 
-class RenderTarget : RenderTargetI {
+class RenderTarget : public RenderTargetI {
     Vect pos;
     Vect size;
 
@@ -33,7 +35,13 @@ class RenderTarget : RenderTargetI {
         void display() { window -> display(); }
 
         void clear() { window -> clear(); }
-        
+
+        void clear(sf::Color color) { window -> clear(color); }
+
+        void create(int sizeX, int sizeY) { window -> create(sizeX, sizeY); }
+
         Vect getPosition() { return pos;  }
         Vect   getSize  () { return size; }
 };
+
+sf::Color translateColor(Color color);

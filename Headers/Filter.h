@@ -4,7 +4,7 @@
 #include "List.h"
 #include "plugin.h"
 
-class Filter : plugin::FilterI {
+class Filter : public plugin::FilterI {
     size_t paramsNum;
 
     plugin::Array<const char *> paramNames;

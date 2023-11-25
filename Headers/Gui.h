@@ -1,4 +1,5 @@
-#include "Widget.h"
+#include "Widgets.h"
+#include "RenderTarget.h"
 
 using namespace plugin;
 

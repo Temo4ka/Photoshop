@@ -14,7 +14,7 @@ enum WidgetStatus {
     Enable  = 1
 };
 
-class Widget : plugin::WidgetI {
+class Widget : public plugin::WidgetI {
     plugin::WidgetI *parent;
 
     ListHead<Widget> *subWidgets;
@@ -40,8 +40,7 @@ class Widget : plugin::WidgetI {
         subWidgets (new ListHead<Widget>()),
         set (new RegionSet()),
         scale(Vect(size.x / double(texW), size.y / double(texH))),
-        status(Disable),
-        EventProcessible(BASE_PRIORITY)
+        status(Disable)
         {
             set -> addRegion(new Region(pos, size));
             if (texture != nullptr) (this->sprite)->setTexture(*texture);
@@ -73,7 +72,7 @@ class Widget : plugin::WidgetI {
 
         virtual int draw(RenderTarget *rt) = 0;
 
-        Vect   getSize  () { return this ->   size  ; }
+        Vect getSizeVect() { return this ->   size  ; }
         Vect getPosition() { return this -> position; }
         Vect   getScale () { return this ->   scale ; }
 
@@ -94,7 +93,11 @@ class Widget : plugin::WidgetI {
 
         void move(Vect delta) { position += delta; }
 
-        ~Widget() { delete sprite; }
+        ~Widget() {
+            delete sprite;
+            delete set;
+            delete subWidgets;
+        }
 
     /*------------------------------for plugins-----------------------------------*/
 
@@ -113,12 +116,12 @@ class Widget : plugin::WidgetI {
     void registerSubWidget  (plugin::WidgetI* object);
     void unregisterSubWidget(plugin::WidgetI* object);
 
-    plugin::Vec2 getSize() { return plugin::Vec2(size.x, size.y); }
-    plugin::Vec2 getPos() { return plugin::Vec2(pos.x, pos.y); }
+    plugin::Vec2 getSize() { return plugin::Vec2(    size.x,     size.y); }
+    plugin::Vec2 getPos()  { return plugin::Vec2(position.x, position.y); }
 
 
-    void setSize(plugin::Vec2 size) { size = Vect(size.x, size.y); }
-    void setPos (plugin::Vec2 pos)  { pos  = Vect(size.x, size.y); }
+    void setSize(plugin::Vec2 sz )  {   size   = Vect( sz.x,  sz.y); }
+    void setPos (plugin::Vec2 pos)  { position = Vect(pos.x, pos.y); }
 
     bool isExtern() { return false; }
 
@@ -128,14 +131,15 @@ class Widget : plugin::WidgetI {
 
     void move(Vec2 shift) { move(Vect(shift.x, shift.y)); }
 
-    bool getAvailable() { return (status == Enable)? true : false};
+    bool getAvailable() { return (status == Enable)? true : false; }
 
     void setAvailable(bool newStatus) { status = (newStatus)? Enable: Disable; }
 
-    void render(RenderTargetI* rti) { draw(dynamic_cast<RenderTarget *>(rt)) }                               //CRINGE!!!
-    void recalcRegion() { clipRegions(); }
+    void render(plugin::RenderTargetI* rti) {
+        MSG("You cannot use render(plugin::RenderTargetI *) for App Widgets :_(\n Use draw(RenderTarget*) instead!\n");                 //CRINGE!!!
+    }        
 
-    ~WidgetI() { ~Widget() };
+    void recalcRegion() { clipRegions(); }
 
     /*----------------------------------------------------------------------------*/
 
@@ -218,8 +222,8 @@ class Menu : public Widget {
 #include "./Filter.h"
 
 class Canvas: public Widget {
-    sf::RenderTexture *texture;
-    sf::RenderTexture *  temp ;
+    RenderTarget *texture;
+    RenderTarget *  temp ;
 
      ToolManager  *  toolManager;
     FilterManager *filterManager;
@@ -233,12 +237,11 @@ class Canvas: public Widget {
         Canvas(Vect pos, Vect size):
         Widget(pos, size, nullptr, 0, 0, nullptr),
         status(Released),
-           texture   (new sf::RenderTexture),
-            temp     (new sf::RenderTexture),
+           texture   (new RenderTarget(pos, size)),
+            temp     (new RenderTarget(pos, size)),
          toolManager (new ToolManager),
         filterManager(new FilterManager)
         { 
-            texture->create(size.x, size.y);
             texture->clear(sf::Color::White);
             toolManager -> tool = new Circle;
 
@@ -247,7 +250,7 @@ class Canvas: public Widget {
 
         int   onMouseMove  (Vect &pos);
         int  onMousePress  (Vect &pos);
-        int onMouseRelease(Vect &pos);
+        int onMouseRelease (Vect &pos);
 
         int draw(RenderTarget *rt);
 

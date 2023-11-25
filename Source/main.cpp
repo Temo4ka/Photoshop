@@ -8,16 +8,18 @@
  
 int main()
 {
+    plugin::App app;
+
     sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Ps", sf::Style::None);
     
     Window *mainWindow = orginiseMainScreen(&window);
 
-    RenderTarget rt = RenderTarget();
+    RenderTarget rt = RenderTarget(Vect(0, 0), Vect(WINDOW_WIDTH, WINDOW_HEIGHT));
 
     clipRegions(mainWindow);
 
     EventManager eventManager = {};
-    eventManager.addWidget(mainWindow);
+    eventManager.registerObject(mainWindow);
 
     while (window.isOpen())
     {
@@ -32,13 +34,13 @@ int main()
                 window.close();
 
             if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) 
-                eventManager.executeEvent(EventProcessible::Events::MouseLeftClick, &window);
+                eventManager.executeEvent(EventManager::Events::MouseLeftClick, &window);
 
             if (event.type == sf::Event::MouseMoved)
-                eventManager.executeEvent(EventProcessible::Events::MouseMove, &window);
+                eventManager.executeEvent(EventManager::Events::MouseMove, &window);
 
             if (event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left)
-                eventManager.executeEvent(EventProcessible::Events::MouseLeftRelease, &window);
+                eventManager.executeEvent(EventManager::Events::MouseLeftRelease, &window);
             
 
         }
@@ -50,9 +52,17 @@ int main()
 #else
         // MESSAGE("Before DRAW");
         mainWindow -> draw(&rt);
+        
+        rt.display();
+
+        sf::Sprite sprite(rt.getWindow()->getTexture());
+
+        sf::Vector2f scale = sprite.getScale();
+        
+        window.draw(sprite);
         // MESSAGE("After DRAW");
 #endif
-        
+  
         window.display();
     }
 

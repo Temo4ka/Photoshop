@@ -1,10 +1,9 @@
 #include "../Headers/Tool.h"
 #include "../Headers/DSL.h"
-
-sf::Color translateColor(Color color);
+#include "../Headers/RenderTarget.h"
 
 void Brush::paintOnPress(RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) {
-    catchNullptr(rt , /*nothing*/ );
+    catchNullptr(data, /*nothing*/ );
     catchNullptr(tmp, /*nothing*/ );
 
     Vect curPos = Vect(context.position.x, context.position.y);
@@ -17,13 +16,13 @@ void Brush::paintOnPress(RenderTargetI *data, RenderTargetI *tmp, MouseContext c
 }
 
 void Brush::paintOnMove(RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) {
-    catchNullptr(rt , /*nothing*/ );
+    catchNullptr(data, /*nothing*/ );
     catchNullptr(tmp, /*nothing*/ );
 
     Vect curPos = Vect(context.position.x, context.position.y);
 
-    sf::RenderTexture * rt  = ((RenderTarget *) data) -> getWindow();
-    sf::RenderTexture *temp = ((RenderTarget *) tmp ) -> getWindow();
+    sf::RenderTexture * rt  = (dynamic_cast<RenderTarget *> (data)) -> getWindow();
+    sf::RenderTexture *temp = (dynamic_cast<RenderTarget *> (tmp) ) -> getWindow();
     
     if (drawing == Drawing::Disable) return;
 
@@ -55,7 +54,16 @@ void Brush::paintOnMove(RenderTargetI *data, RenderTargetI *tmp, MouseContext co
 }
 
 void Brush::paintOnRelease(RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) {
-    catchNullptr(rt , /*nothing*/ );
+    catchNullptr(data, /*nothing*/ );
+    catchNullptr(tmp, /*nothing*/ );
+
+    drawing = Drawing::Disable;
+
+    return;
+}
+
+void Brush::disable(RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) {
+    catchNullptr(data, /*nothing*/ );
     catchNullptr(tmp, /*nothing*/ );
 
     drawing = Drawing::Disable;
@@ -64,13 +72,10 @@ void Brush::paintOnRelease(RenderTargetI *data, RenderTargetI *tmp, MouseContext
 }
 
 void Polyline::paintOnPress(RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) {
-    catchNullptr(rt , /*nothing*/ );
+    catchNullptr(data, /*nothing*/ );
     catchNullptr(tmp, /*nothing*/ );
 
     Vect curPos = Vect(context.position.x, context.position.y);
-
-    sf::RenderTexture * rt  = ((RenderTarget *) data) -> getWindow();
-    sf::RenderTexture *temp = ((RenderTarget *) tmp ) -> getWindow();
 
     if (drawing == Enable) return;
 
@@ -79,11 +84,7 @@ void Polyline::paintOnPress(RenderTargetI *data, RenderTargetI *tmp, MouseContex
     if (this -> startPoint.x == -1 && this -> startPoint.y == -1) {
         this -> startPoint = this -> lastPoint = curPos;
     } else {
-        sf::Vertex vertices[] = {
-            sf::Vertex(sf::Vector2f(lastPoint.x, lastPoint.y), translateColor(color)),
-            sf::Vertex(sf::Vector2f(curPos.x, curPos.y), translateColor(color))
-        };
-        rt -> draw(vertices, 2, sf::Lines);
+        data -> drawLine({lastPoint.x, lastPoint.y}, context.position, color);
         lastPoint = curPos;
     }
 
@@ -91,22 +92,18 @@ void Polyline::paintOnPress(RenderTargetI *data, RenderTargetI *tmp, MouseContex
 }
 
 void Polyline::paintOnMove(RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) {
-    catchNullptr(rt , /*nothing*/ );
+    catchNullptr(data, /*nothing*/ );
     catchNullptr(tmp, /*nothing*/ );
     
-    Vect curPos = Vect(context.position.x, context.position.y);
-    sf::RenderTexture * rt  = ((RenderTarget *) data) -> getWindow();
-    sf::RenderTexture *temp = ((RenderTarget *) tmp ) -> getWindow();
+    if (lastPoint.x == - 1 || lastPoint.y == -1) return;
 
-    sf::Vertex vertices[] = {
-        sf::Vertex(sf::Vector2f(lastPoint.x, lastPoint.y), translateColor(color)),
-        sf::Vertex(sf::Vector2f(curPos.x, curPos.y), translateColor(color))
-    };
-    tmp -> draw(vertices, 2, sf::Lines);
+    Vect curPos = Vect(context.position.x, context.position.y);
+
+    tmp -> drawLine({lastPoint.x, lastPoint.y}, context.position, color);
 }
 
 void Polyline::paintOnRelease(RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) {
-    catchNullptr(rt , /*nothing*/ );
+    catchNullptr(data, /*nothing*/ );
     catchNullptr(tmp, /*nothing*/ );
 
     drawing = Drawing::Disable;
@@ -114,8 +111,18 @@ void Polyline::paintOnRelease(RenderTargetI *data, RenderTargetI *tmp, MouseCont
     return;
 }
 
+void Polyline::disable(RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) {
+    catchNullptr(data, /*nothing*/ );
+    catchNullptr(tmp, /*nothing*/ );
+
+    lastPoint = Vect(-1, -1);
+    drawing = Drawing::Disable;
+
+    return;
+}
+
 void Pen::paintOnPress(RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) {
-    catchNullptr(rt , /*nothing*/ );
+    catchNullptr(data, /*nothing*/ );
     catchNullptr(tmp, /*nothing*/ );
 
     drawing = Drawing::Enable;
@@ -128,28 +135,21 @@ void Pen::paintOnPress(RenderTargetI *data, RenderTargetI *tmp, MouseContext con
 }
 
 void Pen::paintOnMove(RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) {
-    catchNullptr(rt , /*nothing*/ );
+    catchNullptr(data, /*nothing*/ );
     catchNullptr(tmp, /*nothing*/ );
 
     Vect curPos = Vect(context.position.x, context.position.y);
 
-    sf::RenderTexture * rt  = ((RenderTarget *) data) -> getWindow();
-    sf::RenderTexture *temp = ((RenderTarget *) tmp ) -> getWindow();
-
     if (drawing == Drawing::Disable) return;
 
-    sf::Vertex vertices[] = {
-        sf::Vertex(sf::Vector2f(lastPoint.x, lastPoint.y), translateColor(color)),
-        sf::Vertex(sf::Vector2f(curPos.x, curPos.y), translateColor(color))
-    };
-    rt -> draw(vertices, 2, sf::Lines);
+    data -> drawLine({lastPoint.x, lastPoint.y}, {curPos.x, curPos.y}, color);
     lastPoint = curPos;
 
     return;
 }
 
 void Pen::paintOnRelease(RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) {
-    catchNullptr(rt , /*nothing*/ );
+    catchNullptr(data, /*nothing*/ );
     catchNullptr(tmp, /*nothing*/ );
 
     drawing = Drawing::Disable;
@@ -157,10 +157,17 @@ void Pen::paintOnRelease(RenderTargetI *data, RenderTargetI *tmp, MouseContext c
     return;
 }
 
+void Pen::disable(RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) {
+    catchNullptr(data, /*nothing*/ );
+    catchNullptr(tmp, /*nothing*/ );
 
+    drawing = Drawing::Disable;
+
+    return;
+}
 
 void Eraser::paintOnPress(RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) {
-    catchNullptr(rt , /*nothing*/ );
+    catchNullptr(data, /*nothing*/ );
     catchNullptr(tmp, /*nothing*/ );
 
     drawing = Drawing::Enable;
@@ -172,13 +179,13 @@ void Eraser::paintOnPress(RenderTargetI *data, RenderTargetI *tmp, MouseContext 
 }
 
 void Eraser::paintOnMove(RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) {
-    catchNullptr(rt , /*nothing*/ );
+    catchNullptr(data, /*nothing*/ );
     catchNullptr(tmp, /*nothing*/ );
 
     Vect curPos = Vect(context.position.x, context.position.y);
 
-    sf::RenderTexture * rt  = ((RenderTarget *) data) -> getWindow();
-    sf::RenderTexture *temp = ((RenderTarget *) tmp ) -> getWindow();
+    sf::RenderTexture * rt  = (dynamic_cast<RenderTarget *> (data)) -> getWindow();
+    sf::RenderTexture *temp = (dynamic_cast<RenderTarget *> (tmp) ) -> getWindow();
     
     if (drawing == Drawing::Disable) return;
 
@@ -191,20 +198,29 @@ void Eraser::paintOnMove(RenderTargetI *data, RenderTargetI *tmp, MouseContext c
 }
 
 void Eraser::paintOnRelease(RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) {
-    catchNullptr(rt , /*nothing*/ );
+    catchNullptr(data, /*nothing*/ );
     catchNullptr(tmp, /*nothing*/ );
 
+    drawing = Drawing::Disable;
+    
     return;
 }
 
+void Eraser::disable(RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) {
+    catchNullptr(data, /*nothing*/ );
+    catchNullptr(tmp, /*nothing*/ );
+
+    drawing = Drawing::Disable;
+    
+    return;
+}
+
+
 void Square::paintOnPress(RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) {
-    catchNullptr(rt , /*nothing*/ );
+    catchNullptr(data, /*nothing*/ );
     catchNullptr(tmp, /*nothing*/ );
 
     Vect curPos = Vect(context.position.x, context.position.y);
-
-    sf::RenderTexture * rt  = ((RenderTarget *) data) -> getWindow();
-    sf::RenderTexture *temp = ((RenderTarget *) tmp ) -> getWindow();
 
     if (drawing == Drawing::Enable) return;
 
@@ -213,10 +229,7 @@ void Square::paintOnPress(RenderTargetI *data, RenderTargetI *tmp, MouseContext 
     if (this -> startPoint.x == -1 && this -> startPoint.y == -1) {
         this -> startPoint = this -> lastPoint = curPos;
     } else {
-        sf::RectangleShape rectangle(sf::Vector2f(curPos.x - startPoint.x, curPos.y - startPoint.y));
-        rectangle.setPosition(startPoint.x, startPoint.y);
-        rectangle.setFillColor(translateColor(color));
-        rt -> draw(rectangle);
+        data -> drawRect({startPoint.x, startPoint.y}, {curPos.x - startPoint.x, curPos.y - startPoint.y}, color);
         startPoint = Vect(-1, -1);
     }
 
@@ -224,27 +237,20 @@ void Square::paintOnPress(RenderTargetI *data, RenderTargetI *tmp, MouseContext 
 }
 
 void Square::paintOnMove(RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) {
-    catchNullptr(rt , /*nothing*/ );
+    catchNullptr(data, /*nothing*/ );
     catchNullptr(tmp, /*nothing*/ );
 
     Vect curPos = Vect(context.position.x, context.position.y);
 
-    sf::RenderTexture * rt  = ((RenderTarget *) data) -> getWindow();
-    sf::RenderTexture *temp = ((RenderTarget *) tmp ) -> getWindow();
-
-
     if (this -> startPoint.x == -1 && this -> startPoint.y == -1) return;
 
-    sf::RectangleShape rectangle(sf::Vector2f(curPos.x - startPoint.x, curPos.y - startPoint.y));
-    rectangle.setPosition(startPoint.x, startPoint.y);
-    rectangle.setFillColor(translateColor(color));
-    tmp -> draw(rectangle);
+    tmp -> drawRect({startPoint.x, startPoint.y}, {curPos.x - startPoint.x, curPos.y - startPoint.y}, color);
 
     return;
 }
 
 void Square::paintOnRelease(RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) {
-    catchNullptr(rt , /*nothing*/ );
+    catchNullptr(data, /*nothing*/ );
     catchNullptr(tmp, /*nothing*/ );
 
     drawing = Drawing::Disable;
@@ -252,14 +258,21 @@ void Square::paintOnRelease(RenderTargetI *data, RenderTargetI *tmp, MouseContex
     return;
 }
 
+void Square::disable(RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) {
+    catchNullptr(data, /*nothing*/ );
+    catchNullptr(tmp, /*nothing*/ );
+
+    startPoint = Vect(-1, -1);
+    drawing = Drawing::Disable;
+
+    return;
+}
+
 void Circle::paintOnPress(RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) {
-    catchNullptr(rt , /*nothing*/ );
+    catchNullptr(data, /*nothing*/ );
     catchNullptr(tmp, /*nothing*/ );
 
     Vect curPos = Vect(context.position.x, context.position.y);
-
-    sf::RenderTexture * rt  = ((RenderTarget *) data) -> getWindow();
-    sf::RenderTexture *temp = ((RenderTarget *) tmp ) -> getWindow();
 
     if (drawing == Drawing::Enable) return;
 
@@ -268,7 +281,7 @@ void Circle::paintOnPress(RenderTargetI *data, RenderTargetI *tmp, MouseContext 
     if (this -> startPoint.x == -1 && this -> startPoint.y == -1) {
         this -> startPoint = this -> lastPoint = curPos;
     } else {
-        float radius = ((abs(curPos.x - startPoint.x) < abs(curPos.y - startPoint.y))? abs(curPos.x - startPoint.x) : abs(curPos.y - startPoint.y)) / 2;
+        float diam = ((abs(curPos.x - startPoint.x) < abs(curPos.y - startPoint.y))? abs(curPos.x - startPoint.x) : abs(curPos.y - startPoint.y));
         Vect circlePos;
 
         if (startPoint.x < curPos.x)
@@ -277,15 +290,11 @@ void Circle::paintOnPress(RenderTargetI *data, RenderTargetI *tmp, MouseContext 
             circlePos.y = startPoint.y;
 
         if (startPoint.x > curPos.x)
-            circlePos.x = startPoint.x - radius * 2;
+            circlePos.x = startPoint.x - diam;
         if (startPoint.y > curPos.y)
-            circlePos.y = startPoint.y - radius * 2;
+            circlePos.y = startPoint.y - diam;
 
-
-        sf::CircleShape circle(radius);
-        circle.setPosition(circlePos.x, circlePos.y);
-        circle.setFillColor(translateColor(color));
-        rt -> draw(circle);
+        data -> drawEllipse({circlePos.x, circlePos.y}, {diam, diam}, color);
 
         startPoint = Vect(-1, -1);
     }
@@ -294,17 +303,14 @@ void Circle::paintOnPress(RenderTargetI *data, RenderTargetI *tmp, MouseContext 
 }
 
 void Circle::paintOnMove(RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) {
-    catchNullptr(rt , /*nothing*/ );
+    catchNullptr(data, /*nothing*/ );
     catchNullptr(tmp, /*nothing*/ );
 
     Vect curPos = Vect(context.position.x, context.position.y);
 
-    sf::RenderTexture * rt  = ((RenderTarget *) data) -> getWindow();
-    sf::RenderTexture *temp = ((RenderTarget *) tmp ) -> getWindow();
-
     if (this -> startPoint.x == -1 && this -> startPoint.y == -1) return;
 
-    float radius = ((abs(curPos.x - startPoint.x) < abs(curPos.y - startPoint.y))? abs(curPos.x - startPoint.x) : abs(curPos.y - startPoint.y)) / 2;
+    float diam = ((abs(curPos.x - startPoint.x) < abs(curPos.y - startPoint.y))? abs(curPos.x - startPoint.x) : abs(curPos.y - startPoint.y));
 
     Vect circlePos;
 
@@ -314,21 +320,18 @@ void Circle::paintOnMove(RenderTargetI *data, RenderTargetI *tmp, MouseContext c
         circlePos.y = startPoint.y;
 
     if (startPoint.x > curPos.x)
-        circlePos.x = startPoint.x - radius * 2;
+        circlePos.x = startPoint.x - diam;
     if (startPoint.y > curPos.y)
-        circlePos.y = startPoint.y - radius * 2;
+        circlePos.y = startPoint.y - diam;
 
 
-    sf::CircleShape circle(radius);
-    circle.setPosition(circlePos.x, circlePos.y);
-    circle.setFillColor(translateColor(color));
-    tmp -> draw(circle);
+    tmp -> drawEllipse({circlePos.x, circlePos.y}, {diam, diam}, color);
 
     return;
 }
 
 void Circle::paintOnRelease(RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) {
-    catchNullptr(rt , /*nothing*/ );
+    catchNullptr(data, /*nothing*/ );
     catchNullptr(tmp, /*nothing*/ );
 
     drawing = Drawing::Disable;
@@ -336,34 +339,48 @@ void Circle::paintOnRelease(RenderTargetI *data, RenderTargetI *tmp, MouseContex
     return;
 }
 
-void ToolManager::paintOnPress(RenderTargetI *data, RenderTargetI *tmp, MouseContext context) {
-    catchNullptr(rt , /*nothing*/ );
+void Circle::disable(RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) {
+    catchNullptr(data, /*nothing*/ );
     catchNullptr(tmp, /*nothing*/ );
 
-    tool->paintOnPress(data, tmp, curPos, color);
+    startPoint = Vect(-1, -1);
+    drawing = Drawing::Disable;
+
+    return;
+}
+
+void ToolManager::paintOnPress(RenderTargetI *data, RenderTargetI *tmp, MouseContext context) {
+    catchNullptr(data, /*nothing*/ );
+    catchNullptr(tmp, /*nothing*/ );
+
+    tool->paintOnPress(data, tmp, context, color);
 
     return;
 }
 
 void ToolManager::paintOnMove  (RenderTargetI *data, RenderTargetI *tmp, MouseContext context) {
-    catchNullptr(rt , /*nothing*/ );
-    catchNullptr(tmp, /*nothing*/ );
+    catchNullptr(data, /*nothing*/ );
+    catchNullptr(tmp , /*nothing*/ );
 
     tool->paintOnMove(data, tmp, context, color);
 
     return;
 }
 
-
 void ToolManager::paintOnRelease(RenderTargetI *data, RenderTargetI *tmp, MouseContext context) {
-    catchNullptr(rt , /*nothing*/ );
-    catchNullptr(tmp, /*nothing*/ );
+    catchNullptr(data, /*nothing*/ );
+    catchNullptr(tmp , /*nothing*/ );
 
     tool->paintOnRelease(data, tmp, context, color);
 
     return;
 }
 
-sf::Color translateColor(Color color) {
-    return sf::Color(translateColor(color).r, translateColor(color).g, translateColor(color).b, translateColor(color).a);
+void ToolManager::disableTool(RenderTargetI *data, RenderTargetI *tmp, MouseContext context) {
+    catchNullptr(data, /*nothing*/ );
+    catchNullptr(tmp , /*nothing*/ );
+
+    tool->disable(data, tmp, context, color);
+
+    return;
 }

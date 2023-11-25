@@ -8,9 +8,11 @@ enum ListErrors {
     ErasementOfUnknownNode =  2,
 };
 
-template <class Type> class ListHead;
+template <class Type>
+class ListHead;
 
-template <class Type> class ListNode {
+template <class Type>
+class ListNode {
     ListHead<Type> *head;
 
     ListNode<Type> *next;
@@ -38,7 +40,8 @@ template <class Type> class ListNode {
         ~ListNode() { delete object; }
 };
 
-template <class Type> class ListHead {
+template <class Type>
+class ListHead {
     
     ListNode<Type> *head;
 
@@ -53,7 +56,10 @@ template <class Type> class ListHead {
         ListErrors  pushBack(Type *object);
         ListErrors pushFront(Type *object);
 
-        ListErrors erase(ListNode<Type> *node);
+        ListErrors eraseNode(ListNode<Type> *node);
+        ListErrors   erase  (Type *object);
+        
+        ListNode<Type>* getNode(Type *object);
 
         ListNode<Type>* getHead() { return head; }
 
@@ -114,7 +120,17 @@ ListErrors ListHead<Type>::pushFront(Type *object) {
 }
 
 template <class Type>
-ListErrors ListHead<Type>::erase(ListNode<Type> *node) {
+ListErrors ListHead<Type>::erase(Type *object) {
+    catchNullptr(object, NullptrCaught);
+
+    ListNode <Type> *objectNode = getNode(object);
+    if (objectNode == nullptr) return ListOk;
+
+    return eraseNode(objectNode);
+}
+
+template <class Type>
+ListErrors ListHead<Type>::eraseNode(ListNode<Type> *node) {
     catchNullptr(node, NullptrCaught);
 
     if (node->getHead() != this) return ErasementOfUnknownNode;
@@ -137,4 +153,24 @@ ListErrors ListHead<Type>::erase(ListNode<Type> *node) {
     (this -> size)--;
 
     return ListOk;
+}
+
+#include <cstring>
+
+template <class Type>
+ListNode<Type>* ListHead<Type>::getNode(Type *object) {
+    catchNullptr(object, nullptr);
+
+    ListNode <Type> *cur = head;
+
+    if (cur == nullptr) return nullptr;
+
+    do {
+        if (!memcmp((cur ->getObject()), object, sizeof(Type)))
+            return cur;
+
+        cur = cur -> getNext();
+    } while (cur != head);
+
+    return nullptr;
 }

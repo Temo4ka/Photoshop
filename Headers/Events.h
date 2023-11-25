@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Config.h"
 #include "List.h"
 #include <SFML/Graphics.hpp>
 #include "plugin.h"
@@ -10,18 +11,6 @@ class EventProcessible : plugin::EventProcessableI {
     uint8_t priority;
 
     public:
-
-        enum Events {
-             MouseLeftClick   = 1,
-            MouseLeftRelease  = 2,
-                MouseMove     = 3,
-            MouseRightRelease = 4,
-             MouseRightClick  = 5,
-
-            KeyESC   = 6,
-            KeySPACE = 7
-        } event;
-
         EventProcessible(unsigned priority):
                         priority (priority)
         {}
@@ -47,10 +36,23 @@ class EventManager : plugin::EventManagerI {
     ListHead <plugin::EventProcessableI> *scene;
     
     public:
+
+        enum Events {
+            MouseLeftClick   = 1,
+            MouseLeftRelease  = 2,
+                MouseMove     = 3,
+            MouseRightRelease = 4,
+            MouseRightClick  = 5,
+
+            KeyESC   = 6,
+            KeySPACE = 7
+        };
+
         EventManager():
-        EventProcessible(0),
         scene(new ListHead <plugin::EventProcessableI>())
-        {}
+        {
+            priority = LOW_PRIORITY;
+        }
 
         int executeEvent(Events event, sf::RenderWindow *window);
 

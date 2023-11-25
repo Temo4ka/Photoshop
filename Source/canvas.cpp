@@ -5,7 +5,8 @@ int Canvas::onMousePress(Vect &mouse) {
         return EXIT_SUCCESS;
     
     if (filterManager -> active) {
-        filterManager -> apply(texture);
+        filterManager -> curRenderTarget = texture;
+        filterManager -> applyFilter();
 
         filterManager -> active = false;
         return EXIT_SUCCESS;
@@ -13,7 +14,10 @@ int Canvas::onMousePress(Vect &mouse) {
 
     status = Status::Hold;
 
-    toolManager -> onMousePressed(texture, temp, mouse - POSITION);
+    Vect curPos = mouse - POSITION;
+    plugin::MouseContext context = {{curPos.x, curPos.y}, plugin::MouseButton::Left};
+
+    toolManager -> paintOnPress(texture, temp, context);
 
     return EXIT_SUCCESS;
 }
@@ -29,7 +33,11 @@ int Canvas::onMouseMove(Vect &mouse) {
 
     temp->create(SIZE.x, SIZE.y);
     temp->clear(sf::Color(0, 0, 0, 0));
-    toolManager -> onMouseMove(texture, temp, mouse - POSITION);
+
+    Vect curPos = mouse - POSITION;
+    plugin::MouseContext context = {{curPos.x, curPos.y}, plugin::MouseButton::Left};
+
+    toolManager -> paintOnMove(texture, temp, context);
   
     return EXIT_SUCCESS;
 }
@@ -37,7 +45,10 @@ int Canvas::onMouseMove(Vect &mouse) {
 int Canvas::onMouseRelease(Vect &mouse) {
     status = Status::Released;
 
-    toolManager -> onMouseRelease(texture, temp, mouse - POSITION);
+    Vect curPos = mouse - POSITION;
+    plugin::MouseContext context = {{curPos.x, curPos.y}, plugin::MouseButton::Left};
+
+    toolManager -> paintOnRelease(texture, temp, context);
 
     return EXIT_SUCCESS;
 }
@@ -52,8 +63,8 @@ int Canvas::draw(RenderTarget *rt) {
     texture -> display();
       temp  -> display();
 
-      sprite  .setTexture(texture -> getTexture());
-    tempSprite.setTexture(  temp  -> getTexture());
+      sprite  .setTexture(texture->getWindow()->getTexture());
+    tempSprite.setTexture(  temp ->getWindow()->getTexture());
 
     ListNode<Region> *curRegionNode = ((this->getRegionSet())->getHead())->getHead();
     for (int i = 0; i < this->getRegionSet()->getSize(); i++) {

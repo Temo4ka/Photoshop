@@ -23,11 +23,12 @@ struct Tool : public ToolI {
     drawing    (  Disable   )
     {}
 
-    const Texture *getIcon() { return nullptr }
+    const Texture *getIcon() { return nullptr; }
 
     virtual void  paintOnPress  (RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) = 0;
     virtual void   paintOnMove  (RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) = 0;
     virtual void paintOnRelease (RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) = 0;
+    virtual void     disable    (RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) = 0;
 
     Array<const char *> getParamNames()  { return paramNames; }
     Array<  double    >    getParams()   { return   params  ; }
@@ -36,28 +37,27 @@ struct Tool : public ToolI {
 };
 
 
-struct ToolManager : ToolManagerI {
-    Tool* tool;
+struct ToolManager : public ToolManagerI {
+    ToolI* tool;
     Color color;
 
     ToolManager ():
     tool(nullptr),
-    color(Color(0, 255, 0, 255))
+    color({0, 255, 0, 255})
     {}
 
     void  paintOnMove  (RenderTargetI *data, RenderTargetI *tmp, MouseContext context);
     void  paintOnPress (RenderTargetI *data, RenderTargetI *tmp, MouseContext context);
     void paintOnRelease(RenderTargetI *data, RenderTargetI *tmp, MouseContext context);
-
-    void  disableTool  (RenderTargetI *data, RenderTargetI *tmp, MouseContext context) { tool -> drawing = Tool::Disable; }
+    void  disableTool  (RenderTargetI *data, RenderTargetI *tmp, MouseContext context);
 
     void setColor(Color color) { this -> color = color; }
-    void setTool (ToolI *tool) { this -> tool  = (Tool *) tool; }
+    void setTool (ToolI *tool) { this -> tool  = tool;  }
 
     ToolI *getTool()  { return tool; }
     Color  getColor() { return color; }
 };
-// struct Sl : Tool {
+// struct Sl : public Tool {
 
 //     void p(sf::RenderTexture *rt, sf::RenderTexture *temp, Vect curPos, sf::Color color);
 //     void  onMouseMove  (sf::RenderTexture *rt, sf::RenderTexture *temp, Vect curPos, sf::Color color);
@@ -65,57 +65,65 @@ struct ToolManager : ToolManagerI {
 // }
 
 
-struct Polyline : Tool {
+struct Polyline : public Tool {
     void  paintOnPress  (RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color);
     void   paintOnMove  (RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color);
     void paintOnRelease (RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color);
+    void     disable    (RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color);
 };
 
-struct Brush : Tool {
+struct Brush : public Tool {
     void  paintOnPress  (RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color);
     void   paintOnMove  (RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color);
     void paintOnRelease (RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color);
+    void     disable    (RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color);
 };
 
-struct Pen : Tool {
+struct Pen : public Tool {
     void  paintOnPress  (RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color);
     void   paintOnMove  (RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color);
     void paintOnRelease (RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color);
+    void     disable    (RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color);
 };
 
-// struct F : Tool {
+// struct F : public Tool {
 
 //     void onMousePressed(sf::RenderTexture *rt, sf::RenderTexture *temp, Vect curPos, sf::Color color);
 //     void  onMouseMove  (sf::RenderTexture *rt, sf::RenderTexture *temp, Vect curPos, sf::Color color);
 //     void onMousePressed(sf::RenderTexture *rt, sf::RenderTexture *temp, Vect curPos, sf::Color color);
 // }
 
-struct Eraser : Tool {
+struct Eraser : public Tool {
     void  paintOnPress  (RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color);
     void   paintOnMove  (RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color);
     void paintOnRelease (RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color);
+    void     disable    (RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color);
 };
 
-struct Fill : Tool {
+struct Fill : public Tool {
     void  paintOnPress  (RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color);
     void   paintOnMove  (RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color);
     void paintOnRelease (RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color);
+    void     disable    (RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color);
 };
 
-struct Square : Tool {
+struct Square : public Tool {
     void  paintOnPress  (RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color);
     void   paintOnMove  (RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color);
     void paintOnRelease (RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color);
+    void     disable    (RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color);
 };
 
-struct Circle : Tool {
+struct Circle : public Tool {
     void  paintOnPress  (RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color);
     void   paintOnMove  (RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color);
     void paintOnRelease (RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color);
+    void     disable    (RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color);
 };
 
-struct Elipse : Tool {
+struct Elipse : public Tool {
     void  paintOnPress  (RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color);
     void   paintOnMove  (RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color);
     void paintOnRelease (RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color);
+    void     disable    (RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color);
 };

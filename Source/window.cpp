@@ -37,7 +37,7 @@ int Window::draw(RenderTarget *rt) {
 }
 
 int Window::onMousePress(Vect &mouse) {
-    if (mouse.y < POSITION.y + PANEL_HEIGHT) {
+    if (mouse.y < POSITION.y + PANEL_HEIGHT * getScale().y) {
         lastPoint = mouse;
          status   = Status::OnMove;
     }

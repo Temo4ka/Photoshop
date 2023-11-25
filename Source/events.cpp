@@ -21,8 +21,10 @@ int EventManager::executeEvent(Events event, sf::RenderWindow *window) {
             case Events::MouseLeftClick: {
                 sf::Vector2i mousePos = sf::Mouse::getPosition(*window);
 
-                Vect pos = Vect(mousePos.x, mousePos.y);
-                curWidget -> onMousePress(pos);
+                plugin::Vec2 pos = Vec2(mousePos.x, mousePos.y);
+                plugin::MouseContext context = MouseContext(pos, MouseButton::Left);
+
+                curWidget -> onMousePress(context);
                 clipRegions((Window *) curWidget);
                 break;
             }
@@ -30,8 +32,11 @@ int EventManager::executeEvent(Events event, sf::RenderWindow *window) {
             case Events::MouseLeftRelease: {
                 sf::Vector2i mousePos = sf::Mouse::getPosition(*window);
 
-                Vect pos = Vect(mousePos.x, mousePos.y);
-                curWidget -> onMouseRelease(pos);
+                plugin::Vec2 pos = Vec2(mousePos.x, mousePos.y);
+                plugin::MouseContext context = MouseContext(pos, MouseButton::Left);
+
+                curWidget -> onMouseRelease(context);
+
                 clipRegions((Window *) curWidget);
                 break;
             }
@@ -39,8 +44,11 @@ int EventManager::executeEvent(Events event, sf::RenderWindow *window) {
             case Events::MouseMove: {
                 sf::Vector2i mousePos = sf::Mouse::getPosition(*window);
 
-                Vect pos = Vect(mousePos.x, mousePos.y);
-                curWidget -> onMouseMove(pos);
+                plugin::Vec2 pos = Vec2(mousePos.x, mousePos.y);
+                plugin::MouseContext context = MouseContext(pos, MouseButton::Left);
+
+                curWidget -> onMouseMove(context);
+                
                 clipRegions((Window *) curWidget);
                 break;
             }

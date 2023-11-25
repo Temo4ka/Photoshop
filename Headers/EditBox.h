@@ -48,4 +48,6 @@ class EditBox : public Window {
         void setType(BoxType newType) { type = newType; }
 
 	    uint8_t getPriority() { return HIGH_PRIORITY; }
+
+        const char* getString() { return curString.c_str(); }
 };
