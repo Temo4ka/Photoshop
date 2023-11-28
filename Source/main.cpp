@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <windows.h>
 #include "../Headers/Config.h"
 #include "../Headers/UI.h"
 #include "../Headers/Events.h"
@@ -6,9 +7,9 @@
 #include "../Headers/Gui.h"
 
 // #define DEBUG
- 
-int main()
-{
+typedef plugin::Plugin* (*GetInstance_type) (plugin::App *);
+
+int main(int argc, const char *argv[]) {
     sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Ps", sf::Style::None);
     
      ToolManager   toolManager  =  ToolManager ();
@@ -33,6 +34,17 @@ int main()
     app.event_manager  = &eventManager;
     app.filter_manager = &filterManager;
     app.tool_manager   = &toolManager;
+
+    plugin::Plugin *plug;
+    if (argc > 1) {
+        HMODULE hComponent = LoadLibrary(argv[1]);
+        catchNullptr(hComponent, EXIT_FAILURE);
+
+        GetInstance_type GetInstance = (GetInstance_type) GetProcAddress(hComponent, "getInstance");
+        catchNullptr(GetInstance, EXIT_FAILURE);
+
+        plug = GetInstance(&app);
+    }
 
     while (window.isOpen())
     {

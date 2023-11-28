@@ -19,3 +19,6 @@ box:
 	./source/debugEditBox.cpp ./source/region.cpp ./source/widgets.cpp ./source/ui.cpp    \
 	./source/tool.cpp ./source/vect.cpp ./source/events.cpp ./source/editBox.cpp  \
 	-lm -o box.exe -lmingw32 -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lsfml-main -mwindows
+
+plugin:
+	g++ ./plugins/Filter/abw_filter.cpp -shared -o ./plugins/DLL/abw_filter.dll

@@ -2,6 +2,8 @@
 
 #include <cinttypes>
 
+#define DllExport  extern "C" __declspec( dllexport )
+
 namespace plugin {
     enum class InterfaceType {
         Tool,
@@ -206,7 +208,7 @@ namespace plugin {
         InterfaceType type;
 
         virtual Interface *getInterface() = 0;
-        virtual ~Plugin() = 0;
+        virtual ~Plugin() = default;
     };
 
     enum class EventType {
@@ -344,4 +346,4 @@ namespace plugin {
     };
 }
 
-extern "C" plugin::Plugin* getInstance(plugin::App *app);
+DllExport plugin::Plugin* getInstance(plugin::App *app);

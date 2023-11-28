@@ -36,3 +36,5 @@
 #define SIZE this->getSize()
 
 #define SQR(a) ((a) * (a))
+
+#define GET_INSTANCE_FUNC_TYPE (plugin::Plugin* (*) (plugin::App *))

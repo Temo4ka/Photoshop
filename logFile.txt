@@ -1,5 +1,2 @@
-MSG:Blyat, from virtual void Circle::paintOnPress(plugin::RenderTargetI*, plugin::RenderTargetI*, plugin::MouseContext, plugin::Color) at ./source/tool.cpp(297)
-MSG:Blyat, from virtual void Circle::paintOnPress(plugin::RenderTargetI*, plugin::RenderTargetI*, plugin::MouseContext, plugin::Color) at ./source/tool.cpp(297)
-MSG:Blyat, from virtual void Circle::paintOnPress(plugin::RenderTargetI*, plugin::RenderTargetI*, plugin::MouseContext, plugin::Color) at ./source/tool.cpp(297)
-MSG:Blyat, from virtual void Circle::paintOnPress(plugin::RenderTargetI*, plugin::RenderTargetI*, plugin::MouseContext, plugin::Color) at ./source/tool.cpp(297)
-MSG:Blyat, from virtual void Circle::paintOnPress(plugin::RenderTargetI*, plugin::RenderTargetI*, plugin::MouseContext, plugin::Color) at ./source/tool.cpp(297)
+MSG:HERE SUKA!! 000000006a1c18e5, from int main(int, const char**) at ./source/main.cpp(46)
+MSG:HERE BLYAT, from plugin::Plugin* getInstance(plugin::App*) at ./plugins/Filter/abw_filter.cpp(55)
