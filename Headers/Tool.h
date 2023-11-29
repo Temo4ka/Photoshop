@@ -65,7 +65,7 @@ struct ToolManager : public ToolManagerI {
 // }
 
 
-struct Polyline : public Tool {
+struct PolyLine : public Tool {
     void  paintOnPress  (RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color);
     void   paintOnMove  (RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color);
     void paintOnRelease (RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color);

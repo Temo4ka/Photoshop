@@ -58,7 +58,7 @@ class RegionSet {
             //     Vect pos  = node ->getObject()->getPos ();
             //     Vect sz = node ->getObject()->getSize();
 
-            //     MESSAGE("POSITION(%lg, %lg) <-> SIZE(%lg, %lg)", pos.x, pos.y, sz.x, sz.y);
+            //     MESSAGE("POSITION(%lg, %lg) <-> THIS_SIZE(%lg, %lg)", pos.x, pos.y, sz.x, sz.y);
 
             //     node = node -> getNext();
             // }

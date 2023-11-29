@@ -205,6 +205,19 @@ class Button : public Widget {
         int clipRegions();
 };
 
+class PluginButton : public Button {
+    plugin::Plugin *buttPlugin;
+
+    public:
+        PluginButton(plugin::Plugin *buttPlugin, 
+                    Vect pos, Vect size, const char *text, sf::Font *font, sf::Texture *texture, sf::Sprite *sprite, int (*run)(Button *Button) = nullptr):
+             Button(Vect pos, Vect size, const char *text, sf::Font *font, sf::Texture *texture, sf::Sprite *sprite, int (*run)(Button *Button) = nullptr),
+            buttPlugin (buttPlugin)
+        {}
+
+        plugin::Plugin *getPlugin() { return buttPlugin; }
+};
+
 class Menu : public Widget {
     public:
         Menu(Vect pos, Vect size):

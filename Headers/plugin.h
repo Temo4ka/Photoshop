@@ -340,9 +340,18 @@ namespace plugin {
 
     struct App {
         GuiI *root;
-        EventManagerI  *event_manager ; 
-        ToolManagerI   * tool_manager ;
-        FilterManagerI *filter_manager; 
+
+        EventManagerI  * event_manager; 
+        ToolManagerI   *  tool_manager;
+        FilterManagerI *filter_manager;
+
+        App() {
+            root = nullptr;
+            
+             event_manager = nullptr;
+              tool_manager = nullptr;
+            filter_manager = nullptr;
+        }
     };
 }
 

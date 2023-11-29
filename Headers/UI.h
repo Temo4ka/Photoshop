@@ -1,8 +1,12 @@
+#include "../Headers/DSL.h"
+#include "../Headers/Config.h"
+#include "../Headers/PluginManager.h"
+#include "../Headers/Tool.h"
 #include "Widgets.h"
 
-Window* orginiseMainScreen(sf::RenderWindow *window, FilterManager*, ToolManager*);
+Window* orginiseMainScreen(sf::RenderWindow *window, FilterManager*, ToolManager*, PluginManager*);
 
-int addMainScreenButtons(Window *window, Menu *menu, Canvas *canvas);
+int addMainScreenButtons(Window *window, Menu *menu, Canvas *canvas, PluginManager*);
 
 Menu *addFilterMenu(Button *filter, Canvas *canvas);
 
@@ -11,6 +15,8 @@ Menu *addToolsMenu(Button *tools, Canvas *canvas);
 Menu *addColorMenu(Button *color, Canvas *canvas);
 
 Menu *addWindowMenu(Window *mainWindow, Button *window);
+
+Menu *addPluginMenu(Button *plugins, Canvas *, PluginManager *pluginManager);
 
 Window *addSubWindow(Vect pos);
 
@@ -25,7 +31,7 @@ int setBlue (Button *button);
 /*---------------------------*/
 
 /*Tools------------------------*/
-int setPolyline(Button *button);
+int setPolyLine(Button *button);
 int   setPen   (Button *button);
 int  setCircle (Button *button);
 int  setSquare (Button *button);

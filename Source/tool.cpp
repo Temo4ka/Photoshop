@@ -71,7 +71,7 @@ void Brush::disable(RenderTargetI *data, RenderTargetI *tmp, MouseContext contex
     return;
 }
 
-void Polyline::paintOnPress(RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) {
+void PolyLine::paintOnPress(RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) {
     catchNullptr(data, /*nothing*/ );
     catchNullptr(tmp, /*nothing*/ );
 
@@ -91,7 +91,7 @@ void Polyline::paintOnPress(RenderTargetI *data, RenderTargetI *tmp, MouseContex
     return;
 }
 
-void Polyline::paintOnMove(RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) {
+void PolyLine::paintOnMove(RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) {
     catchNullptr(data, /*nothing*/ );
     catchNullptr(tmp, /*nothing*/ );
     
@@ -102,7 +102,7 @@ void Polyline::paintOnMove(RenderTargetI *data, RenderTargetI *tmp, MouseContext
     tmp -> drawLine({lastPoint.x, lastPoint.y}, context.position, color);
 }
 
-void Polyline::paintOnRelease(RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) {
+void PolyLine::paintOnRelease(RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) {
     catchNullptr(data, /*nothing*/ );
     catchNullptr(tmp, /*nothing*/ );
 
@@ -111,7 +111,7 @@ void Polyline::paintOnRelease(RenderTargetI *data, RenderTargetI *tmp, MouseCont
     return;
 }
 
-void Polyline::disable(RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) {
+void PolyLine::disable(RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) {
     catchNullptr(data, /*nothing*/ );
     catchNullptr(tmp, /*nothing*/ );
 

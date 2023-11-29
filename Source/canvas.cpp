@@ -31,7 +31,7 @@ int Canvas::onMouseMove(Vect &mouse) {
 
     // if (status == Status::Released) return EXIT_SUCCESS;
 
-    temp->create(SIZE.x, SIZE.y);
+    temp->create(THIS_SIZE.x, THIS_SIZE.y);
     temp->clear(sf::Color(0, 0, 0, 0));
 
     Vect curPos = mouse - POSITION;

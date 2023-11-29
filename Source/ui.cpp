@@ -1,8 +1,6 @@
 #include "../Headers/UI.h"
-#include "../Headers/DSL.h"
-#include "../Headers/Config.h"
 
-Window* orginiseMainScreen(sf::RenderWindow *window, FilterManager *filterManager, ToolManager *toolManager) {
+Window* orginiseMainScreen(sf::RenderWindow *window, FilterManager *filterManager, ToolManager *toolManager, PluginManager *pluginManager) {
     catchNullptr(  window  , nullptr);
 
     sf::Texture *texture = new sf::Texture;
@@ -16,7 +14,7 @@ Window* orginiseMainScreen(sf::RenderWindow *window, FilterManager *filterManage
 
     Canvas *canvas = new Canvas(Vect(6, PANEL_HEIGHT + MENU_HEIGHT), Vect(MAIN_CANVAS_WIDTH, MAIN_CANVAS_HEIGHT), toolManager, filterManager);
 
-    if (addMainScreenButtons(mainWindow, menu, canvas)) return nullptr;
+    if (addMainScreenButtons(mainWindow, menu, canvas, pluginManager)) return nullptr;
     mainWindow ->addSubWidget(menu);
     mainWindow ->addSubWidget(canvas);
 
@@ -32,7 +30,7 @@ Window* orginiseMainScreen(sf::RenderWindow *window, FilterManager *filterManage
     return mainWindow;
 }
 
-int addMainScreenButtons(Window *mainWindow, Menu *menu, Canvas *canvas) {
+int addMainScreenButtons(Window *mainWindow, Menu *menu, Canvas *canvas, PluginManager* pluginManager) {
     catchNullptr(menu, EXIT_FAILURE);
 
     Vect menuButtonSize(BUTTON_MENU_WIDTH, MENU_HEIGHT);
@@ -43,33 +41,33 @@ int addMainScreenButtons(Window *mainWindow, Menu *menu, Canvas *canvas) {
     sf::Texture *texture = new sf::Texture; 
     texture -> loadFromFile(BUTTON_FILE_NAME);
 
-    sf::Sprite * fileS  = new sf::Sprite;
-    sf::Sprite * editS  = new sf::Sprite;
-    sf::Sprite *filterS = new sf::Sprite;
-    sf::Sprite *colorsS = new sf::Sprite;
-    sf::Sprite *toolsS  = new sf::Sprite;
-    sf::Sprite *windowS = new sf::Sprite;
+    sf::Sprite * fileS   = new sf::Sprite;
+    sf::Sprite *pluginsS = new sf::Sprite;
+    sf::Sprite *filterS  = new sf::Sprite;
+    sf::Sprite *colorsS  = new sf::Sprite;
+    sf::Sprite *toolsS   = new sf::Sprite;
+    sf::Sprite *windowS  = new sf::Sprite;
 
-    Button * file  = new Button(Vect(BUTTON_MENU_WIDTH * 0, PANEL_HEIGHT), menuButtonSize, " file ", font, texture,  fileS );
-    Button * edit  = new Button(Vect(BUTTON_MENU_WIDTH * 1, PANEL_HEIGHT), menuButtonSize, " edit ", font, texture,  editS );
-    Button *filter = new Button(Vect(BUTTON_MENU_WIDTH * 2, PANEL_HEIGHT), menuButtonSize, "filter", font, texture, filterS, activateWidget);
-    Button *window = new Button(Vect(BUTTON_MENU_WIDTH * 3, PANEL_HEIGHT), menuButtonSize, "window", font, texture, windowS, activateWidget);
-    Button *tools  = new Button(Vect(BUTTON_MENU_WIDTH * 4, PANEL_HEIGHT), menuButtonSize, "tools ", font, texture, toolsS , activateWidget);
-    Button *colors = new Button(Vect(BUTTON_MENU_WIDTH * 5, PANEL_HEIGHT), menuButtonSize, "colors", font, texture, colorsS, activateWidget);
+    Button * file   = new Button(Vect(BUTTON_MENU_WIDTH * 0, PANEL_HEIGHT), menuButtonSize, " file  ", font, texture,   fileS );
+    Button *plugins = new Button(Vect(BUTTON_MENU_WIDTH * 1, PANEL_HEIGHT), menuButtonSize, "plugins", font, texture, pluginsS, activateWidget);
+    Button *filter  = new Button(Vect(BUTTON_MENU_WIDTH * 2, PANEL_HEIGHT), menuButtonSize, "filter ", font, texture,  filterS, activateWidget);
+    Button *window  = new Button(Vect(BUTTON_MENU_WIDTH * 3, PANEL_HEIGHT), menuButtonSize, "window ", font, texture,  windowS, activateWidget);
+    Button *tools   = new Button(Vect(BUTTON_MENU_WIDTH * 4, PANEL_HEIGHT), menuButtonSize, "tools  ", font, texture,  toolsS , activateWidget);
+    Button *colors  = new Button(Vect(BUTTON_MENU_WIDTH * 5, PANEL_HEIGHT), menuButtonSize, "colors ", font, texture,  colorsS, activateWidget);
 
-     file  -> changeStatus();
-     edit  -> changeStatus();
-    filter -> changeStatus();
-    colors -> changeStatus();
-    tools  -> changeStatus();
-    window -> changeStatus();
+     file   -> changeStatus();
+    plugins -> changeStatus();
+    filter  -> changeStatus();
+    colors  -> changeStatus();
+    tools   -> changeStatus();
+    window  -> changeStatus();
 
-    menu -> addSubWidget( file );
-    menu -> addSubWidget( edit );
-    menu -> addSubWidget(filter);
-    menu -> addSubWidget(colors);
-    menu -> addSubWidget(tools );
-    menu -> addSubWidget(window);
+    menu -> addSubWidget( file  );
+    menu -> addSubWidget(plugins);
+    menu -> addSubWidget(filter );
+    menu -> addSubWidget(colors );
+    menu -> addSubWidget(tools  );
+    menu -> addSubWidget(window );
 
     Menu *subMenu = addToolsMenu(tools, canvas);
     mainWindow -> addSubWidget(subMenu);
@@ -87,6 +85,9 @@ int addMainScreenButtons(Window *mainWindow, Menu *menu, Canvas *canvas) {
     mainWindow -> addSubWidget(subMenu);
       window   -> addSubWidget(subMenu);
       
+      subMenu   = addPluginMenu(plugins, canvas, pluginManager);
+    mainWindow -> addSubWidget(subMenu);
+      plugins  -> addSubWidget(subMenu);
 
     return EXIT_SUCCESS;
 }
@@ -242,7 +243,7 @@ Menu *addToolsMenu(Button *tools, Canvas *canvas) {
     Button *  rubber  = new Button(Vect(pos.x, pos.y + size.y * 3), menuButtonSize, " eraser ", font, texture,  rubberS ,  setEraser );
     Button *  circle  = new Button(Vect(pos.x, pos.y + size.y * 4), menuButtonSize, " circle ", font, texture,  circleS ,  setCircle );
     Button *  square  = new Button(Vect(pos.x, pos.y + size.y * 5), menuButtonSize, " square ", font, texture,  squareS ,  setSquare );
-    Button * polyline = new Button(Vect(pos.x, pos.y + size.y * 6), menuButtonSize, "polyline", font, texture, polylineS, setPolyline);
+    Button * polyline = new Button(Vect(pos.x, pos.y + size.y * 6), menuButtonSize, "polyline", font, texture, polylineS, setPolyLine);
 
        pen   -> changeStatus();
      brush   -> changeStatus();
@@ -266,6 +267,44 @@ Menu *addToolsMenu(Button *tools, Canvas *canvas) {
     polyline -> addSubWidget(canvas);
 
     return toolsMenu;
+}
+
+Menu *addPluginMenu(Button *plugins, Canvas *canvas, PluginManager *pluginManager) {
+    catchNullptr(   plugins   , nullptr);
+    catchNullptr(   canvas    , nullptr);
+    catchNullptr(pluginManager, nullptr);
+
+    Vect pos  = plugins -> getPosition();
+    Vect size = plugins -> getSizeVect();
+
+    Vect menuButtonSize(BUTTON_MENU_WIDTH, MENU_HEIGHT);
+
+    sf::Font *font = new sf::Font;
+    font -> loadFromFile("./Font/newFont.ttf");
+
+    sf::Texture *texture = new sf::Texture; 
+    texture -> loadFromFile(BUTTON_FILE_NAME);
+
+    Menu *pluginMenu = new Menu(Vect(pos.x, pos.y + size.y), Vect(size.x, MENU_HEIGHT * pluginManager->pluginNum));
+
+    ListNode<plugin::Plugin> *curNode = pluginManager->plugins.getHead();
+    for (int cur = 1; cur <= pluginManager->pluginNum; cur++) {
+        catchNullptr(curNode, nullptr);
+
+        plugin::Plugin *curPlugin = (plugin::Plugin *) curNode -> getObject();
+
+        PluginButton *curPluginButton = new Button(Vect(pos.x, pos.y + size.y * cur), menuButtonSize, curPlugin->name, font,
+                                                                                                                 texture, new sf::Sprite);
+        curPluginButton -> addSubWidget(canvas);
+
+        curPluginButton -> changeStatus();
+        
+        pluginMenu -> addSubWidget(curPluginButton);
+
+        curNode = curNode -> getNext();
+    }
+
+    return pluginMenu;
 }
 
 Window *addSubWindow(Vect pos) {
@@ -406,7 +445,7 @@ int setSquare(Button *button) {
     return EXIT_SUCCESS;
 }
 
-int setPolyline(Button *button) {
+int setPolyLine(Button *button) {
     catchNullptr(button, EXIT_FAILURE);
 
     ListHead<Widget> *list = button -> getList();
@@ -414,7 +453,7 @@ int setPolyline(Button *button) {
     Canvas *curCanvas = (Canvas *) (list->getHead())->getObject();
     catchNullptr(curCanvas, EXIT_FAILURE);
 
-    curCanvas->setTool(new Polyline);
+    curCanvas->setTool(new PolyLine);
     return EXIT_SUCCESS;
 }
 
@@ -439,6 +478,24 @@ int setLastFilter(Button *button) {
     catchNullptr(curCanvas, EXIT_FAILURE);
 
     curCanvas->activateFilter();
+    return EXIT_SUCCESS;
+}
+
+int activatePluginButton(Button *button) {
+    catchNullptr(button, EXIT_FAILURE);
+
+    PluginButton *plugButt = dynamic_cast<PluginButton *>(button);
+
+    ListHead<Widget> *list = button -> getList();
+
+    Canvas *curCanvas = (Canvas *) (list->getHead())->getObject();
+    catchNullptr(curCanvas, EXIT_FAILURE);
+
+    if (plugButt->getPlugin()->type == plugin::InterfaceType::Filter) 
+        curCanvas->setFilter(dynamic_cast<plugin::FilterI *> (plugButt->getPlugin()->getInterface()));
+    else
+        curCanvas->setTool  (dynamic_cast<plugin::ToolI   *> (plugButt->getPlugin()->getInterface()));
+
     return EXIT_SUCCESS;
 }
 

@@ -28,7 +28,7 @@ class AutoBalanceWhite_plugin : public Plugin {
 
          AutoBalanceWhite_plugin() {
             id = 0x1EDA;
-            name = "AutoBalanceWhite";
+            name = "ABW";
             type = InterfaceType::Filter;
             filter = new AutoBalanceWhite_filter;
         }

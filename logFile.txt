@@ -1,2 +1,6 @@
 MSG:HERE SUKA!! 000000006a1c18e5, from int main(int, const char**) at ./source/main.cpp(46)
 MSG:HERE BLYAT, from plugin::Plugin* getInstance(plugin::App*) at ./plugins/Filter/abw_filter.cpp(55)
+hComponent pointer at int PluginManager::loadPlugin(const char*, plugin::App*) at ./source/pluginManager.cpp(7) is NULL
+MSG:HERE BLYAT, from plugin::Plugin* getInstance(plugin::App*) at ./plugins/Filter/abw_filter.cpp(55)
+hComponent pointer at int PluginManager::loadPlugin(const char*, plugin::App*) at ./source/pluginManager.cpp(7) is NULL
+hComponent pointer at int PluginManager::loadPlugin(const char*, plugin::App*) at ./source/pluginManager.cpp(7) is NULL

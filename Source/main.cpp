@@ -4,12 +4,19 @@
 #include "../Headers/Events.h"
 #include "../Headers/EditBox.h"
 #include "../Headers/Gui.h"
+#include "../Headers/PluginManager.h"
 
 // #define DEBUG
 int main(int argc, const char *argv[]) {
     sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Ps", sf::Style::None);
     
-     ToolManager   toolManager  =  ToolManager ();
+    plugin::App app = App();
+
+    PluginManager pluginManager = PluginManager(argc - 1);
+    for (size_t curPlug = 1; curPlug <= argc; curPlug++)
+        pluginManager.loadPlugin(argv[curPlug], &app);
+
+    ToolManager toolManager = ToolManager();
     toolManager.setColor({255, 0, 0, 255});
     toolManager.setTool(new Circle);
     
@@ -18,7 +25,7 @@ int main(int argc, const char *argv[]) {
 
     RenderTarget rt = RenderTarget(Vect(0, 0), Vect(WINDOW_WIDTH, WINDOW_HEIGHT));
 
-    Window *mainWindow = orginiseMainScreen(&window, &filterManager, &toolManager);
+    Window *mainWindow = orginiseMainScreen(&window, &filterManager, &toolManager, &pluginManager);
     clipRegions(mainWindow);
 
     EventManager eventManager = {};
@@ -26,7 +33,6 @@ int main(int argc, const char *argv[]) {
 
     Gui gui(&rt, mainWindow);
 
-    plugin::App app;
     app.root = &gui;
     app.event_manager  = &eventManager;
     app.filter_manager = &filterManager;

@@ -11,7 +11,7 @@ const signed  MENU_HEIGHT  =  60 ;
 
 const signed BUTTON_MENU_WIDTH   =  240;
 
-const signed MAX_SIZE_REGIONS = 1000;
+const signed MAX_THIS_SIZE_REGIONS = 1000;
 
 const signed BUTTON_PIC_WIDTH  = 240;
 const signed BUTTON_PIC_HEIGHT =  60;

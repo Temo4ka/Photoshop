@@ -94,8 +94,8 @@ void EditBox::eraseLetter() {
 void EditBox::addNewLetter(const char *letter) {
     catchNullptr(letter, );
 
-    MESSAGE("%lg", SIZE.x / 36);
-    if (curString.size() < SIZE.x / 36)
+    MESSAGE("%lg", THIS_SIZE.x / 36);
+    if (curString.size() < THIS_SIZE.x / 36)
         curString.push_back(*letter);
 
     return;

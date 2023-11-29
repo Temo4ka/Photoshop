@@ -21,8 +21,8 @@ int Menu::draw(RenderTarget *rt) {
 }
 
 int Menu::onMousePress(Vect &mouse) {
-    if (POSITION.x > mouse.x || POSITION.x + SIZE.x < mouse.x ||
-        POSITION.y > mouse.y || POSITION.y + SIZE.y < mouse.y || getStatus() == Disable)
+    if (POSITION.x > mouse.x || POSITION.x + THIS_SIZE.x < mouse.x ||
+        POSITION.y > mouse.y || POSITION.y + THIS_SIZE.y < mouse.y || getStatus() == Disable)
         return EXIT_SUCCESS;
     
     ListNode<Widget>* cur = (this -> getList()) -> getHead();
@@ -39,8 +39,8 @@ int Menu::onMousePress(Vect &mouse) {
 }
 
 int Menu::onMouseMove(Vect &mouse) {
-    if (POSITION.x > mouse.x || POSITION.x + SIZE.x < mouse.x ||
-        POSITION.y > mouse.y || POSITION.y + SIZE.y < mouse.y )
+    if (POSITION.x > mouse.x || POSITION.x + THIS_SIZE.x < mouse.x ||
+        POSITION.y > mouse.y || POSITION.y + THIS_SIZE.y < mouse.y )
         return EXIT_SUCCESS;
     
     ListNode<Widget>* cur = (this -> getList()) -> getHead();
@@ -57,8 +57,8 @@ int Menu::onMouseMove(Vect &mouse) {
 }
 
 int Menu::onMouseRelease(Vect &mouse) {
-    if (POSITION.x > mouse.x || POSITION.x + SIZE.x < mouse.x ||
-        POSITION.y > mouse.y || POSITION.y + SIZE.y < mouse.y )
+    if (POSITION.x > mouse.x || POSITION.x + THIS_SIZE.x < mouse.x ||
+        POSITION.y > mouse.y || POSITION.y + THIS_SIZE.y < mouse.y )
         return EXIT_SUCCESS;
     
     ListNode<Widget>* cur = (this -> getList()) -> getHead();
