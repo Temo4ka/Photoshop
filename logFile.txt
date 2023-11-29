@@ -4,3 +4,10 @@ hComponent pointer at int PluginManager::loadPlugin(const char*, plugin::App*) a
 MSG:HERE BLYAT, from plugin::Plugin* getInstance(plugin::App*) at ./plugins/Filter/abw_filter.cpp(55)
 hComponent pointer at int PluginManager::loadPlugin(const char*, plugin::App*) at ./source/pluginManager.cpp(7) is NULL
 hComponent pointer at int PluginManager::loadPlugin(const char*, plugin::App*) at ./source/pluginManager.cpp(7) is NULL
+hComponent pointer at int PluginManager::loadPlugin(const char*, plugin::App*) at ./source/pluginManager.cpp(7) is NULL
+hComponent pointer at int PluginManager::loadPlugin(const char*, plugin::App*) at ./source/pluginManager.cpp(7) is NULL
+hComponent pointer at int PluginManager::loadPlugin(const char*, plugin::App*) at ./source/pluginManager.cpp(7) is NULL
+hComponent pointer at int PluginManager::loadPlugin(const char*, plugin::App*) at ./source/pluginManager.cpp(7) is NULL
+hComponent pointer at int PluginManager::loadPlugin(const char*, plugin::App*) at ./source/pluginManager.cpp(7) is NULL
+hComponent pointer at int PluginManager::loadPlugin(const char*, plugin::App*) at ./source/pluginManager.cpp(7) is NULL
+hComponent pointer at int PluginManager::loadPlugin(const char*, plugin::App*) at ./source/pluginManager.cpp(7) is NULL

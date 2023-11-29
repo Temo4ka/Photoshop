@@ -110,14 +110,13 @@ class Widget : public plugin::WidgetI {
 
     bool onClock(uint64_t delta) { return false; }
 
-    uint8_t getPriority() { return LOW_PRIORITY; }
-
+    virtual uint8_t getPriority() { return LOW_PRIORITY; }
 
     void registerSubWidget  (plugin::WidgetI* object);
     void unregisterSubWidget(plugin::WidgetI* object);
 
     plugin::Vec2 getSize() { return plugin::Vec2(    size.x,     size.y); }
-    plugin::Vec2 getPos()  { return plugin::Vec2(position.x, position.y); }
+    plugin::Vec2 getPos () { return plugin::Vec2(position.x, position.y); }
 
 
     void setSize(plugin::Vec2 sz )  {   size   = Vect( sz.x,  sz.y); }
@@ -144,7 +143,6 @@ class Widget : public plugin::WidgetI {
     /*----------------------------------------------------------------------------*/
 
 };
-
 
 class Window : public Widget {
     enum Status {
@@ -211,7 +209,7 @@ class PluginButton : public Button {
     public:
         PluginButton(plugin::Plugin *buttPlugin, 
                     Vect pos, Vect size, const char *text, sf::Font *font, sf::Texture *texture, sf::Sprite *sprite, int (*run)(Button *Button) = nullptr):
-             Button(Vect pos, Vect size, const char *text, sf::Font *font, sf::Texture *texture, sf::Sprite *sprite, int (*run)(Button *Button) = nullptr),
+             Button(     pos,      size,             text,           font,              texture,             sprite,       run),
             buttPlugin (buttPlugin)
         {}
 
@@ -269,7 +267,7 @@ class Canvas: public Widget {
 
         void setColor(sf::Color newColor) { toolManager -> color = { newColor.r, newColor.g, newColor.b, newColor.a }; }
 
-        void setTool(Tool *tool) { 
+        void setTool(ToolI *tool) { 
             delete toolManager -> tool;
             toolManager -> tool = tool;
         }
@@ -278,7 +276,7 @@ class Canvas: public Widget {
             delete filterManager -> lastFilter;
 
             filterManager -> lastFilter = filter;
-            filterManager ->   active   = true;
+            filterManager ->   active   =  true ;
         }
 
         void activateFilter() { filterManager -> active = true; }

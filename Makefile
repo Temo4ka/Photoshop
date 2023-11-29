@@ -22,3 +22,6 @@ box:
 
 plugin:
 	g++ ./plugins/Filter/abw_filter.cpp -shared -o ./plugins/DLL/abw_filter.dll
+
+Senya_Plugin:
+	g++ ./plugins/Filter/test_plugin.cpp -shared -o ./plugins/DLL/filter228.dll

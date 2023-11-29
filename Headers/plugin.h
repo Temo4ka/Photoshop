@@ -14,6 +14,13 @@ namespace plugin {
     struct Array {
         uint64_t size;
         T* data;
+
+        Array(){}
+
+        Array(uint64_t size, T* data):
+                 size (size),
+                          data (data)
+        {}
     };
 
     struct Color {
@@ -21,6 +28,13 @@ namespace plugin {
         uint8_t g;
         uint8_t b;
         uint8_t a;
+
+        Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a):
+                   r (r),
+                              g (g),
+                                         b (b),
+                                                    a (a)
+        {}
     };
 
     struct Texture {
@@ -347,7 +361,7 @@ namespace plugin {
 
         App() {
             root = nullptr;
-            
+
              event_manager = nullptr;
               tool_manager = nullptr;
             filter_manager = nullptr;

@@ -18,6 +18,8 @@ Menu *addWindowMenu(Window *mainWindow, Button *window);
 
 Menu *addPluginMenu(Button *plugins, Canvas *, PluginManager *pluginManager);
 
+int activatePluginButton(Button *button);
+
 Window *addSubWindow(Vect pos);
 
 int activateWidget(Button *button);

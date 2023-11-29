@@ -293,8 +293,8 @@ Menu *addPluginMenu(Button *plugins, Canvas *canvas, PluginManager *pluginManage
 
         plugin::Plugin *curPlugin = (plugin::Plugin *) curNode -> getObject();
 
-        PluginButton *curPluginButton = new Button(Vect(pos.x, pos.y + size.y * cur), menuButtonSize, curPlugin->name, font,
-                                                                                                                 texture, new sf::Sprite);
+        PluginButton *curPluginButton = new PluginButton(curPlugin, Vect(pos.x, pos.y + size.y * cur), menuButtonSize, curPlugin->name, font,
+                                                                         texture, new sf::Sprite, activatePluginButton);
         curPluginButton -> addSubWidget(canvas);
 
         curPluginButton -> changeStatus();
