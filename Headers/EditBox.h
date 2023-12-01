@@ -1,12 +1,10 @@
 #include "Widgets.h"
 #include <string>
 
-class EditBox : public Window {
+class EditBox : public Widget {
     std::string curString;
 
     sf::Font *font;
-
-    bool capsLocked;
 
     bool isWriting;
 
@@ -20,9 +18,8 @@ class EditBox : public Window {
     public:
 
         EditBox(Vect pos, Vect size, sf::Texture *texture, const signed texW, const signed texH, sf::Sprite *sprite):
-        Window(pos, size, texture, texW, texH, sprite),
+        Widget(pos, size, texture, texW, texH, sprite),
           curString   (std::string()),
-          capsLocked  (false),
           isWriting   (false),
         isPeriodPlaced(false),
         font(new sf::Font()),
@@ -34,20 +31,48 @@ class EditBox : public Window {
         void addNewLetter(const char *letter);
         void  eraseLetter();
 
-        const char* translateLetter(KeyBoard::Key letter); 
+        const char* translateLetter(plugin::KeyboardContext letter); 
 
         int draw(RenderTarget *rt);
 
         int   onMouseMove  (Vect &pos);
         int  onMousePress  (Vect &pos);
-        int onMouseRelease(Vect &pos);
+        int onMouseRelease (Vect &pos);
 
-        int onKeyPressed (KeyBoard::Key key);
-        int onKeyReleased(KeyBoard::Key key);
+        int onKeyPressed (plugin::KeyboardContext context);
+        int onKeyReleased(plugin::KeyboardContext context);
 
         void setType(BoxType newType) { type = newType; }
 
 	    uint8_t getPriority() { return HIGH_PRIORITY; }
 
         const char* getString() { return curString.c_str(); }
+
+        double getNum() { return (type == BoxType::Num?) curString.c_str() : NULL; }
+};
+
+class ModalWindow : public Window {
+    plugin::Array<const char*> paramNames;
+    plugin::Array<  double   >   params  ;
+    
+    plugin::Interface *interface;
+
+    public:
+        ModalWindow(plugin::Interface *object, sf::Texture *texture,
+                    const signed texW = WINDOW_WIDTH, const signed texH = WINDOW_HEIGHT, sf::Sprite *sprite = new sf::Sprite):
+        Window(Vect(0, 0), Vect(0, 0), texture, texW, texH, sprite),
+        interface (object)
+        {}
+
+        virtual int draw(RenderTarget *rt);
+
+        void setParamNames(plugin::Array<const char *> paramNames);
+
+        plugin::Array<double> getParams();
+
+        uint8_t getPriority() { return HIGH_PRIORITY; }
+
+        bool onKeyboardPress  (plugin::KeyboardContext context) { return false; }
+        bool onKeyboardRelease(plugin::KeyboardContext context) { return false; }
+
 };

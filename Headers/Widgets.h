@@ -95,6 +95,7 @@ class Widget : public plugin::WidgetI {
 
         ~Widget() {
             delete sprite;
+            delete texture;
             delete set;
             delete subWidgets;
         }
@@ -105,10 +106,10 @@ class Widget : public plugin::WidgetI {
     bool onMouseRelease (plugin::MouseContext context);
     bool onMousePress   (plugin::MouseContext context);
 
-    bool onKeyboardPress  (plugin::KeyboardContext context) { return false; }
-    bool onKeyboardRelease(plugin::KeyboardContext context) { return false; }
+    virtual bool onKeyboardPress  (plugin::KeyboardContext context) { return false; }
+    virtual bool onKeyboardRelease(plugin::KeyboardContext context) { return false; }
 
-    bool onClock(uint64_t delta) { return false; }
+    virtual bool onClock(uint64_t delta) { return false; }
 
     virtual uint8_t getPriority() { return LOW_PRIORITY; }
 
@@ -134,11 +135,11 @@ class Widget : public plugin::WidgetI {
 
     void setAvailable(bool newStatus) { status = (newStatus)? Enable: Disable; }
 
-    void render(plugin::RenderTargetI* rti) {
-        MSG("You cannot use render(plugin::RenderTargetI *) for App Widgets :_(\n Use draw(RenderTarget*) instead!\n");                 //CRINGE!!!
+    virtual void render(plugin::RenderTargetI* rti) {
+        MSG("You cannot use render(plugin::RenderTargetI *) for App Widgets :_(\n Use draw(RenderTarget*) instead!\n");
     }        
 
-    void recalcRegion() { clipRegions(); }
+    virtual void recalcRegion() { clipRegions(); }
 
     /*----------------------------------------------------------------------------*/
 
@@ -168,7 +169,7 @@ class Window : public Widget {
         lastPoint(Vect(0, 0))
         {}
 
-        int draw(RenderTarget *rt);
+        virtual int draw(RenderTarget *rt);
 
         int   onMouseMove  (Vect &pos);
         int  onMousePress  (Vect &pos);
@@ -178,6 +179,8 @@ class Window : public Widget {
 
 
 class Button : public Widget {
+    EventManager *eventManager;
+
     sf::Text *text;
     sf::Font *font;
 
@@ -199,6 +202,10 @@ class Button : public Widget {
         int draw(RenderTarget *rt);
 
         void dumpRegions(sf::RenderWindow *window);
+
+        void setEventManager(EventManager *eventMgr) { eventManager = eventMgr; }
+
+        EventManager* getEventManager() { return eventManager; }
 
         int clipRegions();
 };
@@ -272,14 +279,14 @@ class Canvas: public Widget {
             toolManager -> tool = tool;
         }
 
+         void activateFilter();
+
         void setFilter(plugin::FilterI *filter) { 
             delete filterManager -> lastFilter;
 
             filterManager -> lastFilter = filter;
-            filterManager ->   active   =  true ;
+            activateFilter();
         }
-
-        void activateFilter() { filterManager -> active = true; }
 };
 
 struct KeyBoard {

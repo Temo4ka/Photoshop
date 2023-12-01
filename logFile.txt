@@ -11,3 +11,9 @@ hComponent pointer at int PluginManager::loadPlugin(const char*, plugin::App*) a
 hComponent pointer at int PluginManager::loadPlugin(const char*, plugin::App*) at ./source/pluginManager.cpp(7) is NULL
 hComponent pointer at int PluginManager::loadPlugin(const char*, plugin::App*) at ./source/pluginManager.cpp(7) is NULL
 hComponent pointer at int PluginManager::loadPlugin(const char*, plugin::App*) at ./source/pluginManager.cpp(7) is NULL
+hComponent pointer at int PluginManager::loadPlugin(const char*, plugin::App*) at ./source/pluginManager.cpp(7) is NULL
+hComponent pointer at int PluginManager::loadPlugin(const char*, plugin::App*) at ./source/pluginManager.cpp(7) is NULL
+hComponent pointer at int PluginManager::loadPlugin(const char*, plugin::App*) at ./source/pluginManager.cpp(7) is NULL
+hComponent pointer at int PluginManager::loadPlugin(const char*, plugin::App*) at ./source/pluginManager.cpp(7) is NULL
+hComponent pointer at int PluginManager::loadPlugin(const char*, plugin::App*) at ./source/pluginManager.cpp(7) is NULL
+hComponent pointer at int PluginManager::loadPlugin(const char*, plugin::App*) at ./source/pluginManager.cpp(7) is NULL

@@ -477,9 +477,13 @@ int setLastFilter(Button *button) {
     Canvas *curCanvas = (Canvas *) (list->getHead())->getObject();
     catchNullptr(curCanvas, EXIT_FAILURE);
 
+    if (curCanvas -> )
+
     curCanvas->activateFilter();
     return EXIT_SUCCESS;
 }
+
+void createModalWindow(PluginButton *plugButt);
 
 int activatePluginButton(Button *button) {
     catchNullptr(button, EXIT_FAILURE);
@@ -491,12 +495,35 @@ int activatePluginButton(Button *button) {
     Canvas *curCanvas = (Canvas *) (list->getHead())->getObject();
     catchNullptr(curCanvas, EXIT_FAILURE);
 
+    createModalWindow(plugButt);
+
     if (plugButt->getPlugin()->type == plugin::InterfaceType::Filter) 
         curCanvas->setFilter(dynamic_cast<plugin::FilterI *> (plugButt->getPlugin()->getInterface()));
     else
         curCanvas->setTool  (dynamic_cast<plugin::ToolI   *> (plugButt->getPlugin()->getInterface()));
 
+
     return EXIT_SUCCESS;
+}
+
+void createModalWindow(PluginButton *plugButt) {
+    catchNullptr(plugButt, );
+
+    plugin::Interface *curI = plugButt->getPlugin()->getInterface();
+    if (button->getEventManager() != nullptr && curI->getParamNames().size) {
+        sf::Image *image = new sf::Image;
+        image -> loadFromFile(WINDOW_FILE_NAME);
+
+        sf::Texture *texture = new sf::Texture;
+        texture -> loadFromImage(image);
+
+        ModalWindow *modWind = new ModalWindow(curI, texture);
+
+        button->getEventManager()->registerObject(modWind);
+        button->getEventManager()->setPriority(HIGH_PRIORITY);
+    }
+
+    return;
 }
 
 

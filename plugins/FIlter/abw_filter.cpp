@@ -39,6 +39,7 @@ void AutoBalanceWhite_filter::apply(RenderTargetI *data) {
         }
 
     data -> drawTexture(Vec2(0, 0), Vec2(w, h), texture);
+    // delete texture;
 
     return;
 }

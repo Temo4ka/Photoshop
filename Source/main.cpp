@@ -38,11 +38,6 @@ int main(int argc, const char *argv[]) {
     app.filter_manager = &filterManager;
     app.tool_manager   = &toolManager;
 
-    plugin::Plugin *plug;
-    if (argc > 1) {
-        
-    }
-
     while (window.isOpen())
     {
         sf::Event event;
