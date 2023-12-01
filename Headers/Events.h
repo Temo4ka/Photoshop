@@ -44,8 +44,8 @@ class EventManager : public plugin::EventManagerI {
             MouseRightRelease = 4,
             MouseRightClick  = 5,
 
-            KeyESC   = 6,
-            KeySPACE = 7
+            KeyPressed    = 6,
+            KeyReleased   = 7,
         };
 
         EventManager():
@@ -54,7 +54,7 @@ class EventManager : public plugin::EventManagerI {
             priority = LOW_PRIORITY;
         }
 
-        int executeEvent(Events event, sf::RenderWindow *window);
+        int executeEvent(Events event, sf::RenderWindow *window, plugin::KeyboardContext key);
 
         void registerObject(plugin::EventProcessableI *object);
         

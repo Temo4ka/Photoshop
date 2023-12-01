@@ -5,7 +5,7 @@ void ModalWindow::setParamNames(plugin::Array<const char *> paramNames) {
     this->paramsNames = paramNames;
 
     setPosition(Vect(150, std::max(0, (WINDOW_HEIGHT - EDIT_BOX_HEIGHT * paramNames.size) / 2) ));
-    setSize(Vect(720, EDIT_BOX_HEIGHT * paramNames.size + 20));
+    setSize(Vect(720, EDIT_BOX_HEIGHT * paramNames.size + 40));
 
     sf::Image *image = new Image;
     image -> loadFromFile(EDITBOX_FILE_NAME);
@@ -21,6 +21,16 @@ void ModalWindow::setParamNames(plugin::Array<const char *> paramNames) {
 
         addSubWidget(editBox);
     }
+
+    sf::Font *font = new sf::Font;
+    font -> loadFromFile("./Font/newFont.ttf");
+
+    sf::Texture *texture = new sf::Texture; 
+    texture -> loadFromFile(BUTTON_FILE_NAME);
+
+    Button *okButton = new Button(Vect(POSITION.x + 300, POSITION.y + SIZE.y - 30), Vect(30, 30), "ok", font, texture, new sf::Sprite, );
+
+    addSubWidget(okButton);
 
     return;
 }
@@ -230,3 +240,23 @@ const char* EditBox::translateLetter(plugin::KeyboardContext context) {
 }
 
 #undef CASE
+
+int modalWindowButton(Button *button) {
+    catchNullptr(button, EXIT_FAILURE);
+
+    ListHead<Widget> *list = button -> getList();
+
+    Widget *curWidget = (list->getHead())->getObject();
+    catchNullptr(curWidget, EXIT_FAILURE);
+
+    curWidget->changeStatus();
+
+    ModalWindow *modWind = dynamic_cast<ModalWindow*>(curWidget);
+
+    catchNullptr(modWind->getInterface());
+    modWind->getInterface()->setParams(modWind->getParams());
+
+    modWind -> getEventManager()->setPriority(plugin::EventType::KeyPress, LOW_PRIORITY);
+
+    return EXIT_SUCCESS; 
+}

@@ -3,7 +3,7 @@
 #include "../Headers/UI.h"
 #include <stdlib.h>
 
-int EventManager::executeEvent(Events event, sf::RenderWindow *window) {
+int EventManager::executeEvent(Events event, sf::RenderWindow *window, plugin::KeyboardContext key) {
     ListNode <plugin::EventProcessableI> *curNode = scene -> getHead();
 
     do {
@@ -53,6 +53,20 @@ int EventManager::executeEvent(Events event, sf::RenderWindow *window) {
                 break;
             }
             
+            case Events::KeyPressed {
+                curWidget -> onKeyPressed(key);
+                
+                clipRegions((Window *) curWidget);
+                break;
+            }
+
+            case Events::KeyReleased {
+                curWidget -> onKeyReleased(key);
+                
+                clipRegions((Window *) curWidget);
+                break;
+            }
+
             default:
                 break;
         }

@@ -16,6 +16,7 @@ enum WidgetStatus {
 
 class Widget : public plugin::WidgetI {
     plugin::WidgetI *parent;
+    Widget *root;
 
     ListHead<Widget> *subWidgets;
 
@@ -92,6 +93,9 @@ class Widget : public plugin::WidgetI {
         bool isInWidgetRegion(Vect point);
 
         void move(Vect delta) { position += delta; }
+
+        void    setRoot(Widget *root) { this -> root = root; }
+        Widget* getRoot(            ) {      return root;    }
 
         ~Widget() {
             delete sprite;

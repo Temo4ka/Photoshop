@@ -40,6 +40,8 @@ int main(int argc, const char *argv[]) {
 
     while (window.isOpen())
     {
+        plugin::KeyboardContext context;
+
         sf::Event event;
         while (window.pollEvent(event))
         {
@@ -51,14 +53,29 @@ int main(int argc, const char *argv[]) {
                 window.close();
 
             if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) 
-                eventManager.executeEvent(EventManager::Events::MouseLeftClick, &window);
+                eventManager.executeEvent(EventManager::Events::MouseLeftClick, &window, context);
 
             if (event.type == sf::Event::MouseMoved)
-                eventManager.executeEvent(EventManager::Events::MouseMove, &window);
+                eventManager.executeEvent(EventManager::Events::MouseMove, &window, context);
 
             if (event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left)
-                eventManager.executeEvent(EventManager::Events::MouseLeftRelease, &window);
+                eventManager.executeEvent(EventManager::Events::MouseLeftRelease, &window, context);
             
+            if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::LShift)
+                context.shift = true;
+
+            if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::LShift)
+                context.shift = false;
+
+            if (event.type == sf::Event::KeyPressed && event.key.code != sf::Keyboard::LShift) {
+                context.key = event.key.code;
+                eventManager.executeEvent(EventManager::Events::KeyPressed, &window, context);
+            }
+
+            if (event.type == sf::Event::KeyReleased && event.key.code != sf::Keyboard::LShift) {
+                context.key = event.key.code;
+                eventManager.executeEvent(EventManager::Events::KeyReleased, &window, context);
+            }
 
         }
     window.clear();

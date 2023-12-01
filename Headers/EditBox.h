@@ -52,6 +52,8 @@ class EditBox : public Widget {
 };
 
 class ModalWindow : public Window {
+    EventManager *eventManager;
+
     plugin::Array<const char*> paramNames;
     plugin::Array<  double   >   params  ;
     
@@ -61,7 +63,8 @@ class ModalWindow : public Window {
         ModalWindow(plugin::Interface *object, sf::Texture *texture,
                     const signed texW = WINDOW_WIDTH, const signed texH = WINDOW_HEIGHT, sf::Sprite *sprite = new sf::Sprite):
         Window(Vect(0, 0), Vect(0, 0), texture, texW, texH, sprite),
-        interface (object)
+        interface (object),
+        eventManager (nullptr)
         {}
 
         virtual int draw(RenderTarget *rt);
@@ -75,4 +78,11 @@ class ModalWindow : public Window {
         bool onKeyboardPress  (plugin::KeyboardContext context) { return false; }
         bool onKeyboardRelease(plugin::KeyboardContext context) { return false; }
 
+        plugin::Interface *getInterface() { return interface; }
+
+        EventManager* getEventManager() { return eventManager; }
+ 
+        void setEventManager(EventManager *eventManager) { this -> eventManager = eventManager; }
 };
+
+int modalWindowButton(Button *button);
