@@ -106,7 +106,7 @@ void Widget::dumpRegions(sf::RenderWindow *window) {
 bool Widget::onMouseMove(plugin::MouseContext context) {
     Vect pos = Vect(context.position.x, context.position.y);
 
-    this -> onMouseMove(pos);
+    this -> onMouseMove(pos);   
 
     return true;
 }

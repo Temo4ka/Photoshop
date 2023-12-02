@@ -1,12 +1,13 @@
-#include "../Headers/DSL.h"
-#include "../Headers/Config.h"
-#include "../Headers/PluginManager.h"
-#include "../Headers/Tool.h"
 #include "Widgets.h"
+#include "DSL.h"
+#include "Config.h"
+#include "PluginManager.h"
+#include "Tool.h"
+#include "EditBox.h"
 
-Window* orginiseMainScreen(sf::RenderWindow *window, FilterManager*, ToolManager*, PluginManager*);
+Window* orginiseMainScreen(sf::RenderWindow *window, FilterManager*, ToolManager*, PluginManager*,  EventManager *);
 
-int addMainScreenButtons(Window *window, Menu *menu, Canvas *canvas, PluginManager*);
+int addMainScreenButtons(Window *window, Menu *menu, Canvas *canvas, PluginManager*, EventManager *);
 
 Menu *addFilterMenu(Button *filter, Canvas *canvas);
 
@@ -16,7 +17,7 @@ Menu *addColorMenu(Button *color, Canvas *canvas);
 
 Menu *addWindowMenu(Window *mainWindow, Button *window);
 
-Menu *addPluginMenu(Button *plugins, Canvas *, PluginManager *pluginManager);
+Menu *addPluginMenu(Button *plugins, Canvas *, PluginManager *pluginManager, EventManager *);
 
 int activatePluginButton(Button *button);
 

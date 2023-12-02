@@ -1,6 +1,6 @@
 #include "../Headers/UI.h"
 
-Window* orginiseMainScreen(sf::RenderWindow *window, FilterManager *filterManager, ToolManager *toolManager, PluginManager *pluginManager) {
+Window* orginiseMainScreen(sf::RenderWindow *window, FilterManager *filterManager, ToolManager *toolManager, PluginManager *pluginManager, EventManager *evMgr) {
     catchNullptr(  window  , nullptr);
 
     sf::Texture *texture = new sf::Texture;
@@ -14,10 +14,10 @@ Window* orginiseMainScreen(sf::RenderWindow *window, FilterManager *filterManage
 
     Canvas *canvas = new Canvas(Vect(6, PANEL_HEIGHT + MENU_HEIGHT), Vect(MAIN_CANVAS_WIDTH, MAIN_CANVAS_HEIGHT), toolManager, filterManager);
 
-      menu.setRoot(mainWindow);
-    canvas.setRoot(mainWindow);
+      menu->setRoot(mainWindow);
+    canvas->setRoot(mainWindow);
 
-    if (addMainScreenButtons(mainWindow, menu, canvas, pluginManager)) return nullptr;
+    if (addMainScreenButtons(mainWindow, menu, canvas, pluginManager, evMgr)) return nullptr;
     mainWindow ->addSubWidget(menu);
     mainWindow ->addSubWidget(canvas);
 
@@ -33,7 +33,7 @@ Window* orginiseMainScreen(sf::RenderWindow *window, FilterManager *filterManage
     return mainWindow;
 }
 
-int addMainScreenButtons(Window *mainWindow, Menu *menu, Canvas *canvas, PluginManager* pluginManager) {
+int addMainScreenButtons(Window *mainWindow, Menu *menu, Canvas *canvas, PluginManager* pluginManager, EventManager *evMgr) {
     catchNullptr(menu, EXIT_FAILURE);
 
     Vect menuButtonSize(BUTTON_MENU_WIDTH, MENU_HEIGHT);
@@ -44,7 +44,7 @@ int addMainScreenButtons(Window *mainWindow, Menu *menu, Canvas *canvas, PluginM
     sf::Texture *texture = new sf::Texture; 
     texture -> loadFromFile(BUTTON_FILE_NAME);
 
-    const char *buttNames[] = {" file  ", "plugins", "filter ", "window ", "tools  ", "colors "}
+    const char *buttNames[] = {" file  ", "plugins", "filter ", "window ", "tools  ", "colors "};
 
     for (int curButt = 0; curButt < 6; curButt++) {
         Button *curButton = new Button(Vect(BUTTON_MENU_WIDTH * curButt, PANEL_HEIGHT), menuButtonSize, buttNames[curButt], font, texture, new sf::Sprite,
@@ -55,28 +55,28 @@ int addMainScreenButtons(Window *mainWindow, Menu *menu, Canvas *canvas, PluginM
 
         curButton -> setRoot(mainWindow);
 
-        if (curButt < 2) continue;
+        if (!curButt) continue;
 
         Menu *subMenu;
         switch (curButt) {
-            case 2: 
-                subMenu = addPluginMenu(plugins, canvas, pluginManager);
+            case 1: 
+                subMenu = addPluginMenu(curButton, canvas, pluginManager, evMgr);
+                break;
+
+            case 2:
+                subMenu = addFilterMenu(curButton, canvas);
                 break;
 
             case 3:
-                subMenu = addFilterMenu(filter, canvas);
+                subMenu = addWindowMenu(mainWindow, curButton);
                 break;
-
+            
             case 4:
-                subMenu = addWindowMenu(mainWindow, window);
+                subMenu = addToolsMenu(curButton, canvas);
                 break;
             
             case 5:
-                subMenu = addToolsMenu(tools, canvas);
-                break;
-            
-            case 6:
-                subMenu   = addColorMenu(colors, canvas);
+                subMenu   = addColorMenu(curButton, canvas);
                 break;
             default: break;
         }
@@ -243,7 +243,7 @@ Menu *addToolsMenu(Button *tools, Canvas *canvas) {
 
     for (int curTl = 0; curTl < 6; curTl++) {
         Button *curTool = new Button(Vect(pos.x, pos.y + size.y * (curTl + 1)),
-                                     menuButtonSize, toolNames[curTl], font, texture, new sf::Sprite, runFunction[curTl]);
+                                     menuButtonSize, toolNames[curTl], font, texture, new sf::Sprite, runFunctions[curTl]);
 
         curTool -> setRoot(canvas -> getRoot());
 
@@ -257,7 +257,7 @@ Menu *addToolsMenu(Button *tools, Canvas *canvas) {
     return toolsMenu;
 }
 
-Menu *addPluginMenu(Button *plugins, Canvas *canvas, PluginManager *pluginManager) {
+Menu *addPluginMenu(Button *plugins, Canvas *canvas, PluginManager *pluginManager,  EventManager *evMgr) {
     catchNullptr(   plugins   , nullptr);
     catchNullptr(   canvas    , nullptr);
     catchNullptr(pluginManager, nullptr);
@@ -285,6 +285,8 @@ Menu *addPluginMenu(Button *plugins, Canvas *canvas, PluginManager *pluginManage
                                                                          texture, new sf::Sprite, activatePluginButton);
 
         curPluginButton -> setRoot(canvas -> getRoot());
+
+        curPluginButton -> setEventManager(evMgr);
 
         curPluginButton -> addSubWidget(canvas);
 
@@ -468,8 +470,6 @@ int setLastFilter(Button *button) {
     Canvas *curCanvas = (Canvas *) (list->getHead())->getObject();
     catchNullptr(curCanvas, EXIT_FAILURE);
 
-    if (curCanvas -> )
-
     curCanvas->activateFilter();
     return EXIT_SUCCESS;
 }
@@ -502,18 +502,20 @@ void createModalWindow(PluginButton *plugButt) {
 
     plugin::Interface *curI = plugButt->getPlugin()->getInterface();
     if (plugButt->getEventManager() != nullptr && curI->getParamNames().size) {
-        sf::Image *image = new sf::Image;
-        image -> loadFromFile(WINDOW_FILE_NAME);
-
         sf::Texture *texture = new sf::Texture;
-        texture -> loadFromImage(image);
+        texture -> loadFromFile(WINDOW_FILE_NAME);
 
         ModalWindow *modWind = new ModalWindow(curI, texture);
 
         modWind->setEventManager(plugButt->getEventManager());
 
+        modWind->setParamNames(plugButt->getPlugin()->getInterface()->getParamNames());
+
         plugButt->getEventManager()->registerObject(modWind);
         plugButt->getEventManager()->setPriority(plugin::EventType::KeyPress, HIGH_PRIORITY);
+        // MSG("Here!")  
+
+        modWind -> changeStatus();
 
         catchNullptr(plugButt->getRoot(), );
         plugButt->getRoot()->addSubWidget(modWind);

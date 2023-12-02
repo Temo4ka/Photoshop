@@ -7,13 +7,14 @@
 #include "../Headers/PluginManager.h"
 
 // #define DEBUG
+
 int main(int argc, const char *argv[]) {
     sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Ps", sf::Style::None);
     
     plugin::App app = App();
 
     PluginManager pluginManager = PluginManager(argc - 1);
-    for (size_t curPlug = 1; curPlug <= argc; curPlug++)
+    for (size_t curPlug = 1; curPlug < argc; curPlug++)
         pluginManager.loadPlugin(argv[curPlug], &app);
 
     ToolManager toolManager = ToolManager();
@@ -25,10 +26,11 @@ int main(int argc, const char *argv[]) {
 
     RenderTarget rt = RenderTarget(Vect(0, 0), Vect(WINDOW_WIDTH, WINDOW_HEIGHT));
 
-    Window *mainWindow = orginiseMainScreen(&window, &filterManager, &toolManager, &pluginManager);
+    EventManager eventManager = {};
+
+    Window *mainWindow = orginiseMainScreen(&window, &filterManager, &toolManager, &pluginManager, &eventManager);
     clipRegions(mainWindow);
 
-    EventManager eventManager = {};
     eventManager.registerObject(mainWindow);
 
     Gui gui(&rt, mainWindow);
@@ -68,12 +70,12 @@ int main(int argc, const char *argv[]) {
                 context.shift = false;
 
             if (event.type == sf::Event::KeyPressed && event.key.code != sf::Keyboard::LShift) {
-                context.key = event.key.code;
+                context.key = plugin::Key(event.key.code);
                 eventManager.executeEvent(EventManager::Events::KeyPressed, &window, context);
             }
 
             if (event.type == sf::Event::KeyReleased && event.key.code != sf::Keyboard::LShift) {
-                context.key = event.key.code;
+                context.key = plugin::Key(event.key.code);
                 eventManager.executeEvent(EventManager::Events::KeyReleased, &window, context);
             }
 

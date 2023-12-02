@@ -87,7 +87,13 @@ class Widget : public plugin::WidgetI {
 
         void setRegionSet(RegionSet *newSet) { set = newSet; }
 
-        void setPosition(Vect pos) { position = pos; }
+        void setPosition(Vect pos ) {  position  = pos ; }
+        void setSizeVect(Vect size) {
+            this->scale.x = this->scale.x * size.x / this->size.x; 
+            this->scale.y = this->scale.y * size.y / this->size.y; 
+            this->size = size;
+            sprite -> setScale(scale.x, scale.y);
+        }
 
         bool  isInWidgetArea (Vect point);
         bool isInWidgetRegion(Vect point);
@@ -190,6 +196,8 @@ class Button : public Widget {
 
     int (*run)(Button *button);
 
+    unsigned CharacterSize = 15;
+
     public:
         enum Status {
             Pressed  = 0,
@@ -210,6 +218,10 @@ class Button : public Widget {
         void setEventManager(EventManager *eventMgr) { eventManager = eventMgr; }
 
         EventManager* getEventManager() { return eventManager; }
+
+        void setCharacterSize(unsigned size) { CharacterSize = size; }
+
+        sf::Text *getText() { return text; }
 
         int clipRegions();
 };
@@ -283,7 +295,7 @@ class Canvas: public Widget {
             toolManager -> tool = tool;
         }
 
-         void activateFilter();
+        void activateFilter() { filterManager -> active = true; }
 
         void setFilter(plugin::FilterI *filter) { 
             delete filterManager -> lastFilter;

@@ -7,7 +7,7 @@ Widget(pos, size, texture, BUTTON_PIC_WIDTH, BUTTON_PIC_HEIGHT, sprite) //base c
     this -> run  = run;
     this -> font = font;
     this -> text = new sf::Text(message, *font);
-    this -> text -> setCharacterSize(15);
+    this -> text -> setCharacterSize(CharacterSize);
     this -> text -> setPosition(this->getPosition().x + 40, this->getPosition().y + 24);
 
     this -> status = Released;
@@ -38,6 +38,7 @@ int Button::draw(RenderTarget *rt) {
         curRegionNode = curRegionNode -> getNext();
     }
 
+    text -> setCharacterSize(CharacterSize);
     (rt->getWindow())->draw(*(this->text));
 
     return EXIT_SUCCESS;

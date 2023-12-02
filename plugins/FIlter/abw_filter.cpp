@@ -47,9 +47,11 @@ void AutoBalanceWhite_filter::apply(RenderTargetI *data) {
 AutoBalanceWhite_filter::AutoBalanceWhite_filter() {
     paramNames.data = (const char **) calloc(1, sizeof(const char *));
     paramNames.data[0] = "AverageColorValue";
+    paramNames.size    = 1;
     
     params.data = (double *) calloc(1, sizeof(double));
     params.data[0] = 128;
+    params.size    = 1;
 }
 
 DllExport plugin::Plugin* getInstance(plugin::App *app) {

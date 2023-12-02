@@ -98,9 +98,3 @@ int Canvas::draw(RenderTarget *rt) {
 
     return EXIT_SUCCESS;
 }
-
-void activateFilter() {
-    Array<const char*> array = filterManager -> lastFilter -> getParamNames();
-
-    filterManager -> active = true;
-}

@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Widgets.h"
 #include <string>
 
@@ -39,8 +41,8 @@ class EditBox : public Widget {
         int  onMousePress  (Vect &pos);
         int onMouseRelease (Vect &pos);
 
-        int onKeyPressed (plugin::KeyboardContext context);
-        int onKeyReleased(plugin::KeyboardContext context);
+        bool onKeyboardPress  (plugin::KeyboardContext context) override;
+        bool onKeyboardRelease(plugin::KeyboardContext context) override;
 
         void setType(BoxType newType) { type = newType; }
 
@@ -48,22 +50,22 @@ class EditBox : public Widget {
 
         const char* getString() { return curString.c_str(); }
 
-        double getNum() { return (type == BoxType::Num?) curString.c_str() : NULL; }
+        double getNum() { return (type == BoxType::Num)? atof(curString.c_str()) : 0; }
 };
 
 class ModalWindow : public Window {
     EventManager *eventManager;
+    plugin::Interface *object;
 
     plugin::Array<const char*> paramNames;
     plugin::Array<  double   >   params  ;
     
-    plugin::Interface *interface;
 
     public:
         ModalWindow(plugin::Interface *object, sf::Texture *texture,
                     const signed texW = WINDOW_WIDTH, const signed texH = WINDOW_HEIGHT, sf::Sprite *sprite = new sf::Sprite):
-        Window(Vect(0, 0), Vect(0, 0), texture, texW, texH, sprite),
-        interface (object),
+        Window(Vect(0, 0), Vect(WINDOW_WIDTH, WINDOW_HEIGHT), texture, texW, texH, sprite),
+        object (object),
         eventManager (nullptr)
         {}
 
@@ -75,10 +77,10 @@ class ModalWindow : public Window {
 
         uint8_t getPriority() { return HIGH_PRIORITY; }
 
-        bool onKeyboardPress  (plugin::KeyboardContext context) { return false; }
-        bool onKeyboardRelease(plugin::KeyboardContext context) { return false; }
+        bool onKeyboardPress  (plugin::KeyboardContext context) override;
+        bool onKeyboardRelease(plugin::KeyboardContext context) override;
 
-        plugin::Interface *getInterface() { return interface; }
+        plugin::Interface *getInterface() { return object; }
 
         EventManager* getEventManager() { return eventManager; }
  

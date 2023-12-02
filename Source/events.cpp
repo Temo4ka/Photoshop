@@ -53,15 +53,15 @@ int EventManager::executeEvent(Events event, sf::RenderWindow *window, plugin::K
                 break;
             }
             
-            case Events::KeyPressed {
-                curWidget -> onKeyPressed(key);
+            case Events::KeyPressed: {
+                curWidget -> onKeyboardPress(key);
                 
                 clipRegions((Window *) curWidget);
                 break;
             }
 
-            case Events::KeyReleased {
-                curWidget -> onKeyReleased(key);
+            case Events::KeyReleased: {
+                curWidget -> onKeyboardRelease(key);
                 
                 clipRegions((Window *) curWidget);
                 break;
