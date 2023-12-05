@@ -98,7 +98,7 @@ class Widget : public plugin::WidgetI {
         bool  isInWidgetArea (Vect point);
         bool isInWidgetRegion(Vect point);
 
-        void move(Vect delta) { position += delta; }
+        virtual void move(Vect delta);
 
         void    setRoot(Widget *root) { this -> root = root; }
         Widget* getRoot(            ) {      return root;    }
@@ -212,6 +212,8 @@ class Button : public Widget {
         int onMouseRelease(Vect &pos);
 
         int draw(RenderTarget *rt);
+
+        void move(Vect delta) override;
 
         void dumpRegions(sf::RenderWindow *window);
 

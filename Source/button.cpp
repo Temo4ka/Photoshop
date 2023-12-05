@@ -28,7 +28,7 @@ int Button::draw(RenderTarget *rt) {
         Vect curSize = curRegion->getSize();
         Vect  scale  = this -> getScale();
 
-        (this->getSprite())->setTextureRect(sf::IntRect(curPos.x - POSITION.x, BUTTON_PIC_HEIGHT * status + curPos.y - POSITION.y,
+        (this->getSprite())->setTextureRect(sf::IntRect((curPos.x - POSITION.x) / scale.x, BUTTON_PIC_HEIGHT * status + (curPos.y - POSITION.y) / scale.y,
                                                             curSize.x / scale.x, curSize.y / scale.y));
 
         (this->getSprite())->setPosition(curPos.x, curPos.y);
@@ -66,6 +66,14 @@ int Button::onMouseRelease(Vect &mouse) {
     status = Status::Released;
 
     return EXIT_SUCCESS;
+}
+
+void Button::move(Vect delta) {
+    setPosition(POSITION + delta);
+
+    text -> setPosition(text -> getPosition() + sf::Vector2f(delta.x, delta.y));
+
+    return;
 }
 
 int Button::clipRegions() {

@@ -16,6 +16,23 @@ int Widget::addSubWidget(Widget *widget) {
     return EXIT_SUCCESS;
 }
 
+void Widget::move(Vect delta) {
+    position += delta;
+
+    ListNode<Widget>* curNode = (getList()) -> getHead();
+    if (curNode == nullptr) return;
+
+    do {
+        catchNullptr(curNode -> getObject(), );
+
+        (curNode -> getObject()) -> move(delta);
+
+        curNode = curNode -> getNext();
+    } while (curNode != (getList()) -> getHead());
+
+    return;
+}
+
 int Widget::removeSubWidget(Widget *widget) {
     catchNullptr(widget , EXIT_FAILURE);
 

@@ -5,7 +5,7 @@ void ModalWindow::setParamNames(plugin::Array<const char *> paramNames) {
     this->paramNames = paramNames;
 
     setPosition(Vect(150, std::max(0ULL, (WINDOW_HEIGHT - EDIT_BOX_HEIGHT * paramNames.size) / 2) ));
-    setSizeVect(Vect(720, EDIT_BOX_HEIGHT * paramNames.size + 200));
+    setSizeVect(Vect(720, EDIT_BOX_HEIGHT * paramNames.size + 100));
 
     sf::Image *image = new sf::Image;
     image -> loadFromFile(EDITBOX_FILE_NAME);
@@ -14,8 +14,8 @@ void ModalWindow::setParamNames(plugin::Array<const char *> paramNames) {
     texture -> loadFromImage(*image);
 
     for (int cur = 0; cur < paramNames.size; cur++) {
-        EditBox *editBox = new EditBox(Vect((THIS_SIZE.x / 2 + 5) + POSITION.x,
-                                             POSITION.y + 50 + EDIT_BOX_HEIGHT * cur), 
+        EditBox *editBox = new EditBox(Vect((THIS_SIZE.x / 2) + POSITION.x,
+                                             POSITION.y + 30 + EDIT_BOX_HEIGHT * cur), 
                                        Vect((THIS_SIZE.x / 2 - 10), EDIT_BOX_HEIGHT), texture,
                                        EDIT_BOX_WIDTH, EDIT_BOX_HEIGHT, new sf::Sprite);
 
@@ -30,10 +30,10 @@ void ModalWindow::setParamNames(plugin::Array<const char *> paramNames) {
     texture = new sf::Texture; 
     texture -> loadFromFile(BUTTON_FILE_NAME);
 
-    Button *okButton = new Button(Vect(POSITION.x + 300, POSITION.y + THIS_SIZE.y - 30), Vect(50, 30), "ok", font, texture, new sf::Sprite,
+    Button *okButton = new Button(Vect(POSITION.x + 300, POSITION.y + THIS_SIZE.y - 40), Vect(50, 30), "ok", font, texture, new sf::Sprite,
                                   modalWindowButton);
 
-    okButton->getText()->setPosition(POSITION.x + 308, POSITION.y + THIS_SIZE.y - 24);
+    okButton->getText()->setPosition(POSITION.x + 308, POSITION.y + THIS_SIZE.y - 34);
 
     addSubWidget(okButton);
 
@@ -51,7 +51,6 @@ plugin::Array<double> ModalWindow::getParams() {
     for (int cur = 0; cur < paramNames.size; cur++) {
         catchNullptr(curNode, Array<double> ());
 
-        MSG("HERE")
         EditBox *curEditBox = dynamic_cast<EditBox*> (curNode -> getObject());
         params.data[cur] = curEditBox -> getNum();
 
@@ -61,6 +60,8 @@ plugin::Array<double> ModalWindow::getParams() {
 
     return params;
 }
+
+#include <cmath>
 
 int ModalWindow::draw(RenderTarget *rt) {
     catchNullptr(rt, EXIT_FAILURE);
@@ -74,8 +75,9 @@ int ModalWindow::draw(RenderTarget *rt) {
         Vect curSize = curRegion->getSize();
         Vect  scale  = this -> getScale();
 
-        (this->getSprite())->setTextureRect(sf::IntRect(curPos.x - POSITION.x, curPos.y - POSITION.y,
-                                                        curSize.x / scale.x, curSize.y / scale.y));
+        (this->getSprite())->setTextureRect(sf::IntRect((curPos.x - POSITION.x) / scale.x, (curPos.y - POSITION.y) / scale.y,
+                                                        ceil(curSize.x / scale.x), ceil(curSize.y / scale.y)));
+
 
         (this->getSprite())->setPosition(curPos.x, curPos.y);
 
@@ -90,12 +92,12 @@ int ModalWindow::draw(RenderTarget *rt) {
 
     sf::Text text;
     text.setFont(font);
-    text.setCharacterSize(20);
+    text.setCharacterSize(40);
     text.setFillColor(sf::Color::Black);
 
     for (int cur = 0; cur < paramNames.size; cur++) {
         text.setString(paramNames.data[cur]);
-        text.setPosition(POSITION.x + 5, POSITION.y + 10 + EDIT_BOX_HEIGHT * cur);
+        text.setPosition(POSITION.x + 10, POSITION.y + 30 + EDIT_BOX_HEIGHT * cur);
 
         (rt -> getWindow()) -> draw(text);
     }
@@ -145,7 +147,7 @@ int EditBox::draw(RenderTarget *rt) {
         Vect curSize = curRegion->getSize();
         Vect  scale  = this -> getScale();
 
-        (this->getSprite())->setTextureRect(sf::IntRect(curPos.x - POSITION.x, curPos.y - POSITION.y,
+        (this->getSprite())->setTextureRect(sf::IntRect((curPos.x - POSITION.x) / scale.x, (curPos.y - POSITION.y) / scale.y,
                                                         curSize.x / scale.x, curSize.y / scale.y));
 
         (this->getSprite())->setPosition(curPos.x, curPos.y);

@@ -6,7 +6,7 @@ const unsigned WINDOW_HEIGHT =  720;
 const unsigned SUBWINDOW_WIDTH  = 400;
 const unsigned SUBWINDOW_HEIGHT = 200;
 
-const unsigned PANEL_HEIGHT  =  20 ;
+const unsigned PANEL_HEIGHT  =  30 ;
 const unsigned  MENU_HEIGHT  =  60 ;
 
 const unsigned BUTTON_MENU_WIDTH   =  240;
