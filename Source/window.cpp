@@ -6,7 +6,6 @@ Window::Window(Vect pos, Vect size, sf::Texture *texture, sf::Sprite *sprite):
         status(Status::Still),
         lastPoint(Vect(0, 0))
 {
-    
 
 }
 

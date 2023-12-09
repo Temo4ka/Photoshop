@@ -16,7 +16,7 @@ Window* orginiseMainScreen(sf::RenderWindow *window, HostApp *app) {
 
     Menu *menu = new Menu(Vect(0, PANEL_HEIGHT), Vect(WINDOW_WIDTH, MENU_HEIGHT));
 
-    Canvas *canvas = new Canvas(Vect(6, PANEL_HEIGHT + MENU_HEIGHT), Vect(MAIN_CANVAS_WIDTH, MAIN_CANVAS_HEIGHT), app->toolManager, app->filterManager);
+    Canvas *canvas = new Canvas(Vect(6, PANEL_HEIGHT + MENU_HEIGHT), Vect(MAIN_CANVAS_WIDTH, MAIN_CANVAS_HEIGHT), app);
 
     app->  mainCanvas =   canvas  ;
     app->   mainMenu  =    menu   ;
@@ -117,18 +117,25 @@ Menu *addFileMenu(Button *file, HostApp *app) {
     sf::Texture *texture = new sf::Texture; 
     texture -> loadFromFile(BUTTON_FILE_NAME);
 
-    Menu *fileMenu = new Menu(Vect(pos.x, pos.y + size.y), Vect(size.x, MENU_HEIGHT * 1));
+    Menu *fileMenu = new Menu(Vect(pos.x, pos.y + size.y), Vect(size.x, MENU_HEIGHT * 2));
 
     PluginButton *openButton = new PluginButton(nullptr, Vect(pos.x, pos.y + size.y * 1), menuButtonSize, " open ", font, texture, new sf::Sprite, openFile);
+    PluginButton *saveButton = new PluginButton(nullptr, Vect(pos.x, pos.y + size.y * 2), menuButtonSize, " save ", font, texture, new sf::Sprite, saveFile);
 
     openButton -> setEventManager(app->eventManager);
+    saveButton -> setEventManager(app->eventManager);
     openButton -> setApp (app);
+    saveButton -> setApp (app);
     openButton -> setRoot(app->root);
+    saveButton -> setRoot(app->root);
     openButton -> changeStatus();
+    saveButton -> changeStatus();
 
     fileMenu -> pushBackSubWidget(openButton);
+    fileMenu -> pushBackSubWidget(saveButton);
 
     openButton -> pushBackSubWidget(app->modalWindow);
+    saveButton -> pushBackSubWidget(app->modalWindow);
 
     return fileMenu;
 }
@@ -531,9 +538,34 @@ int openFile(Button *button) {
         catchNullptr(modWind, EXIT_FAILURE);
 
         Array<const char *> paramNames(1, (const char **) calloc(1, sizeof(const char *)));
-        paramNames.data[0] = "File Names";
+        paramNames.data[0] = "file name";
 
         modWind->setParamNames(paramNames, openFileWindowButton, EditBox::BoxType::Text);
+
+        plugButt->getEventManager()->setPriority(plugin::EventType::KeyPress, HIGH_PRIORITY);
+
+        modWind -> changeStatus();
+    }
+
+
+    return EXIT_SUCCESS;
+}
+
+int saveFile(Button *button) {
+    catchNullptr(button, EXIT_FAILURE);
+
+    PluginButton *plugButt = dynamic_cast<PluginButton *>(button);
+
+    if (plugButt->getEventManager() != nullptr) {
+        catchNullptr(plugButt->getApp(), EXIT_FAILURE);
+
+        ModalWindow *modWind = plugButt -> getApp() -> modalWindow;
+        catchNullptr(modWind, EXIT_FAILURE);
+
+        Array<const char *> paramNames(1, (const char **) calloc(1, sizeof(const char *)));
+        paramNames.data[0] = "new file Name";
+
+        modWind->setParamNames(paramNames, saveFileWindowButton, EditBox::BoxType::Text);
 
         plugButt->getEventManager()->setPriority(plugin::EventType::KeyPress, HIGH_PRIORITY);
 
@@ -634,6 +666,33 @@ int openFileWindowButton(Button *button) {
     return EXIT_SUCCESS;
 }
 
+void saveImageFromCanvas(const char *imageName, HostApp * app);
+
+int saveFileWindowButton(Button *button) {
+    catchNullptr(button, EXIT_FAILURE);
+
+    ListHead<Widget> *list = button -> getList();
+
+    Widget *curWidget = (list->getHead())->getObject();
+    catchNullptr(curWidget, EXIT_FAILURE);
+
+    curWidget->changeStatus();
+
+    ModalWindow *modWind = dynamic_cast<ModalWindow*>(curWidget);
+    catchNullptr(modWind, EXIT_FAILURE);
+
+    Array<const char*> fileName = modWind->getStringParams();
+    if (fileName.size == 0) return EXIT_FAILURE;
+
+    char buffer[100] = "./files/";
+
+    saveImageFromCanvas(strcat(buffer, fileName.data[0]), modWind -> getApp());
+    
+    (modWind->getApp()->eventManager)->setPriority(plugin::EventType::KeyPress, LOW_PRIORITY);
+
+    return EXIT_SUCCESS;
+}
+
 
 void clipRegions(Window *window) {
     RegionSet *set = window -> getRegionSet();
@@ -642,6 +701,19 @@ void clipRegions(Window *window) {
     set -> addRegion(new Region(window -> getPosition(), window -> getSizeVect()));
     window -> setRegionSet(set);
     window -> clipRegions();
+
+    return;
+}
+
+void saveImageFromCanvas(const char *imageName, HostApp * app) {
+    catchNullptr(imageName, );
+    catchNullptr(   app   , );
+
+    plugin::Texture *texture = app->mainCanvas->getImage();
+
+    sf::Image image;
+    image.create(texture -> width, texture -> height, (const uint8_t*) texture -> pixels);
+    image.saveToFile(imageName);
 
     return;
 }
@@ -656,7 +728,7 @@ void createNewImageWindow(const char *imageName, HostApp *app) {
 
     Vect textureSize = Vect(texture.getSize().x, texture.getSize().y);
 
-    Canvas *newWindowCanvas = new Canvas(Vect(85, 130), textureSize, app->toolManager, app->filterManager);
+    Canvas *newWindowCanvas = new Canvas(Vect(85, 130), textureSize, app);
     newWindowCanvas->changeStatus();
 
     sf::Sprite sprite;

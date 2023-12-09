@@ -1,14 +1,46 @@
 #include "../Headers/Widgets.h"
+#include "../Headers/UI.h"
+
+Canvas::Canvas(Vect pos, Vect size, HostApp *app):
+        Widget(pos, size, nullptr, 0, 0, nullptr),
+        status(Released),
+           texture   (new RenderTarget(pos, size)),
+            temp     (new RenderTarget(pos, size)),
+         app (app)
+        { 
+            texture->clear(sf::Color::White);
+            app->toolManager -> tool = new Circle;
+
+            app->filterManager -> lastFilter = new ReverseFilter;
+        }
+
+void Canvas::setTool(ToolI *tool) { 
+    delete app->toolManager -> tool;
+    app->toolManager -> tool = tool;
+}
+
+void Canvas::setFilter(plugin::FilterI *filter) { 
+    delete app->filterManager -> lastFilter;
+
+    app->filterManager -> lastFilter = filter;
+    activateFilter();
+}
+
+void Canvas::activateFilter() { app->filterManager -> active = true; }
+
+void Canvas::setColor(sf::Color newColor) { app->toolManager -> color = { newColor.r, newColor.g, newColor.b, newColor.a }; }
 
 int Canvas::onMousePress(Vect &mouse) {
     if (!isInWidgetRegion(mouse))
         return EXIT_SUCCESS;
-    
-    if (filterManager -> active) {
-        filterManager -> curRenderTarget = texture;
-        filterManager -> applyFilter();
 
-        filterManager -> active = false;
+    app -> mainCanvas = this;
+    
+    if (app->filterManager -> active) {
+        app->filterManager -> curRenderTarget = texture;
+        app->filterManager -> applyFilter();
+
+        app->filterManager -> active = false;
         return EXIT_SUCCESS;
     }
 
@@ -17,7 +49,7 @@ int Canvas::onMousePress(Vect &mouse) {
     Vect curPos = mouse - POSITION;
     plugin::MouseContext context = {{curPos.x, curPos.y}, plugin::MouseButton::Left};
 
-    toolManager -> paintOnPress(texture, temp, context);
+    app->toolManager -> paintOnPress(texture, temp, context);
 
     return EXIT_SUCCESS;
 }
@@ -37,7 +69,7 @@ int Canvas::onMouseMove(Vect &mouse) {
     Vect curPos = mouse - POSITION;
     plugin::MouseContext context = {{curPos.x, curPos.y}, plugin::MouseButton::Left};
 
-    toolManager -> paintOnMove(texture, temp, context);
+    app->toolManager -> paintOnMove(texture, temp, context);
   
     return EXIT_SUCCESS;
 }
@@ -48,7 +80,7 @@ int Canvas::onMouseRelease(Vect &mouse) {
     Vect curPos = mouse - POSITION;
     plugin::MouseContext context = {{curPos.x, curPos.y}, plugin::MouseButton::Left};
 
-    toolManager -> paintOnRelease(texture, temp, context);
+    app->toolManager -> paintOnRelease(texture, temp, context);
 
     return EXIT_SUCCESS;
 }

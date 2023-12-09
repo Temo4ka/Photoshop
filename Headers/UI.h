@@ -67,3 +67,7 @@ int openFile(Button *button);
 int openFileWindowButton(Button *button);
 
 int modalWindowButton(Button *button);
+
+int saveFile(Button *button);
+
+int saveFileWindowButton(Button *button);

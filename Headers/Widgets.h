@@ -268,8 +268,7 @@ class Canvas: public Widget {
     RenderTarget *texture;
     RenderTarget *  temp ;
 
-     ToolManager  *  toolManager;
-    FilterManager *filterManager;
+    HostApp *app;
 
     public:
         enum Status {
@@ -277,19 +276,7 @@ class Canvas: public Widget {
               Hold   = 1,
         } status;
 
-        Canvas(Vect pos, Vect size, ToolManager *toolMgr, FilterManager * filterMgr):
-        Widget(pos, size, nullptr, 0, 0, nullptr),
-        status(Released),
-           texture   (new RenderTarget(pos, size)),
-            temp     (new RenderTarget(pos, size)),
-         toolManager (toolMgr),
-        filterManager(filterMgr)
-        { 
-            texture->clear(sf::Color::White);
-            toolManager -> tool = new Circle;
-
-            filterManager -> lastFilter = new ReverseFilter;
-        }
+        Canvas(Vect pos, Vect size, HostApp *app);
 
         int   onMouseMove  (Vect &pos);
         int  onMousePress  (Vect &pos);
@@ -297,23 +284,17 @@ class Canvas: public Widget {
 
         int draw(RenderTarget *rt);
 
-        void setColor(sf::Color newColor) { toolManager -> color = { newColor.r, newColor.g, newColor.b, newColor.a }; }
+        void setColor(sf::Color newColor);
 
-        void setTool(ToolI *tool) { 
-            delete toolManager -> tool;
-            toolManager -> tool = tool;
-        }
+        void setTool(ToolI *tool);
 
-        void activateFilter() { filterManager -> active = true; }
+        void activateFilter();
 
-        void setFilter(plugin::FilterI *filter) { 
-            delete filterManager -> lastFilter;
-
-            filterManager -> lastFilter = filter;
-            activateFilter();
-        }
+        void setFilter(plugin::FilterI *filter);
 
         void paint(sf::Sprite *sprite) { texture -> paint(sprite);}
+
+        Texture *getImage() { return texture->getTexture(); }
 };
 
 struct KeyBoard {
