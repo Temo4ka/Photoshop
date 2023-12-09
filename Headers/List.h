@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdint.h>
+#include "DSL.h"
 
 enum ListErrors {
              ListOk        =  0,
@@ -76,15 +77,16 @@ class ListHead {
                 delete cur;
                 cur = next;
             }
+
             delete cur;
         }
 };
 
-#include "DSL.h"
-
 template <class Type>
 ListErrors ListHead<Type>::pushBack(Type *object) {
     catchNullptr(object, NullptrCaught);
+
+    (this -> size)++;
 
     if (this -> head == nullptr) {
 
@@ -101,8 +103,6 @@ ListErrors ListHead<Type>::pushBack(Type *object) {
     ListNode<Type>  *newNode = new ListNode<Type>(object, nodePrev, nodeNext);
     nodePrev -> setNext(newNode);
     nodeNext -> setPrev(newNode);
-
-    (this -> size)++;
 
     return ListOk;
 }

@@ -42,6 +42,8 @@ class RenderTarget : public RenderTargetI {
 
         Vect getPosition() { return pos;  }
         Vect   getSize  () { return size; }
+
+        void paint(sf::Sprite *sprite) { window -> draw(*sprite); window -> display();}
 };
 
 sf::Color translateColor(Color color);

@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Widgets.h"
 #include "DSL.h"
 #include "Config.h"
@@ -5,23 +7,36 @@
 #include "Tool.h"
 #include "EditBox.h"
 
-Window* orginiseMainScreen(sf::RenderWindow *window, FilterManager*, ToolManager*, PluginManager*,  EventManager *);
+struct HostApp {
+    ModalWindow   *modalWindow  ;
+    ToolManager   *toolManager  ;
+    FilterManager *filterManager;
+    EventManager  *eventManager ;
+    PluginManager *pluginManager;
+       Window     *    root     ;
+       Canvas     * mainCanvas  ;
+        Menu      *  mainMenu   ;
+};
 
-int addMainScreenButtons(Window *window, Menu *menu, Canvas *canvas, PluginManager*, EventManager *);
+Window* orginiseMainScreen(sf::RenderWindow *window, HostApp *app);
 
-Menu *addFilterMenu(Button *filter, Canvas *canvas);
+int addMainScreenButtons(HostApp *app);
 
-Menu *addToolsMenu(Button *tools, Canvas *canvas);
+Menu *addFileMenu(Button *file, HostApp *app);
 
-Menu *addColorMenu(Button *color, Canvas *canvas);
+Menu *addFilterMenu(Button *filter, HostApp *app);
 
-Menu *addWindowMenu(Window *mainWindow, Button *window);
+Menu *addToolsMenu(Button *tools, HostApp *app);
 
-Menu *addPluginMenu(Button *plugins, Canvas *, PluginManager *pluginManager, EventManager *);
+Menu *addColorMenu(Button *color, HostApp *app);
+
+Menu *addWindowMenu(Button *window, HostApp *app);
+
+Menu *addPluginMenu(Button *plugins, HostApp *app);
 
 int activatePluginButton(Button *button);
 
-Window *addSubWindow(Vect pos);
+Window *createSubWindow(Vect pos, Vect size = Vect(SUBWINDOW_WIDTH, SUBWINDOW_HEIGHT));
 
 int activateWidget(Button *button);
 
@@ -46,3 +61,9 @@ int  setEraser (Button *button);
 int setReverse(Button *button);
 int setLastFilter(Button *button);
 /*------------------------------*/
+
+int openFile(Button *button);
+
+int openFileWindowButton(Button *button);
+
+int modalWindowButton(Button *button);

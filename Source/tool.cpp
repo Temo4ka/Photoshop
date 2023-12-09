@@ -294,7 +294,7 @@ void Circle::paintOnPress(RenderTargetI *data, RenderTargetI *tmp, MouseContext 
         if (startPoint.y > curPos.y)
             circlePos.y = startPoint.y - diam;
 
-        data -> drawEllipse({circlePos.x, circlePos.y}, {diam, diam}, color);
+        data -> drawEllipse({circlePos.x, circlePos.y}, {diam / 2, diam / 2}, color);
 
         startPoint = Vect(-1, -1);
     }
@@ -325,7 +325,7 @@ void Circle::paintOnMove(RenderTargetI *data, RenderTargetI *tmp, MouseContext c
         circlePos.y = startPoint.y - diam;
 
 
-    tmp -> drawEllipse({circlePos.x, circlePos.y}, {diam, diam}, color);
+    tmp -> drawEllipse({circlePos.x, circlePos.y}, {diam / 2, diam / 2}, color);
 
     return;
 }

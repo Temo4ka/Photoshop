@@ -12,12 +12,11 @@ class EditBox : public Widget {
 
     bool isPeriodPlaced;
 
-    enum BoxType {
-        Text = 0,
-        Num  = 1
-    } type;
-
     public:
+        enum BoxType {
+            Text = 0,
+            Num  = 1
+        } type;
 
         EditBox(Vect pos, Vect size, sf::Texture *texture, const signed texW, const signed texH, sf::Sprite *sprite):
         Widget(pos, size, texture, texW, texH, sprite),
@@ -54,11 +53,11 @@ class EditBox : public Widget {
 };
 
 class ModalWindow : public Window {
-    EventManager *eventManager;
+    HostApp *app;
+
     plugin::Interface *object;
 
     plugin::Array<const char*> paramNames;
-    plugin::Array<  double   >   params  ;
     
 
     public:
@@ -66,14 +65,16 @@ class ModalWindow : public Window {
                     const signed texW = WINDOW_WIDTH, const signed texH = WINDOW_HEIGHT, sf::Sprite *sprite = new sf::Sprite):
         Window(Vect(0, 0), Vect(WINDOW_WIDTH, WINDOW_HEIGHT), texture, texW, texH, sprite),
         object (object),
-        eventManager (nullptr)
+        app (nullptr)
         {}
 
         virtual int draw(RenderTarget *rt);
 
-        void setParamNames(plugin::Array<const char *> paramNames);
+        void setParamNames(plugin::Array<const char *> paramNames, int (*run)(Button *), EditBox::BoxType type  = EditBox::BoxType::Num);
 
         plugin::Array<double> getParams();
+
+        plugin::Array<const char*> getStringParams();
 
         uint8_t getPriority() { return HIGH_PRIORITY; }
 
@@ -82,9 +83,9 @@ class ModalWindow : public Window {
 
         plugin::Interface *getInterface() { return object; }
 
-        EventManager* getEventManager() { return eventManager; }
+        void setInterface(plugin::Interface *object) { this->object = object;}
  
-        void setEventManager(EventManager *eventManager) { this -> eventManager = eventManager; }
-};
+        void setApp(HostApp *app) { this -> app = app; }
 
-int modalWindowButton(Button *button);
+        HostApp* getApp() { catchNullptr(app, nullptr); return app; }
+};

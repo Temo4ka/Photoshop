@@ -61,7 +61,8 @@ class Widget : public plugin::WidgetI {
         virtual int  onMousePress  (Vect &pos) = 0;
         virtual int onMouseRelease (Vect &pos) = 0;
 
-        int  addSubWidget  (Widget *widget);
+        int  pushBackSubWidget  (Widget *widget);
+        int  pushFrontSubWidget (Widget *widget);
         int removeSubWidget(Widget *widget);
 
         virtual int clipRegions();
@@ -80,6 +81,8 @@ class Widget : public plugin::WidgetI {
         WidgetStatus getStatus() { return this -> status; }
 
         ListHead<Widget> *getList() { return this -> subWidgets; }
+
+        void clearList() { delete this -> subWidgets; this -> subWidgets = new ListHead<Widget>(); }
 
         RegionSet *getRegionSet() { return set; }
 
@@ -107,7 +110,6 @@ class Widget : public plugin::WidgetI {
             delete sprite;
             delete texture;
             delete set;
-            delete subWidgets;
         }
 
     /*------------------------------for plugins-----------------------------------*/
@@ -167,11 +169,7 @@ class Window : public Widget {
     Vect lastPoint;
 
     public:
-        Window(Vect pos, Vect size, sf::Texture *texture, sf::Sprite *sprite):
-        Widget(pos, size, texture, TEST_PIC_WIDTH, TEST_PIC_HEIGHT, sprite),
-        status(Status::Still),
-        lastPoint(Vect(0, 0))
-        {}
+        Window(Vect pos, Vect size, sf::Texture *texture, sf::Sprite *sprite);
 
         Window(Vect pos, Vect size, sf::Texture *texture, const signed texW, const signed texH, sf::Sprite *sprite):
         Widget(pos, size, texture, texW, texH, sprite),
@@ -228,17 +226,26 @@ class Button : public Widget {
         int clipRegions();
 };
 
+struct HostApp;
+
 class PluginButton : public Button {
     plugin::Plugin *buttPlugin;
 
+    HostApp *app;
+
     public:
-        PluginButton(plugin::Plugin *buttPlugin, 
+        PluginButton(plugin::Plugin *buttPlugin,
                     Vect pos, Vect size, const char *text, sf::Font *font, sf::Texture *texture, sf::Sprite *sprite, int (*run)(Button *Button) = nullptr):
              Button(     pos,      size,             text,           font,              texture,             sprite,       run),
-            buttPlugin (buttPlugin)
+            buttPlugin (buttPlugin),
+            app( nullptr  )
         {}
 
         plugin::Plugin *getPlugin() { return buttPlugin; }
+
+        void setApp(HostApp *app) { this -> app = app; }
+
+        HostApp* getApp() { return app; }
 };
 
 class Menu : public Widget {
@@ -305,6 +312,8 @@ class Canvas: public Widget {
             filterManager -> lastFilter = filter;
             activateFilter();
         }
+
+        void paint(sf::Sprite *sprite) { texture -> paint(sprite);}
 };
 
 struct KeyBoard {

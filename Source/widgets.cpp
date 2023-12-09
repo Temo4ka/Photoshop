@@ -1,6 +1,6 @@
 #include "../Headers/Widgets.h"
 
-int Widget::addSubWidget(Widget *widget) {
+int Widget::pushBackSubWidget(Widget *widget) {
     catchNullptr(widget , EXIT_FAILURE);
 
     // RegionSet *subSet = widget->getRegionSet();
@@ -12,6 +12,22 @@ int Widget::addSubWidget(Widget *widget) {
 
     ListHead<Widget> *list = this -> getList();
     list -> pushBack(widget);
+
+    return EXIT_SUCCESS;
+}
+
+int Widget::pushFrontSubWidget(Widget *widget) {
+    catchNullptr(widget , EXIT_FAILURE);
+
+    // RegionSet *subSet = widget->getRegionSet();
+    // RegionSet *newSet =  set->subRegions(subSet);
+
+    // delete set;
+    // set = newSet;
+
+
+    ListHead<Widget> *list = this -> getList();
+    list -> pushFront(widget);
 
     return EXIT_SUCCESS;
 }

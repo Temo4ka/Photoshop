@@ -13,6 +13,8 @@ int main(int argc, const char *argv[]) {
     
     plugin::App app = App();
 
+    HostApp hostApp;
+
     PluginManager pluginManager = PluginManager(argc - 1);
     for (size_t curPlug = 1; curPlug < argc; curPlug++)
         pluginManager.loadPlugin(argv[curPlug], &app);
@@ -28,10 +30,16 @@ int main(int argc, const char *argv[]) {
 
     EventManager eventManager = {};
 
-    Window *mainWindow = orginiseMainScreen(&window, &filterManager, &toolManager, &pluginManager, &eventManager);
+    hostApp.eventManager  = &eventManager;
+    hostApp.filterManager = &filterManager;
+    hostApp.toolManager   = &toolManager;
+    hostApp.pluginManager = &pluginManager;
+
+    Window *mainWindow = orginiseMainScreen(&window, &hostApp);
     clipRegions(mainWindow);
 
     eventManager.registerObject(mainWindow);
+    eventManager.registerObject(hostApp.modalWindow);
 
     Gui gui(&rt, mainWindow);
 

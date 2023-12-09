@@ -21,7 +21,14 @@ box:
 	-lm -o box.exe -lmingw32 -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lsfml-main -mwindows
 
 plugin:
-	g++ ./plugins/Filter/abw_filter.cpp -shared -o ./plugins/DLL/abw_filter.dll
+	g++ ./plugins/Filters/abw_filter.cpp -shared -o ./plugins/DLL/abw_filter.dll
 
 Senya_Plugin:
-	g++ ./plugins/Filter/test_plugin.cpp -shared -o ./plugins/DLL/filter228.dll
+	g++ ./plugins/Filters/test_plugin.cpp -shared -o ./plugins/DLL/filter228.dll
+
+elipse:
+	g++ ./plugins/Tools/elipseTool.cpp -shared -o ./plugins/DLL/elipse_tool.dll
+
+square:
+	g++ ./plugins/Tools/squareTool.cpp -shared -o ./plugins/DLL/square_tool.dll
+

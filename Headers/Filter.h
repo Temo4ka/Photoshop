@@ -49,3 +49,10 @@ class ReverseFilter : public Filter {
 
         void apply(plugin::RenderTargetI *data);
 };
+
+class OpenFile : public Filter {
+    public:
+        OpenFile(): Filter() {}
+
+        void apply(plugin::RenderTargetI * data);
+};

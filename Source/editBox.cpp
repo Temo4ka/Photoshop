@@ -1,7 +1,7 @@
 #include "../Headers/EditBox.h"
 
 
-void ModalWindow::setParamNames(plugin::Array<const char *> paramNames) {
+void ModalWindow::setParamNames(plugin::Array<const char *> paramNames, int (*run)(Button *), EditBox::BoxType type) {
     this->paramNames = paramNames;
 
     setPosition(Vect(150, std::max(0ULL, (WINDOW_HEIGHT - EDIT_BOX_HEIGHT * paramNames.size) / 2) ));
@@ -13,16 +13,21 @@ void ModalWindow::setParamNames(plugin::Array<const char *> paramNames) {
     sf::Texture *texture = new sf::Texture;
     texture -> loadFromImage(*image);
 
+    clearList();
+
     for (int cur = 0; cur < paramNames.size; cur++) {
         EditBox *editBox = new EditBox(Vect((THIS_SIZE.x / 2) + POSITION.x,
                                              POSITION.y + 30 + EDIT_BOX_HEIGHT * cur), 
                                        Vect((THIS_SIZE.x / 2 - 10), EDIT_BOX_HEIGHT), texture,
                                        EDIT_BOX_WIDTH, EDIT_BOX_HEIGHT, new sf::Sprite);
 
+
+        editBox -> setType(type);
         editBox -> changeStatus();
 
-        addSubWidget(editBox);
+        pushBackSubWidget(editBox);
     }
+    MESSAGE("HERE%zu", this->getList()->getSize());
 
     sf::Font *font = new sf::Font;
     font -> loadFromFile("./Font/newFont.ttf");
@@ -31,22 +36,40 @@ void ModalWindow::setParamNames(plugin::Array<const char *> paramNames) {
     texture -> loadFromFile(BUTTON_FILE_NAME);
 
     Button *okButton = new Button(Vect(POSITION.x + 300, POSITION.y + THIS_SIZE.y - 40), Vect(50, 30), "ok", font, texture, new sf::Sprite,
-                                  modalWindowButton);
+                                  run);
 
     okButton->getText()->setPosition(POSITION.x + 308, POSITION.y + THIS_SIZE.y - 34);
 
-    addSubWidget(okButton);
+    pushBackSubWidget(okButton);
 
     okButton -> changeStatus();
-    okButton -> addSubWidget(this);
+    okButton -> pushBackSubWidget(this);
 
     return;
+}
+
+plugin::Array<const char*> ModalWindow::getStringParams() {
+    ListNode<Widget>* curNode = (this -> getList()) -> getHead();
+
+    Array<const char*> params = Array<const char*>(paramNames.size, (const char**) calloc(paramNames.size, sizeof(const char*)));
+
+    for (int cur = 0; cur < paramNames.size; cur++) {
+        catchNullptr(curNode, Array<const char*> ());
+
+        EditBox *curEditBox = dynamic_cast<EditBox*> (curNode -> getObject());
+        params.data[cur] = curEditBox -> getString();
+
+        curNode = curNode -> getNext();
+    }
+    params.size = paramNames.size;
+
+    return params;
 }
 
 plugin::Array<double> ModalWindow::getParams() {
     ListNode<Widget>* curNode = (this -> getList()) -> getHead();
 
-    params = Array<double>(paramNames.size, (double *) calloc(paramNames.size, sizeof(double)));
+    Array<double> params = Array<double>(paramNames.size, (double *) calloc(paramNames.size, sizeof(double)));
 
     for (int cur = 0; cur < paramNames.size; cur++) {
         catchNullptr(curNode, Array<double> ());
@@ -233,7 +256,7 @@ void EditBox::addNewLetter(const char *letter) {
 
 #define CASE(LETTER, letter)                     \
     case plugin::Key::LETTER:                     \
-        return (context.shift? #LETTER : #letter); \
+        return (!context.shift? #LETTER : #letter); \
         break;
 
 const char* EditBox::translateLetter(plugin::KeyboardContext context) {
@@ -272,26 +295,6 @@ const char* EditBox::translateLetter(plugin::KeyboardContext context) {
 }
 
 #undef CASE
-
-int modalWindowButton(Button *button) {
-    catchNullptr(button, EXIT_FAILURE);
-
-    ListHead<Widget> *list = button -> getList();
-
-    Widget *curWidget = (list->getHead())->getObject();
-    catchNullptr(curWidget, EXIT_FAILURE);
-
-    curWidget->changeStatus();
-
-    ModalWindow *modWind = dynamic_cast<ModalWindow*>(curWidget);
-
-    catchNullptr(modWind->getInterface(), EXIT_FAILURE);
-    modWind->getInterface()->setParams(modWind->getParams());
-
-    modWind -> getEventManager()->setPriority(plugin::EventType::KeyPress, LOW_PRIORITY);
-
-    return EXIT_SUCCESS; 
-}
 
 bool ModalWindow::onKeyboardPress(plugin::KeyboardContext context) {
     ListNode<Widget>* cur = (this -> getList()) -> getHead();

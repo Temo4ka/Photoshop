@@ -1,6 +1,15 @@
 #include "../Headers/Widgets.h"
 #include <cmath>
 
+Window::Window(Vect pos, Vect size, sf::Texture *texture, sf::Sprite *sprite):
+        Widget(pos, size, texture, TEST_PIC_WIDTH, TEST_PIC_HEIGHT, sprite),
+        status(Status::Still),
+        lastPoint(Vect(0, 0))
+{
+    
+
+}
+
 int Window::draw(RenderTarget *rt) {
     catchNullptr(rt, EXIT_FAILURE);
     if (this -> getStatus() == Disable) return EXIT_SUCCESS;

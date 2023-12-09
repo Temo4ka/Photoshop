@@ -15,7 +15,10 @@ namespace plugin {
         uint64_t size;
         T* data;
 
-        Array(){}
+        Array() {
+            size = 0;
+            data = nullptr;
+        }
 
         Array(uint64_t size, T* data):
                  size (size),
