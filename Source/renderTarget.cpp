@@ -100,3 +100,19 @@ Texture* RenderTarget::getTexture() {
 
     return texture;
 }
+
+void RenderTarget::setTexture(Texture *texture) {
+    display();
+
+    sf::Image image;
+    image.create(texture -> width, texture -> height, (const uint8_t*) texture -> pixels);
+
+    sf::Texture tex;
+    tex.loadFromImage(image);
+
+    sf::Sprite sprite(tex);
+
+    window -> draw(sprite);
+
+    return;
+}

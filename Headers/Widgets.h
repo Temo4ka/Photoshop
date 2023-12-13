@@ -14,7 +14,7 @@ enum WidgetStatus {
     Enable  = 1
 };
 
-class Widget : public plugin::WidgetI {
+class Widget : public plugin::WidgetI, public plugin::EventProcessableI {
     plugin::WidgetI *parent;
     Widget *root;
 

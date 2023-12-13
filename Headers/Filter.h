@@ -23,7 +23,7 @@ class Filter : public plugin::FilterI {
         void setParams(plugin::Array<double> params) { this -> params = params; }
 };
 
-struct FilterManager : plugin::FilterManagerI {
+struct FilterManager {
     plugin::FilterI *lastFilter;
 
     plugin::RenderTargetI *curRenderTarget;

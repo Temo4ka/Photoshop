@@ -19,6 +19,13 @@ struct Gui : GuiI {
     Vec2 getSize();
     RenderTargetI *getRenderTarget(Vec2 size, Vec2 pos, Plugin *self);
     void createParamWindow(Array<const char *> param_names, Interface *self);
+
+    void createWidgetI(PluginWidgetI* widget);
+
+    Plugin *queryPlugin(uint64_t id);
+
+    Texture *loadTextureFromFile(const char *filename);
+
     WidgetI* getRoot() { return root; }
 
     ~Gui() {

@@ -27,6 +27,8 @@ class TestPlugin : public Plugin {
 
     TestPlugin();
 
+    void selectPlugin() {}
+
     ~TestPlugin();
 
     virtual Interface *getInterface() override {return filter;}

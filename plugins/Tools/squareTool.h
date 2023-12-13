@@ -47,6 +47,8 @@ class SquareToolPlugin : public Plugin {
             tool = new SquareTool;
         }
 
+        void selectPlugin() {}
+
         Interface *getInterface() { return tool; }
 
         ~SquareToolPlugin() { delete tool; }

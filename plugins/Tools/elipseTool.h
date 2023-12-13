@@ -46,6 +46,8 @@ class ElipseToolPlugin : public Plugin {
             type = InterfaceType::Tool;
             tool = new ElipseTool;
         }
+        
+        void selectPlugin() {}
 
         Interface *getInterface() { return tool; }
 

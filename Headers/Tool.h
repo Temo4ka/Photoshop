@@ -37,7 +37,7 @@ struct Tool : public ToolI {
 };
 
 
-struct ToolManager : public ToolManagerI {
+struct ToolManager {
     ToolI* tool;
     Color color;
 

@@ -15,7 +15,7 @@ int main(int argc, const char *argv[]) {
 
     HostApp hostApp;
 
-    PluginManager pluginManager = PluginManager(argc - 1);
+    PluginManager pluginManager = PluginManager(argc - 1); 
     for (size_t curPlug = 1; curPlug < argc; curPlug++)
         pluginManager.loadPlugin(argv[curPlug], &app);
 
@@ -45,8 +45,6 @@ int main(int argc, const char *argv[]) {
 
     app.root = &gui;
     app.event_manager  = &eventManager;
-    app.filter_manager = &filterManager;
-    app.tool_manager   = &toolManager;
 
     while (window.isOpen())
     {

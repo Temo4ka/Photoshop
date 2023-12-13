@@ -8,7 +8,7 @@ Canvas::Canvas(Vect pos, Vect size, HostApp *app):
             temp     (new RenderTarget(pos, size)),
          app (app)
         { 
-            texture->clear(sf::Color::White);
+            texture->clear(plugin::Color(255, 255, 255, 255));
             app->toolManager -> tool = new Circle;
 
             app->filterManager -> lastFilter = new ReverseFilter;
@@ -64,7 +64,7 @@ int Canvas::onMouseMove(Vect &mouse) {
     // if (status == Status::Released) return EXIT_SUCCESS;
 
     temp->create(THIS_SIZE.x, THIS_SIZE.y);
-    temp->clear(sf::Color(0, 0, 0, 0));
+    temp->clear(plugin::Color(0, 0, 0, 0));
 
     Vect curPos = mouse - POSITION;
     plugin::MouseContext context = {{curPos.x, curPos.y}, plugin::MouseButton::Left};

@@ -31,12 +31,13 @@ class RenderTarget : public RenderTargetI {
         void drawText(Vec2 pos, const char *content, uint16_t char_size, Color color);
 
         Texture *getTexture();
+        void setTexture(Texture *);
 
         void display() { window -> display(); }
 
         void clear() { window -> clear(); }
 
-        void clear(sf::Color color) { window -> clear(color); }
+        void clear(Color color) { window -> clear({color.r, color.g, color.b, color.a}); }
 
         void create(int sizeX, int sizeY) { window -> create(sizeX, sizeY); }
 
