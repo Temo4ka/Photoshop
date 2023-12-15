@@ -29,6 +29,7 @@ void ElipseTool::paintOnMove(RenderTargetI *data, RenderTargetI *tmp, MouseConte
 
     if (this -> startPoint.x == -1 && this -> startPoint.y == -1) return;
 
+    tmp -> clear();
     tmp -> drawEllipse({startPoint.x, startPoint.y}, {(curPos.x - startPoint.x) / 2, (curPos.y - startPoint.y) / 2}, color);
 
     return;

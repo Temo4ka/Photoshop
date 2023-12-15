@@ -33,7 +33,7 @@ class AutoBalanceWhite_plugin : public Plugin {
             filter = new AutoBalanceWhite_filter;
         }
 
-        void selectPlugin() {};
+        void selectPlugin() {}
 
         Interface *getInterface() { return filter; }
 

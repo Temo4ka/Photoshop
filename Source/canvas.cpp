@@ -63,8 +63,7 @@ int Canvas::onMouseMove(Vect &mouse) {
 
     // if (status == Status::Released) return EXIT_SUCCESS;
 
-    temp->create(THIS_SIZE.x, THIS_SIZE.y);
-    temp->clear(plugin::Color(0, 0, 0, 0));
+    // temp->create(THIS_SIZE.x, THIS_SIZE.y);
 
     Vect curPos = mouse - POSITION;
     plugin::MouseContext context = {{curPos.x, curPos.y}, plugin::MouseButton::Left};

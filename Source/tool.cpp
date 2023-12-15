@@ -99,6 +99,7 @@ void PolyLine::paintOnMove(RenderTargetI *data, RenderTargetI *tmp, MouseContext
 
     Vect curPos = Vect(context.position.x, context.position.y);
 
+    tmp -> clear();
     tmp -> drawLine({lastPoint.x, lastPoint.y}, context.position, color);
 }
 
@@ -244,6 +245,7 @@ void Square::paintOnMove(RenderTargetI *data, RenderTargetI *tmp, MouseContext c
 
     if (this -> startPoint.x == -1 && this -> startPoint.y == -1) return;
 
+    tmp -> clear();
     tmp -> drawRect({startPoint.x, startPoint.y}, {curPos.x - startPoint.x, curPos.y - startPoint.y}, color);
 
     return;
@@ -325,6 +327,7 @@ void Circle::paintOnMove(RenderTargetI *data, RenderTargetI *tmp, MouseContext c
         circlePos.y = startPoint.y - diam;
 
 
+    tmp -> clear();
     tmp -> drawEllipse({circlePos.x, circlePos.y}, {diam / 2, diam / 2}, color);
 
     return;

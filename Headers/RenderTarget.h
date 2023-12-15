@@ -35,7 +35,7 @@ class RenderTarget : public RenderTargetI {
 
         void display() { window -> display(); }
 
-        void clear() { window -> clear(); }
+        void clear() { window -> clear(sf::Color(0, 0, 0, 0)); }
 
         void clear(Color color) { window -> clear({color.r, color.g, color.b, color.a}); }
 

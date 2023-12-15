@@ -32,3 +32,12 @@ elipse:
 square:
 	g++ ./plugins/Tools/squareTool.cpp -shared -o ./plugins/DLL/square_tool.dll
 
+spline_tool:
+	g++ ./plugins/Tools/splineTool/catmullrom.cpp \
+		./plugins/Tools/splineTool/texture.cpp    ./plugins/Tools/splineTool/vec2.cpp		\
+		./plugins/Tools/splineTool/spline_tool.cpp -shared -o ./plugins/DLL/splineTool.dll
+
+sphere_filter:
+	g++ -IC:\SFML-2.5.1\include -LC:\SFML-2.5.1\lib \
+	./plugins/Filters/sphere_filter/sphere_filter.cpp ./plugins/Filters/sphere_filter/vector.cpp \
+	-shared -o ./plugins/DLL/sphereFilter.dll -lmingw32 -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lsfml-main -mwindows
