@@ -1,12 +1,18 @@
 #include "../Headers/Widgets.h"
 #include <cmath>
 
-Window::Window(Vect pos, Vect size, sf::Texture *texture, sf::Sprite *sprite):
+Window::Window(Vect pos, Vect size, sf::Texture *texture, sf::Sprite *sprite, const char *name):
         Widget(pos, size, texture, TEST_PIC_WIDTH, TEST_PIC_HEIGHT, sprite),
         status(Status::Still),
         lastPoint(Vect(0, 0))
 {
+    sf::Font *font = new sf::Font;
+    font -> loadFromFile(ARIAL_FONT_FILE_NAME);
 
+    text = sf::Text(name, *font);
+
+    Vect position = pos + Vect(3, 3);
+    text.setPosition(position.x, position.y);
 }
 
 int Window::draw(RenderTarget *rt) {
@@ -30,6 +36,11 @@ int Window::draw(RenderTarget *rt) {
 
         curRegionNode = curRegionNode -> getNext();
     } while (curRegionNode != ((this->getRegionSet())->getHead())->getHead());
+
+    text.setCharacterSize(16);
+    Vect position = getPosition() + Vect(3, 3);
+    text.setPosition(position.x, position.y);
+    (rt->getWindow())->draw(text);
 
     ListNode<Widget>* cur = (this -> getList()) -> getHead();
     if (cur == nullptr) return EXIT_SUCCESS;

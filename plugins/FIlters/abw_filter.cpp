@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <algorithm>
 
-uint8_t min(uint8_t a, uint8_t b) {
+uint8_t min(int a, int b) {
     return (a < b)? a : b;
 }
 
@@ -38,12 +38,9 @@ void AutoBalanceWhite_filter::apply(RenderTargetI *data) {
 
     for (int y = 0; y < h; y++)
         for (int x = 0; x < w; x++) {
-            texture -> pixels[y * w + x].r *=   redGain;
-            texture -> pixels[y * w + x].r  = min(texture -> pixels[y * w + x].r, 255);
-            texture -> pixels[y * w + x].g *= greenGain;
-            texture -> pixels[y * w + x].g  = min(texture -> pixels[y * w + x].g, 255);
-            texture -> pixels[y * w + x].b *=  blueGain;
-            texture -> pixels[y * w + x].b  = min(texture -> pixels[y * w + x].b, 255);
+            texture -> pixels[y * w + x].r  = min(int(texture -> pixels[y * w + x].r) * redGain, 255);
+            texture -> pixels[y * w + x].g  = min(int(texture -> pixels[y * w + x].g) * greenGain, 255);
+            texture -> pixels[y * w + x].b  = min(int(texture -> pixels[y * w + x].b) * blueGain, 255);
         }
 
     data -> drawTexture(Vec2(0, 0), Vec2(w, h), texture);

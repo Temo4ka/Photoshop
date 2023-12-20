@@ -28,12 +28,13 @@ Window* orginiseMainScreen(sf::RenderWindow *window, HostApp *app) {
     modalWindow->setRoot(mainWindow);
 
     if (addMainScreenButtons(app)) return nullptr;
+    if (addToolIcons(app))         return nullptr;
     mainWindow->pushBackSubWidget(menu);
     mainWindow->pushBackSubWidget(canvas);
     mainWindow->pushBackSubWidget(modalWindow); 
 
      menu  -> changeStatus();
-    canvas -> changeStatus();
+    // canvas -> changeStatus();
 
     // ListHead<Widget> *list = mainWindow -> getList();
     // list -> pushBack(canvas);
@@ -83,6 +84,7 @@ int addMainScreenButtons(HostApp *app) {
 
             case 3:
                 subMenu = addWindowMenu(curButton, app);
+                app->windowMenu = subMenu;
                 break;
             
             case 4:
@@ -98,6 +100,46 @@ int addMainScreenButtons(HostApp *app) {
         app->root  -> pushBackSubWidget(subMenu);
         curButton  -> pushBackSubWidget(subMenu);
     }
+
+    return EXIT_SUCCESS;
+}
+
+int addToolIcons(HostApp *app) {
+    catchNullptr(app, EXIT_FAILURE);
+
+    Menu *toolBar = new Menu(Vect(0, WINDOW_HEIGHT - 60), Vect(60 * 6, 60));
+
+    Vect menuButtonSize(BUTTON_MENU_WIDTH, MENU_HEIGHT);
+
+    sf::Font *font = new sf::Font;
+    font -> loadFromFile("./Font/newFont.ttf");
+
+    const char *toolNames[] = { "pen.png", "brush.png", "eraser.png", "circle.png", "square.png", "polyline.png" };
+
+    int (*runFunctions[])(Button *) = { setPen, setBrush, setEraser, setCircle, setSquare, setPolyLine };
+
+    for (int curTl = 0; curTl < 6; curTl++) {
+        char buffer[100] = "./icons/";
+
+        sf::Texture *texture = new sf::Texture; 
+        if (!texture -> loadFromFile(strcat(buffer, toolNames[curTl])))
+            texture -> loadFromFile("./icons/default");
+
+        Button *curTool = new Button(Vect(60 * curTl, WINDOW_HEIGHT - 60),
+                                     Vect(60, 60), "", font, texture, new sf::Sprite, runFunctions[curTl], 60, 60);
+
+        curTool -> setRoot(app -> root);
+
+        curTool -> changeStatus();
+
+        toolBar -> pushBackSubWidget(curTool);
+
+        curTool -> pushBackSubWidget(app->mainCanvas);
+    }
+
+    toolBar -> changeStatus();
+
+    app->root->pushBackSubWidget(toolBar);
 
     return EXIT_SUCCESS;
 }
@@ -233,41 +275,10 @@ Menu *addWindowMenu(Button *window, HostApp *app) {
     catchNullptr(window, nullptr);
 
     Vect pos  = window -> getPosition();
-    Vect size = window ->    getSizeVect   ();
+    Vect size = window -> getSizeVect();
 
-    Vect menuButtonSize(BUTTON_MENU_WIDTH, MENU_HEIGHT);
 
-    sf::Font *font = new sf::Font;
-    font -> loadFromFile("./Font/newFont.ttf");
-
-    sf::Texture *texture = new sf::Texture; 
-    texture -> loadFromFile(BUTTON_FILE_NAME);
-
-    sf::Sprite *window1S = new sf::Sprite;
-    sf::Sprite *window2S = new sf::Sprite;
-
-    Menu *windowMenu = new Menu(Vect(pos.x, pos.y + size.y), Vect(size.x, MENU_HEIGHT * 2));
-
-    Button *window1 = new Button(Vect(pos.x, pos.y + size.y * 1), menuButtonSize, "window1", font, texture, window1S, activateWidget);
-    Button *window2 = new Button(Vect(pos.x, pos.y + size.y * 2), menuButtonSize, "window2", font, texture, window2S, activateWidget);
-
-    window1 -> setRoot(app->root);
-    window2 -> setRoot(app->root);
-
-    window1 -> changeStatus();
-    window2 -> changeStatus();
-
-    windowMenu -> pushBackSubWidget(window1);
-    windowMenu -> pushBackSubWidget(window2);
-
-    Window *win1 = createSubWindow(Vect(200, 400));
-    Window *win2 = createSubWindow(Vect(900, 400));
-
-    window1 -> pushBackSubWidget(win1);
-    window2 -> pushBackSubWidget(win2);
-
-    app->root -> pushBackSubWidget(win1);
-    app->root -> pushBackSubWidget(win2);
+    Menu *windowMenu = new Menu(Vect(pos.x, pos.y + size.y), Vect(size.x, 0));
 
     return windowMenu;
 }
@@ -289,7 +300,7 @@ Menu *addToolsMenu(Button *tools, HostApp *app) {
 
     Menu *toolsMenu = new Menu(Vect(pos.x, pos.y + size.y), Vect(size.x, MENU_HEIGHT * 6));
 
-    const char *toolNames[] = {"  pen   ", " brush  ", " eraser ", " circle ", " square ", "polyline" };
+    const char *toolNames[] = {"  pen   ", " brush  ", " eraser ", " circle ", " square ", "polyline"};
 
     int (*runFunctions[])(Button *) = { setPen, setBrush, setEraser, setCircle, setSquare, setPolyLine };
 
@@ -352,13 +363,32 @@ Menu *addPluginMenu(Button *plugins, HostApp *app) {
     return pluginMenu;
 }
 
-Window *createSubWindow(Vect pos, Vect size) {
+Window *createSubWindow(Vect pos, Vect size, const char *name, Menu *windowMenu) {
     sf::Texture *texture = new sf::Texture;
     texture -> loadFromFile(WINDOW_FILE_NAME);
     
     sf::Sprite *sprite = new sf::Sprite;
 
-    Window *subWindow = new Window(pos, size, texture, sprite);
+    Window *subWindow = new Window(pos, size, texture, sprite, name);
+
+    Vect curSize = windowMenu -> getSizeVect();
+    Vect curPos  = windowMenu -> getPosition();
+
+    windowMenu -> setSize({curSize.x, curSize.y + BUTTON_PIC_HEIGHT});
+
+    sf::Font *font = new sf::Font;
+    font -> loadFromFile(FONT_FILE_NAME);
+
+    sf::Texture *butTex = new sf::Texture;
+    butTex -> loadFromFile(BUTTON_FILE_NAME);
+
+    Button *winButton = new Button(Vect(curPos.x, curPos.y + curSize.y), Vect(BUTTON_PIC_WIDTH, BUTTON_PIC_HEIGHT),
+                                   name, font, butTex, new sf::Sprite, activateWidget);
+
+    winButton -> pushBackSubWidget(subWindow);
+    winButton -> changeStatus();
+    
+    windowMenu -> pushBackSubWidget(winButton);
 
     return subWindow;
 }
@@ -657,9 +687,7 @@ int openFileWindowButton(Button *button) {
     Array<const char*> fileName = modWind->getStringParams();
     if (fileName.size == 0) return EXIT_FAILURE;
 
-    char buffer[100] = "./files/";
-
-    createNewImageWindow(strcat(buffer, fileName.data[0]), modWind -> getApp());
+    createNewImageWindow(fileName.data[0], modWind -> getApp());
     
     (modWind->getApp()->eventManager)->setPriority(plugin::EventType::KeyPress, LOW_PRIORITY);
 
@@ -718,13 +746,14 @@ void saveImageFromCanvas(const char *imageName, HostApp * app) {
     return;
 }
 
+void createNewImageWindow(const char *name, HostApp *app) {
+    catchNullptr(name, );
+    catchNullptr(app , );
 
-void createNewImageWindow(const char *imageName, HostApp *app) {
-    catchNullptr(imageName, );
-    catchNullptr(   app   , );
+    char buffer[100] = "./files/";
 
     sf::Texture texture;
-    texture.loadFromFile(imageName);
+    texture.loadFromFile(strcat(buffer, name));
 
     Vect textureSize = Vect(texture.getSize().x, texture.getSize().y);
 
@@ -735,9 +764,30 @@ void createNewImageWindow(const char *imageName, HostApp *app) {
     sprite.setTexture(texture);
     newWindowCanvas -> paint(&sprite);
 
-    Window *wind = createSubWindow(Vect(80, 100), textureSize + Vect(10, 35));
+    Window *wind = createSubWindow(Vect(80, 100), textureSize + Vect(10, 35), name, app -> windowMenu);
     wind -> pushBackSubWidget(newWindowCanvas);
     wind -> changeStatus();
 
+    // addTerminateButton(wind);
+
     app->root->pushFrontSubWidget(wind);
+}
+
+void addTerminateButton(Window *window) {
+    sf::Texture *texture = new sf::Texture;
+    texture->loadFromFile(TERMINATE_BUTTON_FILE_NAME);
+
+    sf::Font *font = new sf::Font;
+    font -> loadFromFile(FONT_FILE_NAME);
+
+    Vect pos = window->getPosition() + window->getSizeVect() - Vect(TERMINATE_BUTTON_WIDTH, window->getSizeVect().y);
+
+    Button *button = new Button(pos, Vect(TERMINATE_BUTTON_WIDTH, TERMINATE_BUTTON_HEIGHT), "", font, texture, new sf::Sprite, activateWidget);
+    button->pushBackSubWidget(window);
+
+    window->pushBackSubWidget(button);
+
+    button->changeStatus();
+
+    return;
 }

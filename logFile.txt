@@ -1,0 +1,132 @@
+MSG:HERE, from Window::Window(Vect, Vect, sf::Texture*, sf::Sprite*, const char*) at ./source/window.cpp(10)
+MSG:1, from virtual int Window::draw(RenderTarget*) at ./source/window.cpp(44)
+MSG:HERE, from Window::Window(Vect, Vect, sf::Texture*, sf::Sprite*, const char*) at ./source/window.cpp(10)
+MSG:1, from virtual int Window::draw(RenderTarget*) at ./source/window.cpp(44)
+MSG:HERE1, from void ModalWindow::setParamNames(plugin::Array<const char*>, int (*)(Button*), EditBox::BoxType) at ./source/editBox.cpp(30)
+MSG:HERE1, from void ModalWindow::setParamNames(plugin::Array<const char*>, int (*)(Button*), EditBox::BoxType) at ./source/editBox.cpp(30)
+MSG:HERE1, from void ModalWindow::setParamNames(plugin::Array<const char*>, int (*)(Button*), EditBox::BoxType) at ./source/editBox.cpp(30)
+MSG:HERE1, from void ModalWindow::setParamNames(plugin::Array<const char*>, int (*)(Button*), EditBox::BoxType) at ./source/editBox.cpp(30)
+MSG:HERE1, from void ModalWindow::setParamNames(plugin::Array<const char*>, int (*)(Button*), EditBox::BoxType) at ./source/editBox.cpp(30)
+MSG:HERE1, from void ModalWindow::setParamNames(plugin::Array<const char*>, int (*)(Button*), EditBox::BoxType) at ./source/editBox.cpp(30)
+MSG:HERE1, from void ModalWindow::setParamNames(plugin::Array<const char*>, int (*)(Button*), EditBox::BoxType) at ./source/editBox.cpp(30)
+MSG:HERE1, from void ModalWindow::setParamNames(plugin::Array<const char*>, int (*)(Button*), EditBox::BoxType) at ./source/editBox.cpp(30)
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+curNode pointer at bool Widget::isInWidgetRegion(Vect) at ./source/window.cpp(130) is NULL
+MSG:HERE1, from void ModalWindow::setParamNames(plugin::Array<const char*>, int (*)(Button*), EditBox::BoxType) at ./source/editBox.cpp(30)
+MSG:HERE1, from void ModalWindow::setParamNames(plugin::Array<const char*>, int (*)(Button*), EditBox::BoxType) at ./source/editBox.cpp(30)

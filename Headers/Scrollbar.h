@@ -2,7 +2,7 @@
 
 #include "Widgets.h"
 
-class CrossbarH : public Widget {
+class ScrollbarH : public Widget {
     Canvas *canvas;
 
     double curYposition;
@@ -11,7 +11,7 @@ class CrossbarH : public Widget {
 
     public:
 
-        CrossbarH(Canvas *canvas, Vect &pos, Vect &size, sf::Texture *texture, const signed texW, const signed texH, sf::Sprite *sprite, Widget *parent = nullptr);
+        ScrollbarH(Canvas *canvas, Vect &pos, Vect &size, sf::Texture *texture, const signed texW, const signed texH, sf::Sprite *sprite, Widget *parent = nullptr);
 
         int   onMouseMove  (Vect &pos);
         int  onMousePress  (Vect &pos);
@@ -19,7 +19,7 @@ class CrossbarH : public Widget {
 
         int draw(RenderTarget *rt);
 
-    ~CrossbarH() {
+    ~ScrollbarH() {
         delete buttonTexture;
     }
 };

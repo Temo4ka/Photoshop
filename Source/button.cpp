@@ -1,8 +1,9 @@
 #include "../Headers/Widgets.h"
 
 
-Button::Button(Vect pos, Vect size, const char *message, sf::Font *font, sf::Texture *texture, sf::Sprite *sprite, int (*run)(Button *button)):
-Widget(pos, size, texture, BUTTON_PIC_WIDTH, BUTTON_PIC_HEIGHT, sprite) //base construction
+Button::Button(Vect pos, Vect size, const char *message, sf::Font *font, sf::Texture *texture, sf::Sprite *sprite, int (*run)(Button *button),
+                                                                                                                                const int W, const int H):
+Widget(pos, size, texture, W, H, sprite) //base construction
 {
     this -> run  = run;
     this -> font = font;
@@ -20,6 +21,8 @@ int Button::draw(RenderTarget *rt) {
 
     // MESSAGE("%s: %d", ((std::string) text->getString()).c_str(), this->getRegionSet()->getSize());
 
+    int square = 0;
+
     ListNode<Region> *curRegionNode = ((this->getRegionSet())->getHead())->getHead();
     for (int i = 0; i < this->getRegionSet()->getSize(); i++) {
         Region *curRegion = curRegionNode->getObject();
@@ -36,10 +39,14 @@ int Button::draw(RenderTarget *rt) {
         (rt->getWindow())->draw(*(this->getSprite()));
         
         curRegionNode = curRegionNode -> getNext();
+
+        square += curSize.x * curSize.y;
     }
 
     text -> setCharacterSize(CharacterSize);
-    (rt->getWindow())->draw(*(this->text));
+    
+    if (square >= getSizeVect().x * getSizeVect().y / 2)
+        (rt->getWindow())->draw(*(this->text));
 
     return EXIT_SUCCESS;
 }

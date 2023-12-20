@@ -61,18 +61,19 @@ class Widget : public plugin::WidgetI, public plugin::EventProcessableI {
         virtual int  onMousePress  (Vect &pos) = 0;
         virtual int onMouseRelease (Vect &pos) = 0;
 
+        virtual int clipRegions();
+        virtual int draw(RenderTarget *rt) = 0;
+        virtual int deleteWidget();
+
         int  pushBackSubWidget  (Widget *widget);
         int  pushFrontSubWidget (Widget *widget);
         int removeSubWidget(Widget *widget);
-
-        virtual int clipRegions();
 
         // virtual int onKeyPressed () = 0;
         // virtual int onKeyReleased() = 0;
 
         // virtual int addObject(Widget &object) = 0;
 
-        virtual int draw(RenderTarget *rt) = 0;
 
         Vect getSizeVect() { return this ->   size  ; }
         Vect getPosition() { return this -> position; }
@@ -158,6 +159,10 @@ class Widget : public plugin::WidgetI, public plugin::EventProcessableI {
 };
 
 class Window : public Widget {
+    bool isNamed = 0;
+
+    sf::Text text;
+
     enum Status {
             Still      = 0,
             OnMove     = 1,
@@ -169,12 +174,13 @@ class Window : public Widget {
     Vect lastPoint;
 
     public:
-        Window(Vect pos, Vect size, sf::Texture *texture, sf::Sprite *sprite);
+        Window(Vect pos, Vect size, sf::Texture *texture, sf::Sprite *sprite, const char *name = "1");
 
         Window(Vect pos, Vect size, sf::Texture *texture, const signed texW, const signed texH, sf::Sprite *sprite):
         Widget(pos, size, texture, texW, texH, sprite),
         status(Status::Still),
-        lastPoint(Vect(0, 0))
+        lastPoint(Vect(0, 0)),
+        isNamed(0)
         {}
 
         virtual int draw(RenderTarget *rt);
@@ -203,7 +209,8 @@ class Button : public Widget {
             Pointed  = 2
         } status;
 
-        Button(Vect pos, Vect size, const char *text, sf::Font *font, sf::Texture *texture, sf::Sprite *sprite, int (*run)(Button *Button) = nullptr);
+        Button(Vect pos, Vect size, const char *text, sf::Font *font, sf::Texture *texture, sf::Sprite *sprite, int (*run)(Button *Button) = nullptr,
+                                                                                            const int W = BUTTON_PIC_WIDTH, const int H = BUTTON_PIC_HEIGHT);
 
         int   onMouseMove  (Vect &pos);
         int  onMousePress  (Vect &pos);

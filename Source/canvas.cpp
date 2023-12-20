@@ -31,6 +31,8 @@ void Canvas::activateFilter() { app->filterManager -> active = true; }
 void Canvas::setColor(sf::Color newColor) { app->toolManager -> color = { newColor.r, newColor.g, newColor.b, newColor.a }; }
 
 int Canvas::onMousePress(Vect &mouse) {
+    if (getStatus() == Disable) return EXIT_SUCCESS;
+    
     if (!isInWidgetRegion(mouse))
         return EXIT_SUCCESS;
 
@@ -55,6 +57,8 @@ int Canvas::onMousePress(Vect &mouse) {
 }
 
 int Canvas::onMouseMove(Vect &mouse) {
+    if (getStatus() == Disable) return EXIT_SUCCESS;
+
     if (!isInWidgetRegion(mouse)) {
         status = Status::Released;
         
@@ -74,6 +78,8 @@ int Canvas::onMouseMove(Vect &mouse) {
 }
 
 int Canvas::onMouseRelease(Vect &mouse) {
+    if (getStatus() == Disable) return EXIT_SUCCESS;
+
     status = Status::Released;
 
     Vect curPos = mouse - POSITION;

@@ -29,8 +29,14 @@ const unsigned HIGH_PRIORITY = 2;
 const unsigned EDIT_BOX_WIDTH  = 240;
 const unsigned EDIT_BOX_HEIGHT =  60;
 
+const unsigned TERMINATE_BUTTON_WIDTH  = 60;
+const unsigned TERMINATE_BUTTON_HEIGHT = 60;
+
 static const char * WINDOW_FILE_NAME = "./Image/Window.png"  ;
 static const char *EDITBOX_FILE_NAME = "./Image/editBox.png" ;
 static const char * BUTTON_FILE_NAME = "./Image/buttons.jpg" ;
 static const char *   FONT_FILE_NAME = "./Font/newFont.ttf"  ;
 static const char *ARIAL_FONT_FILE_NAME = "./Font/arial.ttf" ;
+
+static const char *TERMINATE_BUTTON_FILE_NAME = "./Image/terminateButton.jpg" ;
+

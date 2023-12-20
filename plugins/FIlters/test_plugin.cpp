@@ -3,7 +3,7 @@
 void BlackAndWhiteFilter::apply (RenderTargetI *data) {
     Texture* img = data -> getTexture();
 
-    Color* pixels = img -> pixels;
+    Color* pixels  = img -> pixels;
     unsigned int w = img -> width;
     unsigned int h = img -> height;
 

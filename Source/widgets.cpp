@@ -1,5 +1,22 @@
 #include "../Headers/Widgets.h"
 
+int Widget::deleteWidget() {
+    ListNode<Widget>* curNode = (getList()) -> getHead();
+    if (curNode == nullptr) return EXIT_FAILURE;
+
+    do {
+        catchNullptr(curNode -> getObject(), EXIT_FAILURE);
+
+        (curNode -> getObject()) -> deleteWidget();
+
+        curNode = curNode -> getNext();
+    } while (curNode != (getList()) -> getHead());
+
+    delete this;
+
+    return EXIT_SUCCESS;
+}
+
 int Widget::pushBackSubWidget(Widget *widget) {
     catchNullptr(widget , EXIT_FAILURE);
 

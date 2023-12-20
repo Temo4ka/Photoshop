@@ -16,11 +16,14 @@ struct HostApp {
        Window     *    root     ;
        Canvas     * mainCanvas  ;
         Menu      *  mainMenu   ;
+        Menu      * windowMenu  ;
 };
 
 Window* orginiseMainScreen(sf::RenderWindow *window, HostApp *app);
 
 int addMainScreenButtons(HostApp *app);
+
+int addToolIcons(HostApp *app);
 
 Menu *addFileMenu(Button *file, HostApp *app);
 
@@ -36,7 +39,7 @@ Menu *addPluginMenu(Button *plugins, HostApp *app);
 
 int activatePluginButton(Button *button);
 
-Window *createSubWindow(Vect pos, Vect size = Vect(SUBWINDOW_WIDTH, SUBWINDOW_HEIGHT));
+Window *createSubWindow(Vect pos, Vect size, const char *name, Menu *windowMenu);
 
 int activateWidget(Button *button);
 
@@ -71,3 +74,5 @@ int modalWindowButton(Button *button);
 int saveFile(Button *button);
 
 int saveFileWindowButton(Button *button);
+
+void addTerminateButton(Window *window);
